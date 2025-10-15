@@ -488,15 +488,17 @@
             position: relative;
         }
         
-        /* 桌面端：hover时Logo变白 */
+        /* 桌面端：hover任一菜单时Logo变白 */
         @media (hover: hover) and (pointer: fine) {
-            .glass-nav:has(.nav-items li:hover .dropdown-menu) .nav-logo,
-            .glass-nav:has(.dropdown-menu:hover) .nav-logo {
+            .glass-nav:has(.language-menu-item:hover .dropdown-menu) .nav-logo,
+            .glass-nav:has(.products-menu-item:hover .dropdown-menu) .nav-logo,
+            .glass-nav:has(.language-dropdown:hover) .nav-logo,
+            .glass-nav:has(.products-dropdown:hover) .nav-logo {
                 color: #FFFFFF !important;
             }
         }
         
-        /* 移动端：active时Logo变白 */
+        /* 移动端：任一菜单active时Logo变白 */
         .glass-nav:has(.dropdown-menu.active) .nav-logo {
             color: #FFFFFF !important;
         }
@@ -661,6 +663,34 @@
         
         .dropdown-divider {
             display: none;
+        }
+        
+        /* 语言选项选中状态 */
+        .language-item.active {
+            background: rgba(255, 255, 255, 0.12);
+        }
+        
+        .language-item.active::after {
+            content: '✓';
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 20px;
+            color: #FFFFFF;
+            font-weight: 600;
+        }
+        
+        /* 语言菜单和产品菜单流畅切换 */
+        .language-dropdown,
+        .products-dropdown {
+            transition: opacity 0.3s cubic-bezier(0.28, 0.11, 0.32, 1),
+                       visibility 0.3s cubic-bezier(0.28, 0.11, 0.32, 1);
+        }
+        
+        /* 语言菜单项相对定位（用于check mark） */
+        .language-item {
+            position: relative;
         }
         
         /* 移动端优化 - 和桌面端一样的全宽样式 */
@@ -972,7 +1002,7 @@
             }
             
             .hero-container {
-                transform: translateY(-20%);
+                transform: translateY(20%);
             }
             
             .hero-title {
@@ -993,7 +1023,7 @@
                 width: auto;
                 max-width: none;
                 margin: 0 auto;
-                margin-top: 10%;
+                margin-top: 24%;
                 justify-content: center;
                 height: 56px;
                 font-size: 17px;
@@ -1059,7 +1089,7 @@
             .btn-primary {
                 height: 52px;
                 font-size: 16px;
-                margin-top: 12%;
+                margin-top: 26%;
             }
         }
         
@@ -1146,10 +1176,41 @@
         <nav class="nav-container" aria-label="Main navigation">
             <div class="nav-logo">LIKAIFENG.Net</div>
             <ul class="nav-items" role="menubar">
-                <li role="none">
-                    <a href="#products" role="menuitem">Products</a>
-                    <div class="dropdown-menu">
-                        <div class="dropdown-content">
+                <li role="none" class="language-menu-item">
+                    <a href="#language" role="menuitem" class="language-trigger" data-lang>语言</a>
+                    <div class="dropdown-menu language-dropdown">
+                        <div class="dropdown-content" id="languageDropdownContent">
+                            <a href="#" class="dropdown-item language-item" data-lang="zh-CN">
+                                <span class="dropdown-item-title">简体中文</span>
+                                <span class="dropdown-item-subtitle">Simplified Chinese</span>
+                            </a>
+                            <a href="#" class="dropdown-item language-item" data-lang="en">
+                                <span class="dropdown-item-title">English</span>
+                                <span class="dropdown-item-subtitle">英语</span>
+                            </a>
+                            <a href="#" class="dropdown-item language-item" data-lang="ru">
+                                <span class="dropdown-item-title">Русский</span>
+                                <span class="dropdown-item-subtitle">俄语</span>
+                            </a>
+                            <a href="#" class="dropdown-item language-item" data-lang="fr">
+                                <span class="dropdown-item-title">Français</span>
+                                <span class="dropdown-item-subtitle">法语</span>
+                            </a>
+                            <a href="#" class="dropdown-item language-item" data-lang="de">
+                                <span class="dropdown-item-title">Deutsch</span>
+                                <span class="dropdown-item-subtitle">德语</span>
+                            </a>
+                            <a href="#" class="dropdown-item language-item" data-lang="es">
+                                <span class="dropdown-item-title">Español</span>
+                                <span class="dropdown-item-subtitle">西班牙语</span>
+                            </a>
+                        </div>
+                    </div>
+                </li>
+                <li role="none" class="products-menu-item">
+                    <a href="#products" role="menuitem" class="products-trigger" data-products>产品</a>
+                    <div class="dropdown-menu products-dropdown">
+                        <div class="dropdown-content" id="productsDropdownContent">
                             <a href="#windows" class="dropdown-item available">
                                 <span class="dropdown-item-title">Windows</span>
                                 <span class="dropdown-item-subtitle">Umail - Email Security Tool</span>
@@ -1176,48 +1237,217 @@
         <section class="hero">
             <div class="hero-container">
                 <h1 class="hero-title">
-                    <span>Artwork made</span>
-                    <span>especially for you</span>
+                    <span data-i18n="hero.title.line1">为你打造的艺术品</span>
+                    <span data-i18n="hero.title.line2"></span>
                 </h1>
-                <p class="hero-subtitle">
-                    Leave 'more is less' to us—just to show you that less is more.
+                <p class="hero-subtitle" data-i18n="hero.subtitle">
+                    "多即是少"交给我，"少即是多"留给你。
                 </p>
-                <a href="#about" class="btn-primary pill" aria-label="View">
-                    View
+                <a href="#about" class="btn-primary pill" aria-label="View" data-i18n="hero.cta">
+                    浏览
                 </a>
             </div>
         </section>
     </main>
     
     <script>
-        // 检测减少动画偏好
-        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+        // ========================================
+        // 多语言支持系统
+        // ========================================
+        const translations = {
+            'zh-CN': {
+                'nav.language': '语言',
+                'nav.products': '产品',
+                'hero.title.line1': '为你打造的艺术品',
+                'hero.title.line2': '',
+                'hero.subtitle': '"多即是少"交给我，"少即是多"留给你。',
+                'hero.cta': '浏览'
+            },
+            'en': {
+                'nav.language': 'Language',
+                'nav.products': 'Products',
+                'hero.title.line1': 'Artwork made',
+                'hero.title.line2': 'especially for you',
+                'hero.subtitle': 'Leave \'more is less\' to us—just to show you that less is more.',
+                'hero.cta': 'View'
+            },
+            'ru': {
+                'nav.language': 'Язык',
+                'nav.products': 'Продукты',
+                'hero.title.line1': 'Произведение искусства,',
+                'hero.title.line2': 'созданное для вас',
+                'hero.subtitle': 'Оставьте "больше значит меньше" нам—просто чтобы показать вам, что меньше значит больше.',
+                'hero.cta': 'Просмотр'
+            },
+            'fr': {
+                'nav.language': 'Langue',
+                'nav.products': 'Produits',
+                'hero.title.line1': 'Une œuvre d\'art créée',
+                'hero.title.line2': 'spécialement pour vous',
+                'hero.subtitle': 'Laissez-nous "plus c\'est moins"—juste pour vous montrer que moins c\'est plus.',
+                'hero.cta': 'Voir'
+            },
+            'de': {
+                'nav.language': 'Sprache',
+                'nav.products': 'Produkte',
+                'hero.title.line1': 'Kunstwerk speziell',
+                'hero.title.line2': 'für Sie gemacht',
+                'hero.subtitle': 'Überlassen Sie uns "mehr ist weniger"—nur um Ihnen zu zeigen, dass weniger mehr ist.',
+                'hero.cta': 'Ansehen'
+            },
+            'es': {
+                'nav.language': 'Idioma',
+                'nav.products': 'Productos',
+                'hero.title.line1': 'Obra de arte hecha',
+                'hero.title.line2': 'especialmente para ti',
+                'hero.subtitle': 'Déjanos "más es menos"—solo para mostrarte que menos es más.',
+                'hero.cta': 'Ver'
+            }
+        };
+
+        // 当前语言（默认简体中文）
+        let currentLang = localStorage.getItem('language') || 'zh-CN';
+
+        // 更新页面文本
+        function updateLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('language', lang);
+            
+            // 更新所有带有 data-i18n 的元素
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                const translation = translations[lang][key];
+                if (translation !== undefined) {
+                    if (el.tagName === 'A' || el.tagName === 'BUTTON') {
+                        el.textContent = translation;
+                    } else {
+                        el.textContent = translation;
+                    }
+                }
+            });
+            
+            // 更新导航按钮
+            const langTrigger = document.querySelector('[data-lang]');
+            const productsTrigger = document.querySelector('[data-products]');
+            if (langTrigger) langTrigger.textContent = translations[lang]['nav.language'];
+            if (productsTrigger) productsTrigger.textContent = translations[lang]['nav.products'];
+            
+            // 更新语言选项的选中状态
+            document.querySelectorAll('.language-item').forEach(item => {
+                if (item.dataset.lang === lang) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+        }
+
+        // 页面加载时应用当前语言
+        document.addEventListener('DOMContentLoaded', function() {
+            updateLanguage(currentLang);
+        });
+
+        // 语言切换事件
+        document.addEventListener('click', function(e) {
+            const langItem = e.target.closest('.language-item');
+            if (langItem) {
+                e.preventDefault();
+                const newLang = langItem.dataset.lang;
+                updateLanguage(newLang);
+                
+                // 关闭下拉菜单
+                document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                    menu.classList.remove('active');
+                });
+                const overlay = document.getElementById('dropdownOverlay');
+                if (overlay) overlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+
+        // ========================================
+        // Apple风格菜单切换系统
+        // ========================================
+        const languageDropdown = document.querySelector('.language-dropdown');
+        const productsDropdown = document.querySelector('.products-dropdown');
+        const languageTrigger = document.querySelector('.language-trigger');
+        const productsTrigger = document.querySelector('.products-trigger');
         
+        let currentDropdown = null;
+        
+        // 桌面端：鼠标悬停切换菜单内容
+        if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+            // 语言按钮悬停
+            languageTrigger.addEventListener('mouseenter', function() {
+                if (productsDropdown.classList.contains('active') || 
+                    languageDropdown.classList.contains('active') ||
+                    currentDropdown === productsDropdown) {
+                    // 如果Products菜单正在显示，切换到Language
+                    productsDropdown.classList.remove('active');
+                    languageDropdown.classList.add('active');
+                    currentDropdown = languageDropdown;
+                }
+            });
+            
+            // Products按钮悬停
+            productsTrigger.addEventListener('mouseenter', function() {
+                if (languageDropdown.classList.contains('active') || 
+                    productsDropdown.classList.contains('active') ||
+                    currentDropdown === languageDropdown) {
+                    // 如果Language菜单正在显示，切换到Products
+                    languageDropdown.classList.remove('active');
+                    productsDropdown.classList.add('active');
+                    currentDropdown = productsDropdown;
+                }
+            });
+            
+            // 鼠标离开导航区域时关闭所有菜单
+            document.querySelector('.nav-items').addEventListener('mouseleave', function() {
+                setTimeout(() => {
+                    if (!document.querySelector('.dropdown-menu:hover')) {
+                        languageDropdown.classList.remove('active');
+                        productsDropdown.classList.remove('active');
+                        currentDropdown = null;
+                    }
+                }, 100);
+            });
+            
+            // 菜单内容区域悬停保持打开
+            [languageDropdown, productsDropdown].forEach(menu => {
+                menu.addEventListener('mouseleave', function() {
+                    setTimeout(() => {
+                        if (!document.querySelector('.nav-items li:hover')) {
+                            languageDropdown.classList.remove('active');
+                            productsDropdown.classList.remove('active');
+                            currentDropdown = null;
+                        }
+                    }, 100);
+                });
+            });
+        }
+
+        // ========================================
+        // 减少动画偏好检测
+        // ========================================
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
         if (prefersReducedMotion.matches) {
             document.querySelectorAll('.bg-orb, .bg-ring, .bg-specular').forEach(el => {
                 el.style.animation = 'none';
             });
         }
-        
-        // 导航当前态（可选）
-        const currentPath = window.location.hash || '#products';
-        document.querySelectorAll('.nav-items a').forEach(link => {
-            if (link.getAttribute('href') === currentPath) {
-                link.style.background = 'rgba(0, 0, 0, 0.08)';
-                link.style.boxShadow = 'inset 0 0 0 1px rgba(0, 0, 0, 0.1)';
-            }
-        });
-        
+
+        // ========================================
         // 移动端下拉菜单点击切换
+        // ========================================
         const isMobile = window.matchMedia('(max-width: 768px)').matches;
         if (isMobile) {
-            const dropdownTriggers = document.querySelectorAll('.nav-items li:has(.dropdown-menu) > a');
+            const dropdownTriggers = document.querySelectorAll('.nav-items li > a[href^="#"]');
             const dropdownMenus = document.querySelectorAll('.dropdown-menu');
             const overlay = document.getElementById('dropdownOverlay');
             
             function closeAllDropdowns() {
                 dropdownMenus.forEach(menu => menu.classList.remove('active'));
-                overlay.classList.remove('active');
+                if (overlay) overlay.classList.remove('active');
                 document.body.style.overflow = '';
             }
             
@@ -1225,6 +1455,8 @@
                 trigger.addEventListener('click', function(e) {
                     e.preventDefault();
                     const dropdown = this.nextElementSibling;
+                    if (!dropdown || !dropdown.classList.contains('dropdown-menu')) return;
+                    
                     const isActive = dropdown.classList.contains('active');
                     
                     // 关闭所有菜单
@@ -1233,17 +1465,19 @@
                     // 如果之前是关闭的，打开当前菜单
                     if (!isActive) {
                         dropdown.classList.add('active');
-                        overlay.classList.add('active');
-                        document.body.style.overflow = 'hidden'; // 防止背景滚动
+                        if (overlay) overlay.classList.add('active');
+                        document.body.style.overflow = 'hidden';
                     }
                 });
             });
             
             // 点击遮罩关闭菜单
-            overlay.addEventListener('click', closeAllDropdowns);
+            if (overlay) {
+                overlay.addEventListener('click', closeAllDropdowns);
+            }
             
-            // 点击菜单项后关闭
-            document.querySelectorAll('.dropdown-item').forEach(item => {
+            // 点击菜单项后关闭（仅非disabled项）
+            document.querySelectorAll('.dropdown-item:not(.disabled)').forEach(item => {
                 item.addEventListener('click', function() {
                     closeAllDropdowns();
                 });
