@@ -7,7 +7,7 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <title>LIKAIFENG.Net - Artwork Made Especially For You</title>
-    <!-- Version: 2.5.1 - Updated Hero Content -->
+    <!-- Version: 3.0.0 - Apple-Style Full-Width Dropdown -->
     
     <style>
         /* ========================================
@@ -281,6 +281,12 @@
             box-shadow: none;
         }
         
+        /* 当菜单打开时Logo变白 */
+        .glass-nav:has(.dropdown-menu:hover) .nav-logo,
+        .glass-nav:has(.dropdown-menu.active) .nav-logo {
+            color: #FFFFFF !important;
+        }
+        
         /* Safari 兜底 - backdrop-filter 不支持时 */
         @supports not (backdrop-filter: blur(1px)) {
             .glass-nav {
@@ -363,56 +369,89 @@
             transform: translateY(-2px);
         }
         
-        /* 下拉菜单容器 - 添加padding-top避免hover中断 */
+        /* Apple风格全宽度下拉菜单 */
         .dropdown-menu {
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            margin-top: 0;
-            padding-top: 8px;
-            min-width: max(200px, 15vw);
-            max-width: 90vw;
-            width: max-content;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            height: auto;
+            max-height: 0;
+            margin: 0;
+            padding: 0;
+            background: rgba(0, 0, 0, 0.92);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
             opacity: 0;
             visibility: hidden;
             pointer-events: none;
-            transform: translateX(-50%) translateY(0) scale(0.95);
-            transform-origin: top center;
-            transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1),
-                        visibility 0.25s cubic-bezier(0.4, 0, 0.2, 1),
-                        transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 2001;
-            will-change: transform, opacity;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.28, 0.11, 0.32, 1),
+                        opacity 0.5s cubic-bezier(0.28, 0.11, 0.32, 1),
+                        visibility 0.5s cubic-bezier(0.28, 0.11, 0.32, 1);
+            z-index: 1999;
+            will-change: max-height, opacity;
         }
         
         /* 下拉菜单内容容器 */
         .dropdown-content {
-            background: rgba(17, 18, 20, 0.96);
-            backdrop-filter: saturate(180%) blur(20px);
-            -webkit-backdrop-filter: saturate(180%) blur(20px);
-            border-radius: 12px;
-            padding: 8px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4),
-                        0 0 0 1px rgba(255, 255, 255, 0.1);
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 80px 40px 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: opacity 0.5s cubic-bezier(0.28, 0.11, 0.32, 1) 0.1s,
+                        transform 0.5s cubic-bezier(0.28, 0.11, 0.32, 1) 0.1s;
+        }
+        
+        /* Logo在菜单打开时变白 */
+        .nav-logo {
+            transition: color 0.5s cubic-bezier(0.28, 0.11, 0.32, 1);
+        }
+        
+        .nav-items li:hover .nav-logo,
+        .dropdown-menu.active ~ .nav-container .nav-logo {
+            color: #FFFFFF;
         }
         
         /* 桌面端：hover显示 */
         @media (hover: hover) and (pointer: fine) {
             .nav-items li:hover .dropdown-menu,
             .dropdown-menu:hover {
+                max-height: 400px;
                 opacity: 1;
                 visibility: visible;
                 pointer-events: auto;
-                transform: translateX(-50%) translateY(0) scale(1);
+            }
+            
+            .nav-items li:hover .dropdown-menu .dropdown-content,
+            .dropdown-menu:hover .dropdown-content {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            
+            /* Logo变白 */
+            .nav-items li:hover ~ li .nav-logo,
+            .nav-items li:has(.dropdown-menu:hover) ~ .nav-logo {
+                color: #FFFFFF;
             }
         }
         
         /* 移动端：点击切换 */
         .dropdown-menu.active {
+            max-height: 400px;
             opacity: 1;
             visibility: visible;
             pointer-events: auto;
-            transform: translateX(-50%) translateY(0) scale(1);
+        }
+        
+        .dropdown-menu.active .dropdown-content {
+            opacity: 1;
+            transform: translateY(0);
         }
         
         /* 移动端菜单背景遮罩 - iOS动画 */
@@ -439,26 +478,57 @@
             visibility: visible;
         }
         
-        /* 下拉菜单项 */
+        /* 下拉菜单项 - Apple风格 */
         .dropdown-item {
             display: flex;
             flex-direction: column;
             align-items: flex-start;
-            padding: 10px 16px;
+            padding: 16px 20px;
             color: #FFFFFF;
             text-decoration: none;
-            border-radius: 8px;
-            transition: background-color 0.15s ease;
-            font-size: clamp(14px, 1.5vw, 15px);
+            border-radius: 0;
+            border-bottom: 0.5px solid rgba(255, 255, 255, 0.1);
+            transition: background-color 0.3s cubic-bezier(0.28, 0.11, 0.32, 1),
+                        transform 0.3s cubic-bezier(0.28, 0.11, 0.32, 1);
+            font-size: 17px;
             font-weight: 400;
             position: relative;
-            white-space: nowrap;
-            min-height: 44px;
+            min-height: 60px;
             justify-content: center;
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        
+        /* 菜单项逐个淡入动画 */
+        .dropdown-menu:hover .dropdown-item:nth-child(1),
+        .dropdown-menu.active .dropdown-item:nth-child(1) {
+            animation: slideIn 0.4s cubic-bezier(0.28, 0.11, 0.32, 1) 0.1s forwards;
+        }
+        
+        .dropdown-menu:hover .dropdown-item:nth-child(3),
+        .dropdown-menu.active .dropdown-item:nth-child(3) {
+            animation: slideIn 0.4s cubic-bezier(0.28, 0.11, 0.32, 1) 0.2s forwards;
+        }
+        
+        .dropdown-menu:hover .dropdown-item:nth-child(5),
+        .dropdown-menu.active .dropdown-item:nth-child(5) {
+            animation: slideIn 0.4s cubic-bezier(0.28, 0.11, 0.32, 1) 0.3s forwards;
+        }
+        
+        @keyframes slideIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         
         .dropdown-item:not(.disabled):hover {
-            background: rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateX(4px);
+        }
+        
+        .dropdown-item:last-child {
+            border-bottom: none;
         }
         
         .dropdown-item:not(.disabled):active {
