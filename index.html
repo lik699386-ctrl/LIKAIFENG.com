@@ -359,32 +359,37 @@
             transform: translateY(-2px);
         }
         
-        /* 下拉菜单容器 */
+        /* 下拉菜单容器 - 添加padding-top避免hover中断 */
         .dropdown-menu {
             position: absolute;
             top: 100%;
             left: 50%;
-            margin-top: 8px;
-            background: rgba(17, 18, 20, 0.96);
-            backdrop-filter: saturate(180%) blur(20px);
-            -webkit-backdrop-filter: saturate(180%) blur(20px);
-            border-radius: 12px;
-            padding: 8px;
+            margin-top: 0;
+            padding-top: 8px;
             min-width: max(200px, 15vw);
             max-width: 90vw;
             width: max-content;
             opacity: 0;
             visibility: hidden;
             pointer-events: none;
-            transform: translateX(-50%) translateY(-8px) scale(0.95);
+            transform: translateX(-50%) translateY(0) scale(0.95);
             transform-origin: top center;
             transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1),
                         visibility 0.25s cubic-bezier(0.4, 0, 0.2, 1),
                         transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4),
-                        0 0 0 1px rgba(255, 255, 255, 0.1);
             z-index: 2001;
             will-change: transform, opacity;
+        }
+        
+        /* 下拉菜单内容容器 */
+        .dropdown-content {
+            background: rgba(17, 18, 20, 0.96);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border-radius: 12px;
+            padding: 8px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4),
+                        0 0 0 1px rgba(255, 255, 255, 0.1);
         }
         
         /* 桌面端：hover显示 */
@@ -490,6 +495,10 @@
                 min-width: calc(100vw - 32px);
                 max-width: calc(100vw - 32px);
                 margin: 0;
+                padding: 0;
+            }
+            
+            .dropdown-content {
                 border-radius: 16px;
                 padding: 12px;
                 box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
@@ -943,20 +952,22 @@
                 <li role="none">
                     <a href="#products" role="menuitem">Products</a>
                     <div class="dropdown-menu">
-                        <a href="#windows" class="dropdown-item available">
-                            <span class="dropdown-item-title">Windows</span>
-                            <span class="dropdown-item-subtitle">Umail - Email Security Tool</span>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#ios" class="dropdown-item disabled">
-                            <span class="dropdown-item-title">iOS</span>
-                            <span class="dropdown-item-subtitle">Coming Soon</span>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#android" class="dropdown-item disabled">
-                            <span class="dropdown-item-title">Android</span>
-                            <span class="dropdown-item-subtitle">Coming Soon</span>
-                        </a>
+                        <div class="dropdown-content">
+                            <a href="#windows" class="dropdown-item available">
+                                <span class="dropdown-item-title">Windows</span>
+                                <span class="dropdown-item-subtitle">Umail - Email Security Tool</span>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#ios" class="dropdown-item disabled">
+                                <span class="dropdown-item-title">iOS</span>
+                                <span class="dropdown-item-subtitle">Coming Soon</span>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#android" class="dropdown-item disabled">
+                                <span class="dropdown-item-title">Android</span>
+                                <span class="dropdown-item-subtitle">Coming Soon</span>
+                            </a>
+                        </div>
                     </div>
                 </li>
                 <li role="none"><a href="#why" role="menuitem">Why LIKAIFENG.Net</a></li>
