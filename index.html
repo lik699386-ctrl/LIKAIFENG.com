@@ -316,6 +316,10 @@
             display: none;
         }
         
+        .nav-items li {
+            position: relative;
+        }
+        
         .nav-items a {
             text-decoration: none;
             color: var(--text-inv) !important;
@@ -352,6 +356,106 @@
             background: #000000 !important;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
             transform: translateY(-2px);
+        }
+        
+        /* 下拉菜单容器 */
+        .dropdown-menu {
+            position: absolute;
+            top: calc(100% + 12px);
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(17, 18, 20, 0.98);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 18px;
+            padding: 16px;
+            min-width: 240px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateX(-50%) translateY(-10px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            z-index: 1001;
+        }
+        
+        .nav-items li:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+        
+        /* 下拉菜单项 */
+        .dropdown-item {
+            display: block;
+            padding: 14px 20px;
+            color: #FFFFFF;
+            text-decoration: none;
+            border-radius: 10px;
+            transition: all 0.2s ease;
+            font-size: 15px;
+            font-weight: 400;
+            position: relative;
+        }
+        
+        .dropdown-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .dropdown-item-title {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 2px;
+            color: #FFFFFF;
+        }
+        
+        .dropdown-item-subtitle {
+            display: block;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 400;
+        }
+        
+        .dropdown-item.disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+        
+        .dropdown-item.disabled:hover {
+            background: transparent;
+        }
+        
+        .dropdown-item.available::after {
+            content: '✓';
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #34C759;
+            font-weight: 600;
+        }
+        
+        .dropdown-divider {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+            margin: 8px 0;
+        }
+        
+        /* Products 链接添加下拉箭头 */
+        .nav-items li:has(.dropdown-menu) > a::after {
+            content: '';
+            display: inline-block;
+            width: 0;
+            height: 0;
+            border-left: 4px solid transparent;
+            border-right: 4px solid transparent;
+            border-top: 5px solid currentColor;
+            margin-left: 6px;
+            opacity: 0.7;
+            transition: transform 0.2s ease;
+        }
+        
+        .nav-items li:hover > a::after {
+            transform: rotate(180deg);
         }
         
         /* ========================================
@@ -674,7 +778,25 @@
         <nav class="nav-container" aria-label="Main navigation">
             <div class="nav-logo">CyberOne</div>
             <ul class="nav-items" role="menubar">
-                <li role="none"><a href="#products" role="menuitem">Products</a></li>
+                <li role="none">
+                    <a href="#products" role="menuitem">Products</a>
+                    <div class="dropdown-menu">
+                        <a href="#windows" class="dropdown-item available">
+                            <span class="dropdown-item-title">Windows</span>
+                            <span class="dropdown-item-subtitle">Umail - Email Security Tool</span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#ios" class="dropdown-item disabled">
+                            <span class="dropdown-item-title">iOS</span>
+                            <span class="dropdown-item-subtitle">Coming Soon</span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#android" class="dropdown-item disabled">
+                            <span class="dropdown-item-title">Android</span>
+                            <span class="dropdown-item-subtitle">Coming Soon</span>
+                        </a>
+                    </div>
+                </li>
                 <li role="none"><a href="#why" role="menuitem">Why CyberOne</a></li>
                 <li role="none"><a href="#pricing" role="menuitem">Pricing</a></li>
                 <li role="none"><a href="#resources" role="menuitem">Resources</a></li>
