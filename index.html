@@ -1946,11 +1946,11 @@
                 }
             });
             
-            // 更新所有导航按钮（包括下拉菜单内的复刻按钮）
-            document.querySelectorAll('[data-lang]').forEach(btn => {
+            // 更新所有导航按钮（包括下拉菜单内的复刻按钮）- 只针对button和a标签，不影响语言选项
+            document.querySelectorAll('button[data-lang], a[data-lang]').forEach(btn => {
                 btn.textContent = translations[lang]['nav.language'];
             });
-            document.querySelectorAll('[data-products]').forEach(btn => {
+            document.querySelectorAll('button[data-products], a[data-products]').forEach(btn => {
                 btn.textContent = translations[lang]['nav.products'];
             });
             
