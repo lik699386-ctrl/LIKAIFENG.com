@@ -713,78 +713,149 @@
                 --body: 17px;
             }
             
+            .glass-nav {
+                background: rgba(248, 247, 252, 0.95);
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+                border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            }
+            
             .nav-container {
-                flex-wrap: wrap;
-                padding: 16px 3%;
+                flex-direction: column;
+                align-items: center;
+                padding: 12px 4%;
+                gap: 16px;
+            }
+            
+            .nav-logo {
+                margin-right: 0;
+                font-size: 22px;
             }
             
             .nav-items {
-                width: 100%;
-                justify-content: flex-start;
-                padding-bottom: 4px;
+                flex-wrap: wrap;
+                justify-content: center;
                 gap: 8px;
+                width: 100%;
             }
             
             .nav-items a {
-                padding: 8px 16px;
+                padding: 12px 16px;
                 font-size: 14px;
+                height: 44px;
+                min-width: 44px;
+                white-space: nowrap;
+            }
+            
+            .nav-items .btn-primary {
+                min-width: 120px;
+                font-weight: 600;
             }
             
             .hero {
-                min-height: 90vh;
-                padding: clamp(60px, 8vh, 100px) 3% clamp(60px, 10vh, 120px);
+                min-height: 85vh;
+                padding: clamp(80px, 12vh, 120px) 4% clamp(40px, 8vh, 80px);
+                margin-top: 80px;
             }
             
             .hero-title {
-                margin-bottom: 24px;
+                font-size: clamp(42px, 12vw, 64px);
+                margin-bottom: 20px;
+                line-height: 1.1;
             }
             
             .hero-subtitle {
-                margin-bottom: 36px;
-                font-size: 16px;
+                margin-bottom: 32px;
+                font-size: clamp(16px, 4vw, 18px);
                 max-width: 95%;
+                line-height: 1.5;
             }
             
             .btn-primary {
                 width: 100%;
+                max-width: 320px;
+                margin: 0 auto;
                 justify-content: center;
-                height: 52px;
+                height: 56px;
+                font-size: 17px;
+                font-weight: 600;
             }
             
-            /* 移动端性能优化 - 减少模糊强度 */
+            /* 移动端性能优化 */
             .bg-ring {
-                filter: blur(14px);
+                filter: blur(12px);
             }
             
             .bg-orb {
-                filter: blur(16px);
+                filter: blur(14px);
             }
             
             .bg-specular {
-                filter: blur(14px);
+                filter: blur(12px);
             }
         }
         
-        /* 小屏优化 - 确保375px下标题不拥挤 */
-        @media (max-width: 399px) {
-            :root {
-                --space: 16px;
+        /* 小屏优化 */
+        @media (max-width: 480px) {
+            .nav-container {
+                padding: 10px 3%;
+                gap: 12px;
+            }
+            
+            .nav-logo {
+                font-size: 20px;
+            }
+            
+            .nav-items {
+                gap: 6px;
+            }
+            
+            .nav-items a {
+                padding: 10px 12px;
+                font-size: 13px;
+                height: 40px;
+            }
+            
+            .hero {
+                margin-top: 70px;
+                padding: clamp(60px, 10vh, 100px) 3% clamp(30px, 6vh, 60px);
             }
             
             .hero-title {
-                font-size: clamp(38px, 11vw, 48px);
-                line-height: 1.12;
-                margin-bottom: 20px;
+                font-size: clamp(36px, 10vw, 48px);
+                margin-bottom: 16px;
             }
             
             .hero-subtitle {
                 font-size: 15px;
-                margin-bottom: 32px;
+                margin-bottom: 28px;
+            }
+            
+            .btn-primary {
+                height: 52px;
+                font-size: 16px;
+            }
+        }
+        
+        /* 超小屏优化 */
+        @media (max-width: 375px) {
+            .nav-items a {
+                padding: 8px 10px;
+                font-size: 12px;
+                height: 36px;
+            }
+            
+            .nav-items .btn-primary {
+                min-width: 100px;
+            }
+            
+            .hero-title {
+                font-size: clamp(32px, 9vw, 42px);
             }
             
             .btn-primary {
                 height: 50px;
-                font-size: 16px;
+                font-size: 15px;
             }
         }
         
