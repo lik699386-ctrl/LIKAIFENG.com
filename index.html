@@ -7,7 +7,7 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <title>LIKAIFENG.Net - Stay Secure. Be Unstoppable.</title>
-    <!-- Version: 2.4.1 - Mobile Dropdown Fix -->
+    <!-- Version: 2.4.2 - Compact Mobile Dropdown -->
     
     <style>
         /* ========================================
@@ -507,7 +507,7 @@
             margin: 6px 8px;
         }
         
-        /* 移动端优化 - v2.4.1 */
+        /* 移动端优化 - v2.4.2 紧凑版 */
         @media screen and (max-width: 768px) {
             .dropdown-menu {
                 position: fixed !important;
@@ -526,10 +526,10 @@
             }
             
             .dropdown-content {
-                border-radius: 18px;
-                padding: 16px;
+                border-radius: 14px;
+                padding: 8px;
                 box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
-                max-height: 70vh;
+                max-height: 60vh;
                 overflow-y: auto;
                 -webkit-overflow-scrolling: touch;
                 width: 100%;
@@ -541,20 +541,25 @@
             }
             
             .dropdown-item {
-                padding: 16px 20px;
-                min-height: 56px;
-                border-radius: 12px;
+                padding: 10px 12px;
+                min-height: 44px;
+                border-radius: 8px;
                 box-sizing: border-box;
             }
             
             .dropdown-item-title {
-                font-size: 17px;
+                font-size: 15px;
                 font-weight: 500;
             }
             
             .dropdown-item-subtitle {
-                font-size: 14px;
-                margin-top: 2px;
+                font-size: 12px;
+                margin-top: 1px;
+                opacity: 0.8;
+            }
+            
+            .dropdown-divider {
+                margin: 4px 0;
             }
         }
         
@@ -569,8 +574,21 @@
             }
             
             .dropdown-content {
-                padding: 14px;
-                max-height: 65vh;
+                padding: 6px;
+                max-height: 55vh;
+            }
+            
+            .dropdown-item {
+                padding: 8px 10px !important;
+                min-height: 40px !important;
+            }
+            
+            .dropdown-item-title {
+                font-size: 14px !important;
+            }
+            
+            .dropdown-item-subtitle {
+                font-size: 11px !important;
             }
         }
         
