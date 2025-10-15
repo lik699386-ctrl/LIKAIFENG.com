@@ -1560,11 +1560,13 @@
                 }
             });
             
-            // 更新导航按钮
-            const langTrigger = document.querySelector('[data-lang]');
-            const productsTrigger = document.querySelector('[data-products]');
-            if (langTrigger) langTrigger.textContent = translations[lang]['nav.language'];
-            if (productsTrigger) productsTrigger.textContent = translations[lang]['nav.products'];
+            // 更新所有导航按钮（包括下拉菜单内的复刻按钮）
+            document.querySelectorAll('[data-lang]').forEach(btn => {
+                btn.textContent = translations[lang]['nav.language'];
+            });
+            document.querySelectorAll('[data-products]').forEach(btn => {
+                btn.textContent = translations[lang]['nav.products'];
+            });
             
             // 更新语言选项的选中状态
             document.querySelectorAll('.language-item').forEach(item => {
@@ -1686,29 +1688,86 @@
             // 点击下拉菜单内的语言按钮
             if (e.target.classList.contains('language-btn') && e.target.closest('.dropdown-menu')) {
                 e.preventDefault();
+                e.stopPropagation();
                 
-                // 切换到语言菜单
-                const languageDropdown = document.querySelector('.language-dropdown');
-                const productsDropdown = document.querySelector('.products-dropdown');
-                
-                if (languageDropdown && productsDropdown) {
-                    productsDropdown.classList.remove('active');
-                    languageDropdown.classList.add('active');
+                // 如果是桌面端，在同一个下拉菜单中切换内容
+                if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+                    const currentMenu = e.target.closest('.dropdown-menu');
+                    const languageContent = document.querySelector('.language-dropdown .dropdown-content-apple');
+                    const productsContent = document.querySelector('.products-dropdown .dropdown-content-apple');
+                    
+                    if (currentMenu && languageContent) {
+                        // 隐藏当前内容，显示语言内容
+                        const currentContent = currentMenu.querySelector('.dropdown-content-apple');
+                        if (currentContent && currentContent !== languageContent) {
+                            // 复制语言内容到当前菜单
+                            currentContent.innerHTML = languageContent.innerHTML;
+                        }
+                        
+                        // 更新按钮状态
+                        currentMenu.querySelectorAll('.dropdown-nav-btn').forEach(btn => {
+                            btn.classList.remove('active');
+                        });
+                        currentMenu.querySelector('.language-btn').classList.add('active');
+                    }
+                } else {
+                    // 移动端切换菜单
+                    const languageDropdown = document.querySelector('.language-dropdown');
+                    const productsDropdown = document.querySelector('.products-dropdown');
+                    
+                    if (languageDropdown && productsDropdown) {
+                        productsDropdown.classList.remove('active');
+                        languageDropdown.classList.add('active');
+                    }
                 }
             }
             
             // 点击下拉菜单内的产品按钮
             if (e.target.classList.contains('products-btn') && e.target.closest('.dropdown-menu')) {
                 e.preventDefault();
+                e.stopPropagation();
                 
-                // 切换到产品菜单
-                const languageDropdown = document.querySelector('.language-dropdown');
-                const productsDropdown = document.querySelector('.products-dropdown');
-                
-                if (languageDropdown && productsDropdown) {
-                    languageDropdown.classList.remove('active');
-                    productsDropdown.classList.add('active');
+                // 如果是桌面端，在同一个下拉菜单中切换内容
+                if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+                    const currentMenu = e.target.closest('.dropdown-menu');
+                    const languageContent = document.querySelector('.language-dropdown .dropdown-content-apple');
+                    const productsContent = document.querySelector('.products-dropdown .dropdown-content-apple');
+                    
+                    if (currentMenu && productsContent) {
+                        // 隐藏当前内容，显示产品内容
+                        const currentContent = currentMenu.querySelector('.dropdown-content-apple');
+                        if (currentContent && currentContent !== productsContent) {
+                            // 复制产品内容到当前菜单
+                            currentContent.innerHTML = productsContent.innerHTML;
+                        }
+                        
+                        // 更新按钮状态
+                        currentMenu.querySelectorAll('.dropdown-nav-btn').forEach(btn => {
+                            btn.classList.remove('active');
+                        });
+                        currentMenu.querySelector('.products-btn').classList.add('active');
+                    }
+                } else {
+                    // 移动端切换菜单
+                    const languageDropdown = document.querySelector('.language-dropdown');
+                    const productsDropdown = document.querySelector('.products-dropdown');
+                    
+                    if (languageDropdown && productsDropdown) {
+                        languageDropdown.classList.remove('active');
+                        productsDropdown.classList.add('active');
+                    }
                 }
+            }
+            
+            // 点击任何下拉菜单选项（语言或产品）时关闭菜单
+            if (e.target.closest('.platform-section') || e.target.closest('.product-card')) {
+                // 关闭所有下拉菜单
+                document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                    menu.classList.remove('active');
+                });
+                const overlay = document.getElementById('dropdownOverlay');
+                if (overlay) overlay.classList.remove('active');
+                document.body.style.overflow = '';
             }
         });
 
