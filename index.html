@@ -829,6 +829,15 @@
             background: rgba(255, 255, 255, 0.12);
         }
         
+        /* 菜单内容区域控制 */
+        .menu-content {
+            display: block;
+        }
+        
+        .menu-content[style*="display: none"] {
+            display: none !important;
+        }
+        
         .language-item.active::after {
             content: '✓';
             position: absolute;
@@ -1376,7 +1385,8 @@
                                 <button class="dropdown-nav-btn products-btn" data-products>产品</button>
                             </div>
                         </div>
-                        <div class="dropdown-content-apple" id="languageDropdownContent">
+                        <!-- 语言内容区域 -->
+                        <div class="dropdown-content-apple menu-content language-content" data-content="language">
                             <!-- 简体中文 -->
                             <div class="platform-section">
                                 <h3 class="platform-title">简体中文</h3>
@@ -1413,6 +1423,41 @@
                                 <div class="language-info">西班牙语</div>
                             </div>
                         </div>
+                        <!-- 产品内容区域 -->
+                        <div class="dropdown-content-apple menu-content products-content" data-content="products" style="display: none;">
+                            <!-- Windows Platform -->
+                            <div class="platform-section">
+                                <h3 class="platform-title">Windows</h3>
+                                <div class="products-grid">
+                                    <a href="#umail" class="product-card">
+                                        <div class="product-name">Umail</div>
+                                        <div class="product-desc">Email Security Tool</div>
+                                    </a>
+                                </div>
+                            </div>
+                            
+                            <!-- iOS Platform -->
+                            <div class="platform-section">
+                                <h3 class="platform-title">iOS</h3>
+                                <div class="products-grid">
+                                    <a href="#ios-app" class="product-card">
+                                        <div class="product-name">即将推出</div>
+                                        <div class="product-desc">Coming Soon</div>
+                                    </a>
+                                </div>
+                            </div>
+                            
+                            <!-- Android Platform -->
+                            <div class="platform-section">
+                                <h3 class="platform-title">Android</h3>
+                                <div class="products-grid">
+                                    <a href="#android-app" class="product-card">
+                                        <div class="product-name">即将推出</div>
+                                        <div class="product-desc">Coming Soon</div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </li>
                 <li role="none" class="products-menu-item">
@@ -1426,7 +1471,46 @@
                                 <button class="dropdown-nav-btn products-btn active" data-products>产品</button>
                             </div>
                         </div>
-                        <div class="dropdown-content-apple" id="productsDropdownContent">
+                        <!-- 语言内容区域（复制） -->
+                        <div class="dropdown-content-apple menu-content language-content" data-content="language" style="display: none;">
+                            <!-- 简体中文 -->
+                            <div class="platform-section">
+                                <h3 class="platform-title">简体中文</h3>
+                                <div class="language-info">Simplified Chinese</div>
+                            </div>
+                            
+                            <!-- English -->
+                            <div class="platform-section">
+                                <h3 class="platform-title">English</h3>
+                                <div class="language-info">英语</div>
+                            </div>
+                            
+                            <!-- Русский -->
+                            <div class="platform-section">
+                                <h3 class="platform-title">Русский</h3>
+                                <div class="language-info">俄语</div>
+                            </div>
+                            
+                            <!-- Français -->
+                            <div class="platform-section">
+                                <h3 class="platform-title">Français</h3>
+                                <div class="language-info">法语</div>
+                            </div>
+                            
+                            <!-- Deutsch -->
+                            <div class="platform-section">
+                                <h3 class="platform-title">Deutsch</h3>
+                                <div class="language-info">德语</div>
+                            </div>
+                            
+                            <!-- Español -->
+                            <div class="platform-section">
+                                <h3 class="platform-title">Español</h3>
+                                <div class="language-info">西班牙语</div>
+                            </div>
+                        </div>
+                        <!-- 产品内容区域 -->
+                        <div class="dropdown-content-apple menu-content products-content" data-content="products">
                             <!-- Windows Platform -->
                             <div class="platform-section">
                                 <h3 class="platform-title">Windows</h3>
@@ -1457,6 +1541,38 @@
                                         <div class="product-name">Coming Soon</div>
                                         <div class="product-desc">Stay tuned</div>
                                     </div>
+                                </div>
+                            </div>
+                            <!-- Windows Platform -->
+                            <div class="platform-section">
+                                <h3 class="platform-title">Windows</h3>
+                                <div class="products-grid">
+                                    <a href="#umail" class="product-card">
+                                        <div class="product-name">Umail</div>
+                                        <div class="product-desc">Email Security Tool</div>
+                                    </a>
+                                </div>
+                            </div>
+                            
+                            <!-- iOS Platform -->
+                            <div class="platform-section">
+                                <h3 class="platform-title">iOS</h3>
+                                <div class="products-grid">
+                                    <a href="#ios-app" class="product-card">
+                                        <div class="product-name">即将推出</div>
+                                        <div class="product-desc">Coming Soon</div>
+                                    </a>
+                                </div>
+                            </div>
+                            
+                            <!-- Android Platform -->
+                            <div class="platform-section">
+                                <h3 class="platform-title">Android</h3>
+                                <div class="products-grid">
+                                    <a href="#android-app" class="product-card">
+                                        <div class="product-name">即将推出</div>
+                                        <div class="product-desc">Coming Soon</div>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -1738,64 +1854,63 @@
         });
 
         // ========================================
-        // 桌面端菜单无缝切换核心函数（避免DOM破坏）
+        // 桌面端菜单无缝内容切换核心函数（真正的内容切换）
         // ========================================
         function switchToLanguageMenu() {
-            const languageDropdown = document.querySelector('.language-dropdown');
-            const productsDropdown = document.querySelector('.products-dropdown');
+            // 获取当前活跃的菜单容器
+            const currentActiveMenu = document.querySelector('.dropdown-menu.active') || 
+                                    document.querySelector('.dropdown-menu:hover');
             
-            if (languageDropdown && productsDropdown) {
-                // 确保语言菜单显示，产品菜单隐藏
-                languageDropdown.classList.add('active');
-                productsDropdown.classList.remove('active');
-                
-                // 更新所有下拉菜单内按钮的状态（不破坏DOM）
-                updateAllDropdownButtonStates('language');
+            if (currentActiveMenu) {
+                // 在当前菜单中切换内容显示
+                switchMenuContent(currentActiveMenu, 'language');
+                // 更新当前菜单的按钮状态
+                updateMenuButtonStates(currentActiveMenu, 'language');
             }
         }
         
         function switchToProductsMenu() {
-            const languageDropdown = document.querySelector('.language-dropdown');
-            const productsDropdown = document.querySelector('.products-dropdown');
+            // 获取当前活跃的菜单容器
+            const currentActiveMenu = document.querySelector('.dropdown-menu.active') || 
+                                    document.querySelector('.dropdown-menu:hover');
             
-            if (languageDropdown && productsDropdown) {
-                // 确保产品菜单显示，语言菜单隐藏  
-                productsDropdown.classList.add('active');
-                languageDropdown.classList.remove('active');
-                
-                // 更新所有下拉菜单内按钮的状态（不破坏DOM）
-                updateAllDropdownButtonStates('products');
+            if (currentActiveMenu) {
+                // 在当前菜单中切换内容显示
+                switchMenuContent(currentActiveMenu, 'products');
+                // 更新当前菜单的按钮状态
+                updateMenuButtonStates(currentActiveMenu, 'products');
             }
         }
         
-        function updateAllDropdownButtonStates(activeMenu) {
-            // 更新语言菜单内的按钮状态
-            const languageMenu = document.querySelector('.language-dropdown');
-            if (languageMenu) {
-                const langBtns = languageMenu.querySelectorAll('.dropdown-nav-btn');
-                langBtns.forEach(btn => {
-                    btn.classList.remove('active');
-                    if (activeMenu === 'language' && btn.classList.contains('language-btn')) {
-                        btn.classList.add('active');
-                    } else if (activeMenu === 'products' && btn.classList.contains('products-btn')) {
-                        btn.classList.add('active');
-                    }
-                });
-            }
+        function switchMenuContent(menuContainer, contentType) {
+            // 获取菜单内的所有内容区域
+            const languageContent = menuContainer.querySelector('.language-content');
+            const productsContent = menuContainer.querySelector('.products-content');
             
-            // 更新产品菜单内的按钮状态
-            const productsMenu = document.querySelector('.products-dropdown');
-            if (productsMenu) {
-                const prodBtns = productsMenu.querySelectorAll('.dropdown-nav-btn');
-                prodBtns.forEach(btn => {
-                    btn.classList.remove('active');
-                    if (activeMenu === 'language' && btn.classList.contains('language-btn')) {
-                        btn.classList.add('active');
-                    } else if (activeMenu === 'products' && btn.classList.contains('products-btn')) {
-                        btn.classList.add('active');
-                    }
-                });
+            if (languageContent && productsContent) {
+                if (contentType === 'language') {
+                    // 显示语言内容，隐藏产品内容
+                    languageContent.style.display = 'block';
+                    productsContent.style.display = 'none';
+                } else if (contentType === 'products') {
+                    // 显示产品内容，隐藏语言内容
+                    languageContent.style.display = 'none';
+                    productsContent.style.display = 'block';
+                }
             }
+        }
+        
+        function updateMenuButtonStates(menuContainer, activeContentType) {
+            // 更新当前菜单内的按钮状态
+            const buttons = menuContainer.querySelectorAll('.dropdown-nav-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('active');
+                if (activeContentType === 'language' && btn.classList.contains('language-btn')) {
+                    btn.classList.add('active');
+                } else if (activeContentType === 'products' && btn.classList.contains('products-btn')) {
+                    btn.classList.add('active');
+                }
+            });
         }
 
         // ========================================
