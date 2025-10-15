@@ -363,7 +363,6 @@
             position: absolute;
             top: calc(100% + 12px);
             left: 50%;
-            transform: translateX(-50%);
             background: rgba(17, 18, 20, 0.98);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
@@ -372,15 +371,18 @@
             min-width: 240px;
             opacity: 0;
             visibility: hidden;
+            pointer-events: none;
             transform: translateX(-50%) translateY(-10px);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
             z-index: 1001;
         }
         
-        .nav-items li:hover .dropdown-menu {
+        .nav-items li:hover .dropdown-menu,
+        .dropdown-menu:hover {
             opacity: 1;
             visibility: visible;
+            pointer-events: auto;
             transform: translateX(-50%) translateY(0);
         }
         
