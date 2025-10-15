@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberOne - Stay Secure. Be Unstoppable.</title>
+    
+    <style>
+        /* ========================================
+           Design Tokens - 设计令牌
+           ======================================== */
+        :root {
+            /* 画布与表面 */
+            --bg: #F8F7FC;
+            --bg-accent: #EDF0F5;
+            --surface: #FFFFFF;
+            --surface-2: #FAFBFC;
+            
+            /* 文本 */
+            --text: #0B0B0E;
+            --text-2: #6B7280;
+            --text-inv: #FAFAFA;
+            
+            /* 品牌色 */
+            --blue: #2A6BFF;
+            --cyan: #67E0FF;
+            --violet: #C69BFF;
+            
+            /* 组件 */
+            --btn-black: #111214;
+            --radius-btn: 12px;
+            --radius-pill: 999px;
+            --radius-card: 14px;
+            --shadow-soft: 0 20px 40px -20px rgba(32,56,100,.25);
+            --border-translucent: 1px solid #00000014;
+            
+            /* 排版 */
+            --container: 1600px;
+            --space: 80px;
+            --h1: clamp(56px, 8vw, 140px);
+            --h1-tight: -0.03em;
+            --body: 20px;
+            --easing: cubic-bezier(.22,.61,.36,1);
+            
+            /* 动效 */
+            --dur-in: 320ms;
+            --dur-hover: 180ms;
+        }
+        
+        /* ========================================
+           Reset & Base
+           ======================================== */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        html {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background: var(--bg);
+            overflow-x: hidden;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji", sans-serif;
+            background: transparent;
+            color: var(--text);
+            font-size: var(--body);
+            line-height: 1.6;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+        }
+        
+        /* ========================================
+           Background 3D Layers - 背景玻璃介质体
+           多层纯CSS渐变+模糊+混合模式模拟3D玻璃效果
+           ======================================== */
+        .bg-scene {
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100vw;
+            min-width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        
+        /* 主背景渐变 - 更淡更亮 */
+        .bg-scene::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                180deg,
+                #B0D1FB 0%,
+                #FCFEFF 10%,
+                #EDF3F9 25%,
+                #E1F4FB 50%,
+                #C6D8F3 75%,
+                #BDD1F1 90%,
+                #FADDFB 100%
+            );
+            opacity: 0.4;
+        }
+        
+        /* 背景层1: 大号径向渐变色块 - 模拟色散 */
+        .bg-orb {
+            position: absolute;
+            width: 1000px;
+            height: 1000px;
+            border-radius: 50%;
+            /* 蓝紫渐变，中心亮边缘暗 */
+            background: radial-gradient(circle at 30% 40%, 
+                var(--cyan) 0%, 
+                var(--blue) 25%, 
+                var(--violet) 60%, 
+                transparent 100%);
+            filter: blur(22px);
+            opacity: 0.4;
+            animation: orbFloat 20s var(--easing) infinite;
+            will-change: transform, opacity;
+        }
+        
+        .bg-orb:nth-child(1) {
+            top: -150px;
+            left: 170%;
+            transform: translateX(-50%);
+            opacity: 0.35;
+        }
+        
+        .bg-orb:nth-child(2) {
+            bottom: -250px;
+            left: 170%;
+            transform: translateX(-30%);
+            animation-delay: -10s;
+            animation-duration: 25s;
+            opacity: 0.3;
+        }
+        
+        /* 背景层2: 玻璃圆盘轮廓 - 带锥形高光，居中 */
+        .bg-ring {
+            position: absolute;
+            width: 900px;
+            height: 900px;
+            top: 45%;
+            left: 170%;
+            transform: translate(-50%, -50%) rotate(0deg);
+            border-radius: 50%;
+            /* 锥形渐变模拟光泽带 */
+            background: conic-gradient(from 0deg at 50% 50%,
+                transparent 0deg,
+                rgba(103, 224, 255, 0.25) 90deg,
+                rgba(42, 107, 255, 0.4) 180deg,
+                rgba(198, 155, 255, 0.25) 270deg,
+                transparent 360deg);
+            filter: blur(22px);
+            opacity: 0.45;
+            animation: ringRotate 30s linear infinite;
+            will-change: transform;
+            /* 如果后续有真实渲染图，替换这个背景层的 background-image: url(...) */
+        }
+        
+        /* 折射环 - 增强镜面圆盘效果 */
+        .bg-ring::after {
+            content: "";
+            position: absolute;
+            inset: -12% -8%;
+            background:
+                radial-gradient(120% 140% at 60% 40%, #fff8 0%, #fff0 55%),
+                conic-gradient(from 15deg, #fff0 0 35%, #ffffff55 40% 48%, #fff0 60% 100%);
+            filter: blur(18px) contrast(110%);
+            mix-blend-mode: screen;
+            opacity: .55;
+            animation: ringSpin 36s linear infinite;
+        }
+        
+        @keyframes ringSpin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        /* 背景层3: 高光点 - 强调镜面反射 */
+        .bg-specular {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            background: radial-gradient(circle at center,
+                rgba(255, 255, 255, 0.8) 0%,
+                rgba(103, 224, 255, 0.4) 40%,
+                transparent 70%);
+            filter: blur(22px);
+            mix-blend-mode: screen;
+            opacity: 0.6;
+            animation: specularPulse 18s var(--easing) infinite;
+            will-change: transform, opacity;
+        }
+        
+        .bg-specular:nth-child(4) {
+            top: 12%;
+            left: 175%;
+            opacity: 0.5;
+        }
+        
+        .bg-specular:nth-child(5) {
+            bottom: 15%;
+            left: 180%;
+            animation-delay: -9s;
+            opacity: 0.4;
+        }
+        
+        /* 动画关键帧 */
+        @keyframes orbFloat {
+            0%, 100% {
+                transform: translate(0, 0) scale(1);
+                opacity: 0.4;
+            }
+            50% {
+                transform: translate(30px, -40px) scale(1.05);
+                opacity: 0.5;
+            }
+        }
+        
+        @keyframes ringRotate {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        
+        @keyframes specularPulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.6;
+            }
+            50% {
+                transform: scale(1.15);
+                opacity: 0.8;
+            }
+        }
+        
+        /* 减少动画偏好 - 真·静止 */
+        @media (prefers-reduced-motion: reduce) {
+            .bg-orb, .bg-ring, .bg-specular, .bg-ring::after {
+                animation: none !important;
+                opacity: 0.8;
+                transform: none;
+            }
+            .bg-ring {
+                transform: translate(-50%, -50%);
+            }
+            .hero-container {
+                animation: none !important;
+            }
+        }
+        
+        /* ========================================
+           Navigation - 玻璃导航栏
+           ======================================== */
+        .glass-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+            background: transparent;
+            border-bottom: none;
+            box-shadow: none;
+        }
+        
+        /* Safari 兜底 - backdrop-filter 不支持时 */
+        @supports not (backdrop-filter: blur(1px)) {
+            .glass-nav {
+                background: transparent;
+            }
+        }
+        
+        .nav-container {
+            max-width: none;
+            margin: 0;
+            padding: 24px 2.5%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 60px;
+        }
+        
+        .nav-logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #000000;
+            letter-spacing: -0.01em;
+            margin-right: auto;
+        }
+        
+        .nav-items {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            list-style: none;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+        
+        .nav-items::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .nav-items a {
+            text-decoration: none;
+            color: var(--text-inv) !important;
+            font-size: 16px;
+            font-weight: 500;
+            padding: 12px 24px;
+            height: 48px;
+            display: inline-flex;
+            align-items: center;
+            border-radius: var(--radius-pill);
+            background: rgba(17, 18, 20, 0.85) !important;
+            transition: all var(--dur-hover) var(--easing);
+            white-space: nowrap;
+        }
+        
+        .nav-items a:hover,
+        .nav-items a:focus-visible {
+            background: rgba(17, 18, 20, 0.95) !important;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+        
+        .nav-items a:focus-visible {
+            outline: none;
+            box-shadow: 0 0 0 3px #2A6BFF44, 0 0 0 1px #2A6BFF inset;
+        }
+        
+        .nav-items .btn-primary {
+            background: var(--btn-black) !important;
+            color: var(--text-inv) !important;
+            height: 48px;
+        }
+        
+        .nav-items .btn-primary:hover {
+            background: #000000 !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            transform: translateY(-2px);
+        }
+        
+        /* ========================================
+           Hero Section - 主视觉区
+           ======================================== */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: clamp(100px, 12vh, 200px) 2.5% clamp(100px, 15vh, 250px);
+            z-index: 1;
+        }
+        
+        .hero-container {
+            max-width: none;
+            width: 100%;
+            text-align: center;
+            animation: fadeInUp var(--dur-in) var(--easing);
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .hero-title {
+            font-size: var(--h1);
+            font-weight: 340;
+            letter-spacing: var(--h1-tight);
+            line-height: 1.05;
+            margin-bottom: 40px;
+            color: var(--text);
+            text-shadow: 0 1px 0 #fff, 0 0 24px #ffffff80;
+        }
+        
+        .hero-title span {
+            display: block;
+        }
+        
+        .hero-subtitle {
+            font-size: clamp(18px, 2.2vw, 24px);
+            color: var(--text-2);
+            max-width: 70%;
+            margin: 0 auto 56px;
+            line-height: 1.7;
+            font-weight: 400;
+        }
+        
+        /* ========================================
+           Buttons - 按钮系统
+           ======================================== */
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 14px;
+            padding: 18px 36px;
+            border-radius: var(--radius-pill);
+            font-size: 18px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all var(--dur-hover) var(--easing);
+            cursor: pointer;
+            border: none;
+            font-family: inherit;
+        }
+        
+        .btn-primary {
+            background: var(--btn-black);
+            color: var(--text-inv);
+            height: 60px;
+            box-shadow: 0 12px 30px -12px rgba(0,0,0,.45);
+            padding-right: 24px;
+            padding-left: 36px;
+            position: relative;
+            transform: translateZ(0);
+            will-change: transform, box-shadow;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px -16px rgba(0, 0, 0, 0.5);
+        }
+        
+        .btn-primary:focus-visible {
+            outline: none;
+            box-shadow: 0 0 0 3px #2A6BFF44, 0 0 0 1px #2A6BFF inset, 0 12px 30px -12px rgba(0,0,0,.45);
+        }
+        
+        .btn-primary:active {
+            transform: translateY(-1px) scale(.99);
+            box-shadow: none;
+        }
+        
+        /* 右侧圆形箭头 */
+        .btn-arrow {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            margin-left: 14px;
+            transition: all var(--dur-hover) var(--easing);
+        }
+        
+        .btn-primary:hover .btn-arrow {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateX(4px);
+        }
+        
+        .btn-arrow svg {
+            width: 16px;
+            height: 16px;
+            stroke: currentColor;
+            stroke-width: 2;
+            fill: none;
+        }
+        
+        .btn-ghost {
+            height: 48px;
+            border: 1px solid #00000022;
+            color: var(--text);
+            background: #FFFFFFCC;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+        
+        .btn-ghost:hover {
+            border-color: #00000033;
+            background: #FFFFFFDD;
+        }
+        
+        .btn-ghost:focus-visible {
+            outline: none;
+            box-shadow: 0 0 0 3px #2A6BFF44, 0 0 0 1px #2A6BFF inset;
+        }
+        
+        /* ========================================
+           Responsive - 响应式
+           ======================================== */
+        @media (max-width: 1600px) {
+            :root {
+                --container: 1400px;
+                --space: 60px;
+            }
+            
+            .nav-container {
+                padding: 20px 2.5%;
+            }
+            
+            .hero {
+                padding: clamp(80px, 10vh, 160px) 2.5% clamp(80px, 12vh, 200px);
+            }
+        }
+        
+        @media (max-width: 1199px) {
+            :root {
+                --container: 1100px;
+                --space: 40px;
+            }
+            
+            .nav-container {
+                padding: 20px 3%;
+            }
+            
+            .hero {
+                padding: clamp(80px, 10vh, 140px) 3% clamp(80px, 10vh, 160px);
+            }
+            
+            .hero-subtitle {
+                max-width: 80%;
+            }
+        }
+        
+        @media (max-width: 767px) {
+            :root {
+                --space: 20px;
+                --body: 17px;
+            }
+            
+            .nav-container {
+                flex-wrap: wrap;
+                padding: 16px 3%;
+            }
+            
+            .nav-items {
+                width: 100%;
+                justify-content: flex-start;
+                padding-bottom: 4px;
+                gap: 8px;
+            }
+            
+            .nav-items a {
+                padding: 8px 16px;
+                font-size: 14px;
+            }
+            
+            .hero {
+                min-height: 90vh;
+                padding: clamp(60px, 8vh, 100px) 3% clamp(60px, 10vh, 120px);
+            }
+            
+            .hero-title {
+                margin-bottom: 24px;
+            }
+            
+            .hero-subtitle {
+                margin-bottom: 36px;
+                font-size: 16px;
+                max-width: 95%;
+            }
+            
+            .btn-primary {
+                width: 100%;
+                justify-content: center;
+                height: 52px;
+            }
+            
+            /* 移动端性能优化 - 减少模糊强度 */
+            .bg-ring {
+                filter: blur(14px);
+            }
+            
+            .bg-orb {
+                filter: blur(16px);
+            }
+            
+            .bg-specular {
+                filter: blur(14px);
+            }
+        }
+        
+        /* 小屏优化 - 确保375px下标题不拥挤 */
+        @media (max-width: 399px) {
+            :root {
+                --space: 16px;
+            }
+            
+            .hero-title {
+                font-size: clamp(38px, 11vw, 48px);
+                line-height: 1.12;
+                margin-bottom: 20px;
+            }
+            
+            .hero-subtitle {
+                font-size: 15px;
+                margin-bottom: 32px;
+            }
+            
+            .btn-primary {
+                height: 50px;
+                font-size: 16px;
+            }
+        }
+        
+        /* ========================================
+           Accessibility - 可达性
+           ======================================== */
+        /* 焦点环覆盖所有可交互元素 */
+        a, button, [role="button"], .pill, .btn-primary, .btn-ghost {
+            outline: none;
+        }
+        
+        a:focus-visible, 
+        button:focus-visible, 
+        [role="button"]:focus-visible,
+        .pill:focus-visible,
+        .nav-items a:focus-visible {
+            box-shadow: 0 0 0 3px #2A6BFF44, 0 0 0 1px #2A6BFF inset;
+            border-radius: var(--radius-pill);
+        }
+        
+        *:focus-visible {
+            outline: none;
+        }
+        
+        /* 确保文本对比度 */
+        @media (prefers-contrast: high) {
+            :root {
+                --text: #000000;
+                --text-2: #4B5563;
+            }
+        }
+        
+        /* 强对比模式 - 移除装饰性阴影 */
+        @media (prefers-contrast: more) {
+            .hero-title {
+                text-shadow: none;
+            }
+            .btn-primary {
+                box-shadow: none;
+            }
+            .btn-primary:hover {
+                box-shadow: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 背景3D场景 -->
+    <div class="bg-scene" aria-hidden="true">
+        <div class="bg-orb"></div>
+        <div class="bg-orb"></div>
+        <div class="bg-ring"></div>
+        <div class="bg-specular"></div>
+        <div class="bg-specular"></div>
+    </div>
+    
+    <!-- 导航栏 -->
+    <header class="glass-nav" role="banner" aria-label="Primary">
+        <nav class="nav-container" aria-label="Main navigation">
+            <div class="nav-logo">CyberOne</div>
+            <ul class="nav-items" role="menubar">
+                <li role="none"><a href="#products" role="menuitem">Products</a></li>
+                <li role="none"><a href="#why" role="menuitem">Why CyberOne</a></li>
+                <li role="none"><a href="#pricing" role="menuitem">Pricing</a></li>
+                <li role="none"><a href="#resources" role="menuitem">Resources</a></li>
+                <li role="none"><a href="#start" class="btn-primary pill" role="menuitem">Get Started</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <!-- Hero区域 -->
+    <main id="main" tabindex="-1">
+        <section class="hero">
+            <div class="hero-container">
+                <h1 class="hero-title">
+                    <span>Stay secure.</span>
+                    <span>Be unstoppable.</span>
+                </h1>
+                <p class="hero-subtitle">
+                    We provide comprehensive solutions to safeguard your data, systems, and networks against cyber attacks.
+                </p>
+                <a href="#check" class="btn-primary pill" aria-label="Run cyber security check">
+                    Cyber Security Check
+                    <span class="btn-arrow" aria-hidden="true">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </span>
+                </a>
+            </div>
+        </section>
+    </main>
+    
+    <script>
+        // 检测减少动画偏好
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+        
+        if (prefersReducedMotion.matches) {
+            document.querySelectorAll('.bg-orb, .bg-ring, .bg-specular').forEach(el => {
+                el.style.animation = 'none';
+            });
+        }
+        
+        // 导航当前态（可选）
+        const currentPath = window.location.hash || '#products';
+        document.querySelectorAll('.nav-items a').forEach(link => {
+            if (link.getAttribute('href') === currentPath) {
+                link.style.background = 'rgba(0, 0, 0, 0.08)';
+                link.style.boxShadow = 'inset 0 0 0 1px rgba(0, 0, 0, 0.1)';
+            }
+        });
+    </script>
+</body>
+</html>
+
