@@ -7,7 +7,7 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <title>LIKAIFENG.Net - Stay Secure. Be Unstoppable.</title>
-    <!-- Version: 2.4.5 - Transparent Mobile Navigation -->
+    <!-- Version: 2.5.0 - Simplified Navigation -->
     
     <style>
         /* ========================================
@@ -1050,10 +1050,6 @@
                         </div>
                     </div>
                 </li>
-                <li role="none"><a href="#why" role="menuitem">Why LIKAIFENG.Net</a></li>
-                <li role="none"><a href="#pricing" role="menuitem">Pricing</a></li>
-                <li role="none"><a href="#resources" role="menuitem">Resources</a></li>
-                <li role="none"><a href="#start" class="btn-primary pill" role="menuitem">Get Started</a></li>
             </ul>
         </nav>
     </header>
@@ -1069,8 +1065,8 @@
                 <p class="hero-subtitle">
                     We provide comprehensive solutions to safeguard your data, systems, and networks against cyber attacks.
                 </p>
-                <a href="https://github.com/lik699386-ctrl/cyberone-website/releases/latest" class="btn-primary pill" aria-label="Download CyberOne Software" id="downloadBtn">
-                    Download Software
+                <a href="#about" class="btn-primary pill" aria-label="View us">
+                    View us
                     <span class="btn-arrow" aria-hidden="true">
                         <svg viewBox="0 0 24 24">
                             <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1099,30 +1095,6 @@
                 link.style.boxShadow = 'inset 0 0 0 1px rgba(0, 0, 0, 0.1)';
             }
         });
-        
-        // 智能下载 - 中国大陆用户使用加速镜像
-        const downloadBtn = document.getElementById('downloadBtn');
-        if (downloadBtn) {
-            // 检测是否为中国大陆用户（简单判断，基于时区）
-            const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-            const isChinaMainland = timezone === 'Asia/Shanghai' || 
-                                   timezone === 'Asia/Chongqing' || 
-                                   timezone === 'Asia/Urumqi' ||
-                                   navigator.language.includes('zh-CN');
-            
-            downloadBtn.addEventListener('click', function(e) {
-                if (isChinaMainland) {
-                    // 中国大陆用户：使用 GitHub 加速镜像
-                    e.preventDefault();
-                    const originalUrl = this.href;
-                    const mirrorUrl = 'https://ghproxy.com/' + originalUrl;
-                    window.open(mirrorUrl, '_blank');
-                } else {
-                    // 国际用户：直接使用 GitHub
-                    // 默认行为，不需要特殊处理
-                }
-            });
-        }
         
         // 移动端下拉菜单点击切换
         const isMobile = window.matchMedia('(max-width: 768px)').matches;
