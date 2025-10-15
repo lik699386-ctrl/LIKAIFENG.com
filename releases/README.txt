@@ -15,3 +15,6 @@ https://github.com/lik699386-ctrl/cyberone-website/releases/download/v1.0.0/Cybe
 https://ghproxy.com/https://github.com/lik699386-ctrl/cyberone-website/releases/download/v1.0.0/CyberOne.exe
 
 
+
+
+

@@ -281,11 +281,7 @@
             box-shadow: none;
         }
         
-        /* 当菜单打开时Logo变白 */
-        .glass-nav:has(.dropdown-menu:hover) .nav-logo,
-        .glass-nav:has(.dropdown-menu.active) .nav-logo {
-            color: #FFFFFF !important;
-        }
+        /* 当菜单打开时Logo变白 - 已移动到后面统一处理 */
         
         /* Safari 兜底 - backdrop-filter 不支持时 */
         @supports not (backdrop-filter: blur(1px)) {
@@ -411,11 +407,21 @@
         /* Logo在菜单打开时变白 */
         .nav-logo {
             transition: color 0.5s cubic-bezier(0.28, 0.11, 0.32, 1);
+            z-index: 2001;
+            position: relative;
         }
         
-        .nav-items li:hover .nav-logo,
-        .dropdown-menu.active ~ .nav-container .nav-logo {
-            color: #FFFFFF;
+        /* 桌面端：hover时Logo变白 */
+        @media (hover: hover) and (pointer: fine) {
+            .glass-nav:has(.nav-items li:hover .dropdown-menu) .nav-logo,
+            .glass-nav:has(.dropdown-menu:hover) .nav-logo {
+                color: #FFFFFF !important;
+            }
+        }
+        
+        /* 移动端：active时Logo变白 */
+        .glass-nav:has(.dropdown-menu.active) .nav-logo {
+            color: #FFFFFF !important;
         }
         
         /* 桌面端：hover显示 */
@@ -483,17 +489,17 @@
             display: flex;
             flex-direction: column;
             align-items: flex-start;
-            padding: 16px 20px;
+            padding: 20px 0;
             color: #FFFFFF;
             text-decoration: none;
             border-radius: 0;
-            border-bottom: 0.5px solid rgba(255, 255, 255, 0.1);
+            border-bottom: none;
             transition: background-color 0.3s cubic-bezier(0.28, 0.11, 0.32, 1),
                         transform 0.3s cubic-bezier(0.28, 0.11, 0.32, 1);
             font-size: 17px;
             font-weight: 400;
             position: relative;
-            min-height: 60px;
+            min-height: 70px;
             justify-content: center;
             opacity: 0;
             transform: translateY(-10px);
@@ -537,17 +543,17 @@
         
         .dropdown-item-title {
             display: block;
-            font-weight: 600;
-            font-size: clamp(14px, 1.5vw, 15px);
-            margin-bottom: 2px;
+            font-weight: 700;
+            font-size: clamp(20px, 2vw, 24px);
+            margin-bottom: 4px;
             color: #FFFFFF;
             line-height: 1.2;
         }
         
         .dropdown-item-subtitle {
             display: block;
-            font-size: clamp(11px, 1.2vw, 12px);
-            color: rgba(255, 255, 255, 0.6);
+            font-size: clamp(13px, 1.4vw, 15px);
+            color: rgba(255, 255, 255, 0.7);
             font-weight: 400;
             line-height: 1.3;
         }
@@ -577,9 +583,7 @@
         }
         
         .dropdown-divider {
-            height: 0.5px;
-            background: rgba(255, 255, 255, 0.15);
-            margin: 6px 8px;
+            display: none;
         }
         
         /* 移动端优化 - v2.4.4 iOS动画版 */
@@ -623,28 +627,27 @@
             }
             
             .dropdown-item {
-                padding: 6px 8px;
-                min-height: 36px;
+                padding: 12px 8px;
+                min-height: 50px;
                 border-radius: 6px;
                 box-sizing: border-box;
             }
             
             .dropdown-item-title {
-                font-size: 13px;
-                font-weight: 500;
+                font-size: 16px;
+                font-weight: 700;
                 line-height: 1.2;
             }
             
             .dropdown-item-subtitle {
-                font-size: 10px;
-                margin-top: 1px;
-                opacity: 0.75;
+                font-size: 12px;
+                margin-top: 2px;
+                opacity: 0.8;
                 line-height: 1.2;
             }
             
             .dropdown-divider {
-                margin: 2px 0;
-                height: 0.5px;
+                display: none;
             }
         }
         
@@ -664,16 +667,17 @@
             }
             
             .dropdown-item {
-                padding: 5px 6px !important;
-                min-height: 32px !important;
+                padding: 10px 6px !important;
+                min-height: 45px !important;
             }
             
             .dropdown-item-title {
-                font-size: 12px !important;
+                font-size: 15px !important;
+                font-weight: 700 !important;
             }
             
             .dropdown-item-subtitle {
-                font-size: 9px !important;
+                font-size: 11px !important;
             }
         }
         
