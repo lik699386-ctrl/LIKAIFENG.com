@@ -1258,32 +1258,34 @@
                 flex-direction: row;
                 align-items: center;
                 justify-content: space-between;
-                padding: 20px 4% 12px;
-                gap: 16px;
+                padding: 20px 3% 12px; /* 减小左右padding */
+                gap: 8px; /* 减小gap */
             }
             
             .nav-logo {
                 margin-right: 0;
-                font-size: 22px;
+                font-size: 20px; /* 减小Logo字体 */
                 font-weight: 800;
                 color: #000000;
                 text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
                 order: 1;  /* Logo在左边 */
+                flex-shrink: 0; /* Logo不收缩 */
             }
             
             .nav-items {
                 order: 2;  /* Products按钮在右边 */
                 flex-wrap: nowrap;
                 justify-content: flex-end;
-                gap: 8px;
+                gap: 6px; /* 减小按钮间隙 */
                 width: auto;
+                flex-shrink: 1; /* 允许按钮收缩 */
             }
             
             .nav-items a {
-                padding: 12px 16px;
-                font-size: 14px;
-                height: 44px;
-                min-width: 44px;
+                padding: 10px 12px; /* 减小padding */
+                font-size: 13px; /* 减小字体 */
+                height: 40px; /* 减小高度 */
+                min-width: auto; /* 移除最小宽度限制 */
                 white-space: nowrap;
             }
             
@@ -1351,22 +1353,22 @@
         /* 小屏优化 */
         @media (max-width: 480px) {
             .nav-container {
-                padding: 16px 3% 10px;
-                gap: 12px;
-            }
-            
-            .nav-logo {
-                font-size: 20px;
-            }
-            
-            .nav-items {
+                padding: 16px 2.5% 10px; /* 进一步减小padding */
                 gap: 6px;
             }
             
+            .nav-logo {
+                font-size: 18px; /* 更小的Logo */
+            }
+            
+            .nav-items {
+                gap: 5px; /* 更小的间隙 */
+            }
+            
             .nav-items a {
-                padding: 10px 12px;
-                font-size: 13px;
-                height: 40px;
+                padding: 8px 10px; /* 更小的padding */
+                font-size: 12px; /* 更小的字体 */
+                height: 36px; /* 更小的高度 */
             }
             
             .hero {
@@ -1393,10 +1395,23 @@
         
         /* 超小屏优化 */
         @media (max-width: 375px) {
+            .nav-container {
+                padding: 14px 2% 8px; /* 最小padding */
+                gap: 4px;
+            }
+            
+            .nav-logo {
+                font-size: 16px; /* 最小Logo */
+            }
+            
+            .nav-items {
+                gap: 4px; /* 最小间隙 */
+            }
+            
             .nav-items a {
-                padding: 8px 10px;
-                font-size: 12px;
-                height: 36px;
+                padding: 7px 8px; /* 最小padding */
+                font-size: 11px; /* 最小字体 */
+                height: 34px; /* 最小高度 */
             }
             
             .nav-items .btn-primary {
