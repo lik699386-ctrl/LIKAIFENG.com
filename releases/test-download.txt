@@ -1,0 +1,8 @@
+这是一个测试文件，用于演示 GitHub Releases 下载功能。
+
+CyberOne Security Tool - Test Version
+Version: 0.0.1
+Date: 2025-10-15
+
+未来这里会是你的实际软件文件。
+
