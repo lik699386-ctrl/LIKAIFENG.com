@@ -779,31 +779,7 @@
             box-shadow: none;
         }
         
-        /* 右侧圆形箭头 */
-        .btn-arrow {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2);
-            margin-left: 14px;
-            transition: all var(--dur-hover) var(--easing);
-        }
-        
-        .btn-primary:hover .btn-arrow {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateX(4px);
-        }
-        
-        .btn-arrow svg {
-            width: 16px;
-            height: 16px;
-            stroke: currentColor;
-            stroke-width: 2;
-            fill: none;
-        }
+        /* 右侧圆形箭头 - 已移除 */
         
         .btn-ghost {
             height: 48px;
@@ -914,8 +890,12 @@
             
             .hero {
                 min-height: 100vh;
-                padding: clamp(140px, 18vh, 180px) 4% clamp(40px, 8vh, 80px);
+                padding: clamp(100px, 14vh, 140px) 4% clamp(40px, 8vh, 80px);
                 margin-top: 0;
+            }
+            
+            .hero-container {
+                transform: translateY(-20%);
             }
             
             .hero-title {
@@ -923,13 +903,6 @@
                 font-weight: 500;  /* Artwork加粗 */
                 margin-bottom: 20px;
                 line-height: 1.1;
-            }
-            
-            .btn-primary {
-                width: auto;  /* 按钮自适应内容宽度 */
-                max-width: none;
-                padding-left: 24px;
-                padding-right: 24px;
             }
             
             .hero-subtitle {
@@ -943,12 +916,17 @@
                 width: auto;
                 max-width: none;
                 margin: 0 auto;
+                margin-top: 10%;
                 justify-content: center;
                 height: 56px;
                 font-size: 17px;
                 font-weight: 600;
-                padding-left: 28px;
-                padding-right: 28px;
+                padding: 0 28px;
+                background: rgba(17, 18, 20, 0.85) !important;
+            }
+            
+            .btn-primary:hover {
+                background: rgba(17, 18, 20, 0.95) !important;
             }
             
             /* 移动端性能优化 */
@@ -988,7 +966,7 @@
             
             .hero {
                 margin-top: 0;
-                padding: clamp(120px, 15vh, 140px) 3% clamp(30px, 6vh, 60px);
+                padding: clamp(80px, 12vh, 120px) 3% clamp(30px, 6vh, 60px);
             }
             
             .hero-title {
@@ -1004,6 +982,7 @@
             .btn-primary {
                 height: 52px;
                 font-size: 16px;
+                margin-top: 12%;
             }
         }
         
@@ -1126,13 +1105,8 @@
                 <p class="hero-subtitle">
                     Leave 'more is less' to us—just to show you that less is more.
                 </p>
-                <a href="#about" class="btn-primary pill" aria-label="View us">
-                    View us
-                    <span class="btn-arrow" aria-hidden="true">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </span>
+                <a href="#about" class="btn-primary pill" aria-label="View">
+                    View
                 </a>
             </div>
         </section>
