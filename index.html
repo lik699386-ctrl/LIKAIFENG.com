@@ -817,7 +817,8 @@
                 box-sizing: border-box !important;
             }
             
-            .dropdown-content {
+            .dropdown-content,
+            .dropdown-content-apple {
                 border-radius: 0;
                 padding: 80px 20px 40px;
                 box-shadow: none;
@@ -831,9 +832,28 @@
             }
             
             .dropdown-menu.active {
-                max-height: 400px;
+                max-height: 600px;
                 opacity: 1;
                 visibility: visible;
+            }
+            
+            /* 移动端Apple风格布局调整 */
+            .platform-section {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+            
+            .platform-title {
+                font-size: 32px;
+            }
+            
+            .products-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            
+            .product-card {
+                padding: 24px 20px;
             }
             
             .dropdown-item {
