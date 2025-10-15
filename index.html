@@ -1714,7 +1714,7 @@
                     <span data-i18n="hero.title.line2"></span>
                 </h1>
                 <p class="hero-subtitle" data-i18n="hero.subtitle">
-                    "多即是少"交给我，"少即是多"留给你。
+                    "多即是少"交给我，"少即是多"留给你。设计对于我来说不仅仅是外观，也是工作原理。
                 </p>
                 <a href="#about" class="btn-primary pill" aria-label="View" data-i18n="hero.cta">
                     浏览
@@ -1734,7 +1734,7 @@
                 'nav.back': '← 返回',
                 'hero.title.line1': '为你打造的艺术品',
                 'hero.title.line2': '',
-                'hero.subtitle': '"多即是少"交给我，"少即是多"留给你。',
+                'hero.subtitle': '"多即是少"交给我，"少即是多"留给你。设计对于我来说不仅仅是外观，也是工作原理。',
                 'hero.cta': '浏览',
                 'language.simplified-chinese': '简体中文',
                 'language.english': 'English',
@@ -1773,7 +1773,7 @@
                 'nav.back': '← Back',
                 'hero.title.line1': 'Artwork made',
                 'hero.title.line2': 'especially for you',
-                'hero.subtitle': 'Leave \'more is less\' to us—just to show you that less is more.',
+                'hero.subtitle': 'Leave \'more is less\' to us—just to show you that less is more. Design is not just what it looks like for me, but also how it works.',
                 'hero.cta': 'View',
                 'language.simplified-chinese': '简体中文',
                 'language.english': 'English',
@@ -1812,7 +1812,7 @@
                 'nav.back': '← Назад',
                 'hero.title.line1': 'Произведение искусства,',
                 'hero.title.line2': 'созданное для вас',
-                'hero.subtitle': 'Оставьте "больше значит меньше" нам—просто чтобы показать вам, что меньше значит больше.',
+                'hero.subtitle': 'Оставьте "больше значит меньше" нам—просто чтобы показать вам, что меньше значит больше. Для меня дизайн — это не только внешний вид, но и принцип работы.',
                 'hero.cta': 'Просмотр',
                 'language.simplified-chinese': '简体中文',
                 'language.english': 'English',
@@ -1851,7 +1851,7 @@
                 'nav.back': '← Retour',
                 'hero.title.line1': 'Une œuvre d\'art créée',
                 'hero.title.line2': 'spécialement pour vous',
-                'hero.subtitle': 'Laissez-nous "plus c\'est moins"—juste pour vous montrer que moins c\'est plus.',
+                'hero.subtitle': 'Laissez-nous "plus c\'est moins"—juste pour vous montrer que moins c\'est plus. Pour moi, le design n\'est pas seulement l\'apparence, mais aussi le fonctionnement.',
                 'hero.cta': 'Voir',
                 'language.simplified-chinese': '简体中文',
                 'language.english': 'English',
@@ -1890,7 +1890,7 @@
                 'nav.back': '← Zurück',
                 'hero.title.line1': 'Kunstwerk speziell',
                 'hero.title.line2': 'für Sie gemacht',
-                'hero.subtitle': 'Überlassen Sie uns "mehr ist weniger"—nur um Ihnen zu zeigen, dass weniger mehr ist.',
+                'hero.subtitle': 'Überlassen Sie uns "mehr ist weniger"—nur um Ihnen zu zeigen, dass weniger mehr ist. Für mich ist Design nicht nur das Aussehen, sondern auch die Funktionsweise.',
                 'hero.cta': 'Ansehen',
                 'language.simplified-chinese': '简体中文',
                 'language.english': 'English',
@@ -1929,7 +1929,7 @@
                 'nav.back': '← Volver',
                 'hero.title.line1': 'Obra de arte hecha',
                 'hero.title.line2': 'especialmente para ti',
-                'hero.subtitle': 'Déjanos "más es menos"—solo para mostrarte que menos es más.',
+                'hero.subtitle': 'Déjanos "más es menos"—solo para mostrarte que menos es más. Para mí, el diseño no es solo la apariencia, sino también cómo funciona.',
                 'hero.cta': 'Ver',
                 'language.simplified-chinese': '简体中文',
                 'language.english': 'English',
@@ -2107,19 +2107,41 @@
         }
 
         // ========================================
-        // 下拉菜单内按钮切换功能（全新稳定版本）
+        // 下拉菜单内按钮切换功能（桌面端悬停，移动端点击）
         // ========================================
+        
+        // 桌面端：鼠标悬停切换下拉菜单内的内容区域
+        if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+            // 语言按钮悬停事件
+            document.querySelectorAll('.language-btn').forEach(btn => {
+                btn.addEventListener('mouseenter', function(e) {
+                    if (this.closest('.dropdown-menu')) {
+                        e.preventDefault();
+                        switchToLanguageMenu();
+                    }
+                });
+            });
+            
+            // 产品按钮悬停事件
+            document.querySelectorAll('.products-btn').forEach(btn => {
+                btn.addEventListener('mouseenter', function(e) {
+                    if (this.closest('.dropdown-menu')) {
+                        e.preventDefault();
+                        switchToProductsMenu();
+                    }
+                });
+            });
+        }
+        
+        // 移动端：点击切换
         document.addEventListener('click', function(e) {
             // 点击下拉菜单内的语言按钮
             if (e.target.classList.contains('language-btn') && e.target.closest('.dropdown-menu')) {
                 e.preventDefault();
                 e.stopPropagation();
                 
-                // 桌面端：无缝切换到语言菜单
-                if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-                    switchToLanguageMenu();
-                } else {
-                    // 移动端：切换菜单容器
+                // 移动端：切换菜单容器
+                if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
                     const languageDropdown = document.querySelector('.language-dropdown');
                     const productsDropdown = document.querySelector('.products-dropdown');
                     
@@ -2135,11 +2157,8 @@
                 e.preventDefault();
                 e.stopPropagation();
                 
-                // 桌面端：无缝切换到产品菜单
-                if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-                    switchToProductsMenu();
-                } else {
-                    // 移动端：切换菜单容器
+                // 移动端：切换菜单容器
+                if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
                     const languageDropdown = document.querySelector('.language-dropdown');
                     const productsDropdown = document.querySelector('.products-dropdown');
                     
