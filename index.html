@@ -269,7 +269,7 @@
             top: 0;
             left: 0;
             right: 0;
-            z-index: 1000;
+            z-index: 2000;
             backdrop-filter: none;
             -webkit-backdrop-filter: none;
             background: transparent;
@@ -375,7 +375,14 @@
             transform: translateX(-50%) translateY(-10px);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-            z-index: 1001;
+            z-index: 2001;
+        }
+        
+        /* 调试：先让菜单一直显示 */
+        .dropdown-menu {
+            opacity: 1 !important;
+            visibility: visible !important;
+            pointer-events: auto !important;
         }
         
         .nav-items li:hover .dropdown-menu,
