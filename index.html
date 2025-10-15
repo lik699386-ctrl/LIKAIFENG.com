@@ -387,8 +387,19 @@
             will-change: transform, opacity;
         }
         
-        .nav-items li:hover .dropdown-menu,
-        .dropdown-menu:hover {
+        /* 桌面端：hover显示 */
+        @media (hover: hover) and (pointer: fine) {
+            .nav-items li:hover .dropdown-menu,
+            .dropdown-menu:hover {
+                opacity: 1;
+                visibility: visible;
+                pointer-events: auto;
+                transform: translateX(-50%) translateY(0) scale(1);
+            }
+        }
+        
+        /* 移动端：点击切换 */
+        .dropdown-menu.active {
             opacity: 1;
             visibility: visible;
             pointer-events: auto;
@@ -471,32 +482,44 @@
         /* 移动端优化 */
         @media (max-width: 768px) {
             .dropdown-menu {
-                min-width: max(220px, 60vw);
-                left: 0;
-                right: 0;
-                margin-left: auto;
-                margin-right: auto;
-                transform: translateX(-50%) translateY(-8px) scale(0.95);
+                position: fixed;
+                top: auto;
+                bottom: 80px;
+                left: 50%;
+                right: auto;
+                min-width: calc(100vw - 32px);
+                max-width: calc(100vw - 32px);
+                margin: 0;
+                border-radius: 16px;
+                padding: 12px;
+                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+            }
+            
+            .dropdown-menu.active {
+                transform: translateX(-50%) translateY(0) scale(1);
             }
             
             .dropdown-item {
-                padding: 12px 16px;
-                min-height: 48px;
+                padding: 14px 20px;
+                min-height: 52px;
+                border-radius: 10px;
             }
             
             .dropdown-item-title {
-                font-size: 15px;
+                font-size: 16px;
             }
             
             .dropdown-item-subtitle {
-                font-size: 13px;
+                font-size: 14px;
             }
         }
         
         /* 超小屏幕 */
         @media (max-width: 480px) {
             .dropdown-menu {
-                min-width: 85vw;
+                min-width: calc(100vw - 24px);
+                max-width: calc(100vw - 24px);
+                bottom: 60px;
             }
         }
         
@@ -1007,6 +1030,44 @@
                     // 国际用户：直接使用 GitHub
                     // 默认行为，不需要特殊处理
                 }
+            });
+        }
+        
+        // 移动端下拉菜单点击切换
+        const isMobile = window.matchMedia('(max-width: 768px)').matches;
+        if (isMobile) {
+            const dropdownTriggers = document.querySelectorAll('.nav-items li:has(.dropdown-menu) > a');
+            const dropdownMenus = document.querySelectorAll('.dropdown-menu');
+            
+            dropdownTriggers.forEach(trigger => {
+                trigger.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const dropdown = this.nextElementSibling;
+                    const isActive = dropdown.classList.contains('active');
+                    
+                    // 关闭所有其他下拉菜单
+                    dropdownMenus.forEach(menu => menu.classList.remove('active'));
+                    
+                    // 切换当前菜单
+                    if (!isActive) {
+                        dropdown.classList.add('active');
+                    }
+                });
+            });
+            
+            // 点击外部关闭下拉菜单
+            document.addEventListener('click', function(e) {
+                const isDropdownClick = e.target.closest('.nav-items li:has(.dropdown-menu)');
+                if (!isDropdownClick) {
+                    dropdownMenus.forEach(menu => menu.classList.remove('active'));
+                }
+            });
+            
+            // 点击菜单项后关闭
+            document.querySelectorAll('.dropdown-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    dropdownMenus.forEach(menu => menu.classList.remove('active'));
+                });
             });
         }
     </script>
