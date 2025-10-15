@@ -454,7 +454,7 @@
             transform: translateY(-2px);
         }
         
-        /* Apple风格全宽度下拉菜单 */
+        /* Apple风格全宽度下拉菜单 - iOS丝滑动画 */
         .dropdown-menu {
             position: fixed;
             top: 0;
@@ -471,11 +471,13 @@
             opacity: 0;
             visibility: hidden;
             overflow: hidden;
-            transition: max-height 0.5s cubic-bezier(0.28, 0.11, 0.32, 1),
-                        opacity 0.5s cubic-bezier(0.28, 0.11, 0.32, 1),
-                        visibility 0s 0.5s;
+            /* iOS风格丝滑动画 */
+            transition: max-height 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                        opacity 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                        visibility 0s 0.6s,
+                        backdrop-filter 0.45s ease;
             z-index: 2100;
-            will-change: max-height, opacity;
+            will-change: max-height, opacity, backdrop-filter;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
         }
         
@@ -553,15 +555,18 @@
             background: rgba(0, 0, 0, 0.95);
             backdrop-filter: saturate(180%) blur(20px);
             -webkit-backdrop-filter: saturate(180%) blur(20px);
-            padding: clamp(100px, 12vh, 140px) clamp(5%, 10vw, 20%) clamp(60px, 8vh, 100px);
+            padding: 60px clamp(5%, 8vw, 15%) 40px;
             border-radius: 0;
             box-shadow: 0 50px 100px rgba(0, 0, 0, 0.6);
-            max-height: none;
+            max-height: 80vh;
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
             display: flex;
             flex-direction: column;
             gap: 40px;
+            /* iOS风格动画 */
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            will-change: transform, opacity;
         }
         
         /* 平台分区 */
@@ -836,13 +841,54 @@
             background: rgba(255, 255, 255, 0.12);
         }
         
-        /* 菜单内容区域控制 */
+        /* 菜单内容区域控制 - iOS风格切换动画 */
         .menu-content {
             display: block;
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            will-change: transform, opacity;
         }
         
         .menu-content[style*="display: none"] {
             display: none !important;
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        
+        /* 菜单内容显示动画 */
+        .menu-content.entering {
+            animation: menuContentEnter 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+        
+        .menu-content.exiting {
+            animation: menuContentExit 0.25s cubic-bezier(0.55, 0.06, 0.68, 0.19) forwards;
+        }
+        
+        @keyframes menuContentEnter {
+            0% {
+                opacity: 0;
+                transform: translateY(15px) scale(0.98);
+            }
+            60% {
+                opacity: 0.8;
+                transform: translateY(5px) scale(0.995);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        @keyframes menuContentExit {
+            0% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-10px) scale(0.98);
+            }
         }
         
         .language-item.active::after {
@@ -1851,13 +1897,45 @@
             
             if (languageContent && productsContent) {
                 if (contentType === 'language') {
-                    // 显示语言内容，隐藏产品内容
-                    languageContent.style.display = 'block';
-                    productsContent.style.display = 'none';
+                    // iOS风格切换动画：先隐藏产品内容，再显示语言内容
+                    if (productsContent.style.display !== 'none') {
+                        productsContent.classList.add('exiting');
+                        setTimeout(() => {
+                            productsContent.style.display = 'none';
+                            productsContent.classList.remove('exiting');
+                            languageContent.style.display = 'block';
+                            languageContent.classList.add('entering');
+                            setTimeout(() => {
+                                languageContent.classList.remove('entering');
+                            }, 350);
+                        }, 250);
+                    } else {
+                        languageContent.style.display = 'block';
+                        languageContent.classList.add('entering');
+                        setTimeout(() => {
+                            languageContent.classList.remove('entering');
+                        }, 350);
+                    }
                 } else if (contentType === 'products') {
-                    // 显示产品内容，隐藏语言内容
-                    languageContent.style.display = 'none';
-                    productsContent.style.display = 'block';
+                    // iOS风格切换动画：先隐藏语言内容，再显示产品内容
+                    if (languageContent.style.display !== 'none') {
+                        languageContent.classList.add('exiting');
+                        setTimeout(() => {
+                            languageContent.style.display = 'none';
+                            languageContent.classList.remove('exiting');
+                            productsContent.style.display = 'block';
+                            productsContent.classList.add('entering');
+                            setTimeout(() => {
+                                productsContent.classList.remove('entering');
+                            }, 350);
+                        }, 250);
+                    } else {
+                        productsContent.style.display = 'block';
+                        productsContent.classList.add('entering');
+                        setTimeout(() => {
+                            productsContent.classList.remove('entering');
+                        }, 350);
+                    }
                 }
             }
         }
