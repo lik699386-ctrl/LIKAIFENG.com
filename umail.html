@@ -433,7 +433,7 @@
     <nav class="glass-nav">
         <div class="nav-container">
             <a href="index.html" class="nav-logo">LIKAIFENG.Net</a>
-            <button class="nav-back" onclick="history.back()">← 返回</button>
+            <button class="nav-back" onclick="history.back()" data-i18n="nav.back">← 返回</button>
         </div>
     </nav>
     
@@ -447,46 +447,49 @@
     <!-- 主内容 -->
     <main class="main-container">
         <div class="product-hero">
-            <div class="status-tag">✓ 已发布</div>
+            <div class="status-tag" data-i18n="status.released">✓ 已发布</div>
             
             <div class="product-icon">
                 U
             </div>
             
             <h1 class="product-title">Umail</h1>
-            <p class="product-subtitle">专业级邮箱安全管理工具<br>让每一封邮件都在您的掌控之中</p>
+            <p class="product-subtitle">
+                <span data-i18n="umail.subtitle">专业级邮箱安全管理工具</span><br>
+                <span data-i18n="umail.tagline">让每一封邮件都在您的掌控之中</span>
+            </p>
             
             <div class="features-list">
                 <div class="feature-item">
                     <div class="feature-icon">🛡️</div>
-                    <div class="feature-title">安全至上</div>
-                    <div class="feature-desc">军用级加密技术，保护您的邮件隐私安全</div>
+                    <div class="feature-title" data-i18n="umail.feature.security.title">安全至上</div>
+                    <div class="feature-desc" data-i18n="umail.feature.security.desc">军用级加密技术，保护您的邮件隐私安全</div>
                 </div>
                 
                 <div class="feature-item">
                     <div class="feature-icon">⚡</div>
-                    <div class="feature-title">极速体验</div>
-                    <div class="feature-desc">原生优化，毫秒级响应，丝滑如iOS</div>
+                    <div class="feature-title" data-i18n="umail.feature.speed.title">极速体验</div>
+                    <div class="feature-desc" data-i18n="umail.feature.speed.desc">原生优化，毫秒级响应，丝滑如iOS</div>
                 </div>
                 
                 <div class="feature-item">
                     <div class="feature-icon">🎯</div>
-                    <div class="feature-title">智能过滤</div>
-                    <div class="feature-desc">AI驱动的垃圾邮件识别，准确率99.9%</div>
+                    <div class="feature-title" data-i18n="umail.feature.smart.title">智能过滤</div>
+                    <div class="feature-desc" data-i18n="umail.feature.smart.desc">AI驱动的垃圾邮件识别，准确率99.9%</div>
                 </div>
                 
                 <div class="feature-item">
                     <div class="feature-icon">🌊</div>
-                    <div class="feature-title">简约设计</div>
-                    <div class="feature-desc">少即是多的设计哲学，专注核心功能</div>
+                    <div class="feature-title" data-i18n="umail.feature.design.title">简约设计</div>
+                    <div class="feature-desc" data-i18n="umail.feature.design.desc">少即是多的设计哲学，专注核心功能</div>
                 </div>
             </div>
             
             <div class="cta-buttons">
-                <a href="#download" class="btn-primary">
+                <a href="#download" class="btn-primary" data-i18n="umail.cta.download">
                     ⬇️ 立即下载
                 </a>
-                <a href="#learn-more" class="btn-secondary">
+                <a href="#learn-more" class="btn-secondary" data-i18n="umail.cta.learn-more">
                     了解更多
                 </a>
             </div>
@@ -494,8 +497,133 @@
     </main>
     
     <script>
+        // ========================================
+        // 多语言支持系统 (从主页面复制)
+        // ========================================
+        const translations = {
+            'zh-CN': {
+                'nav.back': '← 返回',
+                'status.released': '✓ 已发布',
+                'umail.subtitle': '专业级邮箱安全管理工具',
+                'umail.tagline': '让每一封邮件都在您的掌控之中',
+                'umail.feature.security.title': '安全至上',
+                'umail.feature.security.desc': '军用级加密技术，保护您的邮件隐私安全',
+                'umail.feature.speed.title': '极速体验',
+                'umail.feature.speed.desc': '原生优化，毫秒级响应，丝滑如iOS',
+                'umail.feature.smart.title': '智能过滤',
+                'umail.feature.smart.desc': 'AI驱动的垃圾邮件识别，准确率99.9%',
+                'umail.feature.design.title': '简约设计',
+                'umail.feature.design.desc': '少即是多的设计哲学，专注核心功能',
+                'umail.cta.download': '⬇️ 立即下载',
+                'umail.cta.learn-more': '了解更多'
+            },
+            'en': {
+                'nav.back': '← Back',
+                'status.released': '✓ Released',
+                'umail.subtitle': 'Professional Email Security Management Tool',
+                'umail.tagline': 'Keep every email under your control',
+                'umail.feature.security.title': 'Security First',
+                'umail.feature.security.desc': 'Military-grade encryption technology protects your email privacy',
+                'umail.feature.speed.title': 'Lightning Fast',
+                'umail.feature.speed.desc': 'Native optimization, millisecond response, smooth as iOS',
+                'umail.feature.smart.title': 'Smart Filtering',
+                'umail.feature.smart.desc': 'AI-driven spam recognition with 99.9% accuracy',
+                'umail.feature.design.title': 'Minimalist Design',
+                'umail.feature.design.desc': 'Less is more design philosophy, focus on core functions',
+                'umail.cta.download': '⬇️ Download Now',
+                'umail.cta.learn-more': 'Learn More'
+            },
+            'ru': {
+                'nav.back': '← Назад',
+                'status.released': '✓ Выпущен',
+                'umail.subtitle': 'Профессиональный инструмент безопасности электронной почты',
+                'umail.tagline': 'Держите каждое письмо под своим контролем',
+                'umail.feature.security.title': 'Безопасность прежде всего',
+                'umail.feature.security.desc': 'Военная технология шифрования защищает конфиденциальность вашей почты',
+                'umail.feature.speed.title': 'Молниеносная скорость',
+                'umail.feature.speed.desc': 'Нативная оптимизация, миллисекундный отклик, плавность как iOS',
+                'umail.feature.smart.title': 'Умная фильтрация',
+                'umail.feature.smart.desc': 'ИИ-распознавание спама с точностью 99,9%',
+                'umail.feature.design.title': 'Минималистичный дизайн',
+                'umail.feature.design.desc': 'Философия "меньше значит больше", фокус на основных функциях',
+                'umail.cta.download': '⬇️ Скачать сейчас',
+                'umail.cta.learn-more': 'Узнать больше'
+            },
+            'fr': {
+                'nav.back': '← Retour',
+                'status.released': '✓ Publié',
+                'umail.subtitle': 'Outil professionnel de gestion de sécurité des emails',
+                'umail.tagline': 'Gardez chaque email sous votre contrôle',
+                'umail.feature.security.title': 'Sécurité d\'abord',
+                'umail.feature.security.desc': 'Technologie de cryptage de niveau militaire protège la confidentialité de vos emails',
+                'umail.feature.speed.title': 'Vitesse éclair',
+                'umail.feature.speed.desc': 'Optimisation native, réponse en millisecondes, fluide comme iOS',
+                'umail.feature.smart.title': 'Filtrage intelligent',
+                'umail.feature.smart.desc': 'Reconnaissance de spam alimentée par IA avec 99,9% de précision',
+                'umail.feature.design.title': 'Design minimaliste',
+                'umail.feature.design.desc': 'Philosophie "moins c\'est plus", focus sur les fonctions principales',
+                'umail.cta.download': '⬇️ Télécharger maintenant',
+                'umail.cta.learn-more': 'En savoir plus'
+            },
+            'de': {
+                'nav.back': '← Zurück',
+                'status.released': '✓ Veröffentlicht',
+                'umail.subtitle': 'Professionelles E-Mail-Sicherheits-Management-Tool',
+                'umail.tagline': 'Behalten Sie jede E-Mail unter Ihrer Kontrolle',
+                'umail.feature.security.title': 'Sicherheit zuerst',
+                'umail.feature.security.desc': 'Verschlüsselungstechnologie auf militärischem Niveau schützt Ihre E-Mail-Privatsphäre',
+                'umail.feature.speed.title': 'Blitzschnell',
+                'umail.feature.speed.desc': 'Native Optimierung, Millisekunden-Antwort, flüssig wie iOS',
+                'umail.feature.smart.title': 'Intelligente Filterung',
+                'umail.feature.smart.desc': 'KI-gesteuerte Spam-Erkennung mit 99,9% Genauigkeit',
+                'umail.feature.design.title': 'Minimalistisches Design',
+                'umail.feature.design.desc': 'Weniger ist mehr Designphilosophie, Fokus auf Kernfunktionen',
+                'umail.cta.download': '⬇️ Jetzt herunterladen',
+                'umail.cta.learn-more': 'Mehr erfahren'
+            },
+            'es': {
+                'nav.back': '← Volver',
+                'status.released': '✓ Lanzado',
+                'umail.subtitle': 'Herramienta profesional de gestión de seguridad de correo electrónico',
+                'umail.tagline': 'Mantén cada correo bajo tu control',
+                'umail.feature.security.title': 'Seguridad primero',
+                'umail.feature.security.desc': 'Tecnología de encriptación de nivel militar protege la privacidad de tu correo',
+                'umail.feature.speed.title': 'Velocidad relámpago',
+                'umail.feature.speed.desc': 'Optimización nativa, respuesta en milisegundos, fluido como iOS',
+                'umail.feature.smart.title': 'Filtrado inteligente',
+                'umail.feature.smart.desc': 'Reconocimiento de spam impulsado por IA con 99.9% de precisión',
+                'umail.feature.design.title': 'Diseño minimalista',
+                'umail.feature.design.desc': 'Filosofía de diseño "menos es más", enfoque en funciones principales',
+                'umail.cta.download': '⬇️ Descargar ahora',
+                'umail.cta.learn-more': 'Saber más'
+            }
+        };
+
+        // 当前语言（从localStorage读取或默认简体中文）
+        let currentLang = localStorage.getItem('language') || 'zh-CN';
+
+        // 更新页面文本
+        function updateLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('language', lang);
+            
+            // 更新所有带有 data-i18n 的元素
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                const translation = translations[lang][key];
+                if (translation !== undefined) {
+                    el.textContent = translation;
+                }
+            });
+            
+            // 更新页面标题
+            document.title = `Umail - ${translations[lang]['umail.subtitle']} | LIKAIFENG.Net`;
+        }
+
         // iOS风格交互增强
         document.addEventListener('DOMContentLoaded', function() {
+            // 应用当前语言
+            updateLanguage(currentLang);
             // 按钮交互反馈
             const buttons = document.querySelectorAll('.btn-primary, .btn-secondary, .nav-back');
             
