@@ -292,6 +292,7 @@
             align-items: center;
             justify-content: space-between;
             gap: 60px;
+            overflow: visible;
         }
         
         .nav-logo {
@@ -307,7 +308,7 @@
             align-items: center;
             gap: 16px;
             list-style: none;
-            overflow-x: auto;
+            overflow: visible;
             -webkit-overflow-scrolling: touch;
             scrollbar-width: none;
         }
@@ -376,13 +377,6 @@
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
             z-index: 2001;
-        }
-        
-        /* 调试：先让菜单一直显示 */
-        .dropdown-menu {
-            opacity: 1 !important;
-            visibility: visible !important;
-            pointer-events: auto !important;
         }
         
         .nav-items li:hover .dropdown-menu,
