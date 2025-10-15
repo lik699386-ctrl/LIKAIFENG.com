@@ -1,0 +1,66 @@
+# Netlify/Vercel Headers Configuration
+# For GitHub Pages, these are informational - need server-side config
+# 这些头部需要在GitHub Pages之上的CDN层配置（如Cloudflare）
+
+/*
+  # HSTS - HTTP Strict Transport Security (最高级别)
+  Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+  
+  # Content Security Policy (最严格 - 生产环境)
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'sha256-HASH_HERE'; style-src 'self' 'sha256-HASH_HERE'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests; block-all-mixed-content
+  
+  # X-Frame-Options
+  X-Frame-Options: DENY
+  
+  # X-Content-Type-Options
+  X-Content-Type-Options: nosniff
+  
+  # X-XSS-Protection
+  X-XSS-Protection: 1; mode=block
+  
+  # Referrer-Policy
+  Referrer-Policy: strict-origin-when-cross-origin
+  
+  # Permissions-Policy (Feature-Policy)
+  Permissions-Policy: accelerometer=(), ambient-light-sensor=(), autoplay=(), battery=(), camera=(), cross-origin-isolated=(), display-capture=(), document-domain=(), encrypted-media=(), execution-while-not-rendered=(), execution-while-out-of-viewport=(), fullscreen=(self), geolocation=(), gyroscope=(), keyboard-map=(), magnetometer=(), microphone=(), midi=(), navigation-override=(), payment=(), picture-in-picture=(), publickey-credentials-get=(), screen-wake-lock=(), sync-xhr=(), usb=(), web-share=(), xr-spatial-tracking=()
+  
+  # Cross-Origin Policies
+  Cross-Origin-Embedder-Policy: require-corp
+  Cross-Origin-Opener-Policy: same-origin
+  Cross-Origin-Resource-Policy: same-origin
+  
+  # Expect-CT
+  Expect-CT: max-age=86400, enforce
+  
+  # X-DNS-Prefetch-Control
+  X-DNS-Prefetch-Control: off
+  
+  # Cache-Control (敏感资源)
+  Cache-Control: no-cache, no-store, must-revalidate, private
+  
+  # X-Permitted-Cross-Domain-Policies
+  X-Permitted-Cross-Domain-Policies: none
+  
+  # X-Download-Options
+  X-Download-Options: noopen
+  
+  # Clear-Site-Data (登出时使用)
+  # Clear-Site-Data: "cache", "cookies", "storage"
+
+# 静态资源缓存策略（带版本控制的资源可以长期缓存）
+/*.css
+  Cache-Control: public, max-age=31536000, immutable
+  
+/*.js
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.png
+  Cache-Control: public, max-age=31536000, immutable
+  
+/*.jpg
+  Cache-Control: public, max-age=31536000, immutable
+
+# HTML文件不缓存
+/*.html
+  Cache-Control: no-cache, no-store, must-revalidate
+

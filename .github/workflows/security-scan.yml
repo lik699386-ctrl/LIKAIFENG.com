@@ -1,0 +1,230 @@
+name: Security Scan
+
+# Apple.com级别的自动化安全扫描
+# 每次push和定期扫描都会执行
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
+  schedule:
+    # 每天UTC时间0点运行
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  security-headers-check:
+    name: Security Headers Validation
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Check Security Headers
+      run: |
+        echo "🔍 Checking security headers in index.html..."
+        
+        # 检查必需的安全头部
+        required_headers=(
+          "Content-Security-Policy"
+          "X-Frame-Options"
+          "X-Content-Type-Options"
+          "X-XSS-Protection"
+          "Referrer-Policy"
+          "Permissions-Policy"
+        )
+        
+        for header in "${required_headers[@]}"; do
+          if grep -q "$header" index.html; then
+            echo "✅ Found: $header"
+          else
+            echo "❌ Missing: $header"
+            exit 1
+          fi
+        done
+        
+        echo "✅ All security headers present!"
+
+  csp-validation:
+    name: Content Security Policy Validation
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Validate CSP
+      run: |
+        echo "🔍 Validating Content Security Policy..."
+        
+        # 检查CSP是否存在危险指令
+        if grep -q "unsafe-eval" index.html; then
+          echo "❌ DANGER: unsafe-eval found in CSP!"
+          exit 1
+        fi
+        
+        # 检查是否有CSP
+        if grep -q "Content-Security-Policy" index.html; then
+          echo "✅ CSP found"
+          
+          # 检查关键指令
+          if grep -q "default-src 'self'" index.html; then
+            echo "✅ default-src 'self' configured"
+          fi
+          
+          if grep -q "frame-ancestors 'none'" index.html; then
+            echo "✅ frame-ancestors 'none' configured"
+          fi
+          
+          if grep -q "upgrade-insecure-requests" index.html; then
+            echo "✅ upgrade-insecure-requests enabled"
+          fi
+        else
+          echo "❌ No CSP found!"
+          exit 1
+        fi
+
+  dependency-check:
+    name: Dependency Security Check
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Check for external dependencies
+      run: |
+        echo "🔍 Checking for external dependencies..."
+        
+        # 检查是否有外部脚本引用
+        if grep -E '<script[^>]+src="http' index.html; then
+          echo "⚠️ External script found - check if necessary"
+        fi
+        
+        # 检查是否有外部样式引用
+        if grep -E '<link[^>]+href="http' index.html; then
+          echo "⚠️ External stylesheet found - check if necessary"
+        fi
+        
+        echo "✅ Dependency check complete"
+
+  secrets-scan:
+    name: Secrets Scanning
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    
+    - name: TruffleHog Scan
+      uses: trufflesecurity/trufflehog@main
+      with:
+        path: ./
+        base: ${{ github.event.repository.default_branch }}
+        head: HEAD
+    
+    - name: Check for common secrets patterns
+      run: |
+        echo "🔍 Scanning for secrets..."
+        
+        # 检查常见的密钥模式
+        patterns=(
+          "api[_-]?key"
+          "password"
+          "secret"
+          "token"
+          "private[_-]?key"
+        )
+        
+        for pattern in "${patterns[@]}"; do
+          if grep -ri "$pattern" --exclude-dir=.git --exclude="*.md" .; then
+            echo "⚠️ Found potential secret: $pattern"
+          fi
+        done
+
+  html-validation:
+    name: HTML Validation
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: HTML5 Validator
+      uses: Cyb3r-Jak3/html5validator-action@v7.1.1
+      with:
+        root: ./
+    
+    - name: Check HTML structure
+      run: |
+        echo "🔍 Validating HTML structure..."
+        
+        # 检查是否有DOCTYPE
+        if ! grep -q "<!DOCTYPE html>" index.html; then
+          echo "❌ Missing DOCTYPE"
+          exit 1
+        fi
+        
+        # 检查是否有lang属性
+        if ! grep -q '<html lang=' index.html; then
+          echo "❌ Missing lang attribute"
+          exit 1
+        fi
+        
+        echo "✅ HTML structure valid"
+
+  link-check:
+    name: Check Broken Links
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Link Checker
+      uses: lycheeverse/lychee-action@v1.8.0
+      with:
+        args: --verbose --no-progress './**/*.html' './**/*.md'
+        fail: true
+
+  security-scorecard:
+    name: Security Scorecard
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+      id-token: write
+    
+    steps:
+    - name: "Checkout code"
+      uses: actions/checkout@v3
+      with:
+        persist-credentials: false
+    
+    - name: "Run analysis"
+      uses: ossf/scorecard-action@v2.3.1
+      with:
+        results_file: results.sarif
+        results_format: sarif
+        publish_results: true
+
+  notify-security-team:
+    name: Notify Security Team
+    runs-on: ubuntu-latest
+    needs: [security-headers-check, csp-validation, secrets-scan]
+    if: failure()
+    
+    steps:
+    - name: Send notification
+      run: |
+        echo "🚨 Security scan failed!"
+        echo "Please review the security scan results immediately."
+        # 在实际生产环境中，这里可以发送邮件或Slack通知
+

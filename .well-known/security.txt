@@ -1,0 +1,21 @@
+Contact: mailto:lik699386@gmail.com
+Expires: 2026-12-31T23:59:59.000Z
+Encryption: https://lik699386-ctrl.github.io/cyberone-website/pgp-key.txt
+Preferred-Languages: en, zh
+Canonical: https://lik699386-ctrl.github.io/cyberone-website/.well-known/security.txt
+Policy: https://lik699386-ctrl.github.io/cyberone-website/SECURITY.md
+Acknowledgments: https://lik699386-ctrl.github.io/cyberone-website/SECURITY.md#acknowledgments
+
+# Security Policy
+# 
+# This file is in compliance with RFC 9116 (https://www.rfc-editor.org/rfc/rfc9116.html)
+# Placed in .well-known directory as per standard
+# 
+# If you discover a security vulnerability in this website, please report it to us.
+# We take all security bugs seriously and will respond promptly.
+#
+# Please DO NOT file a public issue. Instead, send details to the contact above.
+#
+# Expected Response Time: 24-48 hours
+# Vulnerability Disclosure: Coordinated disclosure after fix
+
