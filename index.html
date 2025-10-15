@@ -509,17 +509,18 @@
                 color: #FFFFFF !important;
             }
             
-            /* 菜单打开时，导航按钮融入黑色背景，且保持可见性 */
+            /* 菜单打开时，导航按钮取消背景形状，只保留白色文字 */
             .glass-nav:has(.dropdown-menu:hover) .nav-items a,
             .glass-nav:has(.dropdown-menu.active) .nav-items a {
-                background: rgba(255, 255, 255, 0.1) !important;
+                background: transparent !important;
                 color: #FFFFFF !important;
                 position: relative;
                 z-index: 2100;
+                box-shadow: none !important;
             }
             
             .glass-nav:has(.dropdown-menu:hover) .nav-items a:hover {
-                background: rgba(255, 255, 255, 0.15) !important;
+                background: transparent !important;
             }
             
             /* 确保Logo也在上层 */
@@ -543,7 +544,7 @@
         @media (hover: hover) and (pointer: fine) {
             .nav-items li:hover .dropdown-menu,
             .dropdown-menu:hover {
-                max-height: 400px;
+                max-height: 80vh;
                 opacity: 1;
                 visibility: visible;
                 pointer-events: auto;
@@ -580,24 +581,24 @@
             background: rgba(0, 0, 0, 0.95);
             backdrop-filter: saturate(180%) blur(20px);
             -webkit-backdrop-filter: saturate(180%) blur(20px);
-            padding: clamp(100px, 12vh, 140px) clamp(5%, 10vw, 20%) clamp(80px, 10vh, 120px);
+            padding: clamp(100px, 12vh, 140px) clamp(5%, 10vw, 20%) clamp(60px, 8vh, 100px);
             border-radius: 0;
             box-shadow: 0 50px 100px rgba(0, 0, 0, 0.6);
-            max-height: 800px;
+            max-height: none;
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
             display: flex;
             flex-direction: column;
-            gap: 60px;
+            gap: 40px;
         }
         
         /* 平台分区 */
         .platform-section {
             display: grid;
-            grid-template-columns: 180px 1fr;
-            gap: 32px;
+            grid-template-columns: 150px 1fr;
+            gap: 24px;
             align-items: center;
-            padding: 12px 0;
+            padding: 10px 0;
             cursor: pointer;
             border-radius: 8px;
             transition: background 0.2s ease;
@@ -609,7 +610,7 @@
         
         /* 左侧平台标题 */
         .platform-title {
-            font-size: clamp(24px, 2.5vw, 32px);
+            font-size: clamp(20px, 2vw, 24px);
             font-weight: 600;
             color: #FFFFFF;
             margin: 0;
@@ -620,7 +621,7 @@
         
         /* 语言信息（右侧副标题） */
         .language-info {
-            font-size: clamp(16px, 1.5vw, 19px);
+            font-size: clamp(14px, 1.3vw, 16px);
             color: rgba(255, 255, 255, 0.6);
             line-height: 1.4;
             text-align: left;
@@ -658,7 +659,7 @@
         }
         
         .product-name {
-            font-size: clamp(18px, 1.8vw, 21px);
+            font-size: clamp(16px, 1.5vw, 18px);
             font-weight: 600;
             color: #FFFFFF;
             margin-bottom: 6px;
@@ -666,7 +667,7 @@
         }
         
         .product-desc {
-            font-size: clamp(14px, 1.3vw, 16px);
+            font-size: clamp(13px, 1.2vw, 14px);
             color: rgba(255, 255, 255, 0.6);
             line-height: 1.4;
         }
