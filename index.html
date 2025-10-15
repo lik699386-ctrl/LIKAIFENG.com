@@ -508,14 +508,14 @@
             .dropdown-menu {
                 position: fixed;
                 top: 50%;
-                bottom: auto;
-                left: 50%;
-                right: auto;
-                min-width: calc(100vw - 40px);
-                max-width: calc(100vw - 40px);
+                left: 20px;
+                right: 20px;
+                width: auto;
+                min-width: auto;
+                max-width: none;
                 margin: 0;
                 padding: 0;
-                transform: translate(-50%, -50%) scale(0.95);
+                transform: translateY(-50%) scale(0.95);
             }
             
             .dropdown-content {
@@ -528,7 +528,7 @@
             }
             
             .dropdown-menu.active {
-                transform: translate(-50%, -50%) scale(1);
+                transform: translateY(-50%) scale(1);
             }
             
             .dropdown-item {
@@ -551,8 +551,8 @@
         /* 超小屏幕 */
         @media (max-width: 480px) {
             .dropdown-menu {
-                min-width: calc(100vw - 32px);
-                max-width: calc(100vw - 32px);
+                left: 16px;
+                right: 16px;
             }
             
             .dropdown-content {
