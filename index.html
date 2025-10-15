@@ -359,63 +359,85 @@
             transform: translateY(-2px);
         }
         
-        /* 下拉菜单容器 */
+        /* 下拉菜单容器 - 苹果风格 */
         .dropdown-menu {
-            position: absolute;
-            top: calc(100% + 12px);
-            left: 50%;
-            background: rgba(17, 18, 20, 0.98);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 18px;
-            padding: 16px;
-            min-width: 240px;
+            position: fixed;
+            top: 48px;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.92);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            padding: 48px 0;
             opacity: 0;
             visibility: hidden;
             pointer-events: none;
-            transform: translateX(-50%) translateY(-10px);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-            z-index: 2001;
+            transform: translateY(-20px);
+            transition: all 0.35s cubic-bezier(0.28, 0.11, 0.32, 1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            z-index: 1999;
         }
         
         .nav-items li:hover .dropdown-menu,
-        .dropdown-menu:hover {
+        .nav-items li .dropdown-menu:hover {
             opacity: 1;
             visibility: visible;
             pointer-events: auto;
-            transform: translateX(-50%) translateY(0);
+            transform: translateY(0);
         }
         
-        /* 下拉菜单项 */
+        /* 下拉菜单内容容器 */
+        .dropdown-content {
+            max-width: 1024px;
+            margin: 0 auto;
+            padding: 0 40px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 60px;
+        }
+        
+        /* 下拉菜单列 */
+        .dropdown-column {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .dropdown-column-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 16px;
+        }
+        
+        /* 下拉菜单链接 */
         .dropdown-item {
             display: block;
-            padding: 14px 20px;
-            color: #FFFFFF;
+            padding: 8px 0;
+            color: #E8E8ED;
             text-decoration: none;
-            border-radius: 10px;
-            transition: all 0.2s ease;
-            font-size: 15px;
-            font-weight: 400;
+            transition: color 0.2s ease;
+            font-size: 24px;
+            font-weight: 600;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
             position: relative;
         }
         
         .dropdown-item:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-        
-        .dropdown-item-title {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 2px;
             color: #FFFFFF;
         }
         
-        .dropdown-item-subtitle {
-            display: block;
-            font-size: 13px;
-            color: rgba(255, 255, 255, 0.6);
+        .dropdown-item-small {
+            font-size: 14px;
             font-weight: 400;
+            padding: 6px 0;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .dropdown-item-small:hover {
+            color: #FFFFFF;
         }
         
         .dropdown-item.disabled {
@@ -424,23 +446,26 @@
         }
         
         .dropdown-item.disabled:hover {
-            background: transparent;
+            color: #E8E8ED;
         }
         
-        .dropdown-item.available::after {
-            content: '✓';
+        .dropdown-item.available::before {
+            content: '●';
             position: absolute;
-            right: 20px;
-            top: 50%;
-            transform: translateY(-50%);
+            left: -16px;
             color: #34C759;
-            font-weight: 600;
+            font-size: 8px;
         }
         
-        .dropdown-divider {
-            height: 1px;
-            background: rgba(255, 255, 255, 0.1);
-            margin: 8px 0;
+        .dropdown-item-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 500;
+            margin-left: 8px;
+            color: rgba(255, 255, 255, 0.8);
         }
         
         /* Products 链接添加下拉箭头 */
@@ -723,6 +748,19 @@
             }
         }
         
+        /* 下拉菜单响应式 */
+        @media (max-width: 1024px) {
+            .dropdown-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+                padding: 0 24px;
+            }
+            
+            .dropdown-menu {
+                padding: 32px 0;
+            }
+        }
+        
         /* ========================================
            Accessibility - 可达性
            ======================================== */
@@ -784,20 +822,32 @@
                 <li role="none">
                     <a href="#products" role="menuitem">Products</a>
                     <div class="dropdown-menu">
-                        <a href="#windows" class="dropdown-item available">
-                            <span class="dropdown-item-title">Windows</span>
-                            <span class="dropdown-item-subtitle">Umail - Email Security Tool</span>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#ios" class="dropdown-item disabled">
-                            <span class="dropdown-item-title">iOS</span>
-                            <span class="dropdown-item-subtitle">Coming Soon</span>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#android" class="dropdown-item disabled">
-                            <span class="dropdown-item-title">Android</span>
-                            <span class="dropdown-item-subtitle">Coming Soon</span>
-                        </a>
+                        <div class="dropdown-content">
+                            <!-- 第一列：平台 -->
+                            <div class="dropdown-column">
+                                <div class="dropdown-column-title">Platform</div>
+                                <a href="#windows" class="dropdown-item available">Windows<span class="dropdown-item-badge">Available</span></a>
+                                <a href="#ios" class="dropdown-item disabled">iOS<span class="dropdown-item-badge">Coming Soon</span></a>
+                                <a href="#android" class="dropdown-item disabled">Android<span class="dropdown-item-badge">Coming Soon</span></a>
+                            </div>
+                            
+                            <!-- 第二列：Windows 应用 -->
+                            <div class="dropdown-column">
+                                <div class="dropdown-column-title">Windows Apps</div>
+                                <a href="#umail" class="dropdown-item">Umail</a>
+                                <a href="#umail" class="dropdown-item-small">Email Security Tool</a>
+                                <a href="#umail" class="dropdown-item-small">Protect your inbox from threats</a>
+                            </div>
+                            
+                            <!-- 第三列：更多信息 -->
+                            <div class="dropdown-column">
+                                <div class="dropdown-column-title">More from CyberOne</div>
+                                <a href="#support" class="dropdown-item-small">Product Support</a>
+                                <a href="#docs" class="dropdown-item-small">Documentation</a>
+                                <a href="#releases" class="dropdown-item-small">Release Notes</a>
+                                <a href="#roadmap" class="dropdown-item-small">Development Roadmap</a>
+                            </div>
+                        </div>
                     </div>
                 </li>
                 <li role="none"><a href="#why" role="menuitem">Why CyberOne</a></li>
