@@ -1631,6 +1631,39 @@
         }
 
         // ========================================
+        // 下拉菜单内按钮切换功能
+        // ========================================
+        document.addEventListener('click', function(e) {
+            // 点击下拉菜单内的语言按钮
+            if (e.target.classList.contains('language-btn') && e.target.closest('.dropdown-menu')) {
+                e.preventDefault();
+                
+                // 切换到语言菜单
+                const languageDropdown = document.querySelector('.language-dropdown');
+                const productsDropdown = document.querySelector('.products-dropdown');
+                
+                if (languageDropdown && productsDropdown) {
+                    productsDropdown.classList.remove('active');
+                    languageDropdown.classList.add('active');
+                }
+            }
+            
+            // 点击下拉菜单内的产品按钮
+            if (e.target.classList.contains('products-btn') && e.target.closest('.dropdown-menu')) {
+                e.preventDefault();
+                
+                // 切换到产品菜单
+                const languageDropdown = document.querySelector('.language-dropdown');
+                const productsDropdown = document.querySelector('.products-dropdown');
+                
+                if (languageDropdown && productsDropdown) {
+                    languageDropdown.classList.remove('active');
+                    productsDropdown.classList.add('active');
+                }
+            }
+        });
+
+        // ========================================
         // 减少动画偏好检测
         // ========================================
         const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
