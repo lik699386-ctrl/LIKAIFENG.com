@@ -14,3 +14,4 @@ https://github.com/lik699386-ctrl/cyberone-website/releases/download/v1.0.0/Cybe
 中国大陆加速下载（使用镜像）：
 https://ghproxy.com/https://github.com/lik699386-ctrl/cyberone-website/releases/download/v1.0.0/CyberOne.exe
 
+
