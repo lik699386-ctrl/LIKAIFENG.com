@@ -506,16 +506,18 @@
         /* 移动端优化 */
         @media (max-width: 768px) {
             .dropdown-menu {
-                position: fixed;
-                top: 50%;
-                left: 20px;
-                right: 20px;
-                width: auto;
-                min-width: auto;
-                max-width: none;
-                margin: 0;
-                padding: 0;
-                transform: translateY(-50%) scale(0.95);
+                position: fixed !important;
+                top: 50% !important;
+                left: 20px !important;
+                right: 20px !important;
+                width: auto !important;
+                min-width: 0 !important;
+                max-width: none !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                padding-top: 0 !important;
+                transform: translateY(-50%) scale(0.95) !important;
+                transform-origin: center center !important;
             }
             
             .dropdown-content {
@@ -528,7 +530,7 @@
             }
             
             .dropdown-menu.active {
-                transform: translateY(-50%) scale(1);
+                transform: translateY(-50%) scale(1) !important;
             }
             
             .dropdown-item {
@@ -551,8 +553,8 @@
         /* 超小屏幕 */
         @media (max-width: 480px) {
             .dropdown-menu {
-                left: 16px;
-                right: 16px;
+                left: 16px !important;
+                right: 16px !important;
             }
             
             .dropdown-content {
