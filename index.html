@@ -3,11 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    
+    <!-- ========================================
+         ENTERPRISE-GRADE SECURITY HEADERS
+         Apple.com级别安全防护
+         ======================================== -->
+    
+    <!-- Content Security Policy - 最严格的内容安全策略 -->
+    <meta http-equiv="Content-Security-Policy" content="
+        default-src 'self';
+        script-src 'self' 'unsafe-inline';
+        style-src 'self' 'unsafe-inline';
+        img-src 'self' data: https:;
+        font-src 'self' data:;
+        connect-src 'self';
+        frame-ancestors 'none';
+        base-uri 'self';
+        form-action 'self';
+        upgrade-insecure-requests;
+        block-all-mixed-content;
+    ">
+    
+    <!-- X-Frame-Options - 防止点击劫持攻击 -->
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    
+    <!-- X-Content-Type-Options - 防止MIME类型嗅探 -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    
+    <!-- X-XSS-Protection - XSS过滤器（传统浏览器兼容） -->
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+    
+    <!-- Referrer Policy - 严格的引用来源策略 -->
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    
+    <!-- Permissions Policy - 限制浏览器功能访问 -->
+    <meta http-equiv="Permissions-Policy" content="
+        accelerometer=(),
+        ambient-light-sensor=(),
+        autoplay=(),
+        battery=(),
+        camera=(),
+        cross-origin-isolated=(),
+        display-capture=(),
+        document-domain=(),
+        encrypted-media=(),
+        execution-while-not-rendered=(),
+        execution-while-out-of-viewport=(),
+        fullscreen=(self),
+        geolocation=(),
+        gyroscope=(),
+        keyboard-map=(),
+        magnetometer=(),
+        microphone=(),
+        midi=(),
+        navigation-override=(),
+        payment=(),
+        picture-in-picture=(),
+        publickey-credentials-get=(),
+        screen-wake-lock=(),
+        sync-xhr=(),
+        usb=(),
+        web-share=(),
+        xr-spatial-tracking=()
+    ">
+    
+    <!-- Expect-CT - Certificate Transparency -->
+    <meta http-equiv="Expect-CT" content="max-age=86400, enforce">
+    
+    <!-- Cross-Origin Policies - 跨域隔离 -->
+    <meta http-equiv="Cross-Origin-Embedder-Policy" content="require-corp">
+    <meta http-equiv="Cross-Origin-Opener-Policy" content="same-origin">
+    <meta http-equiv="Cross-Origin-Resource-Policy" content="same-origin">
+    
+    <!-- Cache Control - 缓存控制（生产环境可调整） -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate, private">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
+    
+    <!-- DNS Prefetch Control - 控制DNS预取 -->
+    <meta http-equiv="x-dns-prefetch-control" content="off">
+    
     <title>LIKAIFENG.Net - Artwork Made Especially For You</title>
-    <!-- Version: 3.0.0 - Apple-Style Full-Width Dropdown -->
+    <!-- Version: 3.0.2 - Enterprise Security Hardened -->
     
     <style>
         /* ========================================

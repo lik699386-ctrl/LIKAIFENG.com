@@ -1,0 +1,30 @@
+# robots.txt for LIKAIFENG.Net
+# Security-hardened configuration
+
+User-agent: *
+Allow: /
+Disallow: /.git/
+Disallow: /.*
+Disallow: /*.md$
+Disallow: /security.txt
+Disallow: /SECURITY.md
+
+# Sitemap
+Sitemap: https://lik699386-ctrl.github.io/cyberone-website/sitemap.xml
+
+# Security: Prevent access to sensitive files
+User-agent: *
+Disallow: /.env
+Disallow: /.DS_Store
+Disallow: /Thumbs.db
+Disallow: /*.log
+Disallow: /*.bak
+Disallow: /*.swp
+Disallow: /*~
+
+# Rate limiting hint for crawlers
+Crawl-delay: 1
+
+# Contact
+# For security issues, see /security.txt or /SECURITY.md
+
