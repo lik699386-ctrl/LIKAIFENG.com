@@ -586,34 +586,28 @@
             display: none;
         }
         
-        /* 移动端优化 - v2.4.4 iOS动画版 */
+        /* 移动端优化 - 和桌面端一样的全宽样式 */
         @media screen and (max-width: 768px) {
             .dropdown-menu {
                 position: fixed !important;
-                top: 50% !important;
-                left: 5vw !important;
-                right: 5vw !important;
-                width: 90vw !important;
-                min-width: 90vw !important;
-                max-width: 90vw !important;
+                top: 0 !important;
+                left: 0 !important;
+                right: 0 !important;
+                width: 100% !important;
+                min-width: 100% !important;
+                max-width: 100% !important;
                 margin: 0 !important;
                 padding: 0 !important;
-                padding-top: 0 !important;
-                transform: translateY(-50%) scale(0.8) !important;
-                transform-origin: center center !important;
+                transform: none !important;
                 box-sizing: border-box !important;
-                opacity: 0 !important;
-                transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1),
-                            transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
-                will-change: transform, opacity !important;
             }
             
             .dropdown-content {
-                border-radius: 10px;
-                padding: 4px;
-                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
-                max-height: 40vh;
-                overflow-y: auto;
+                border-radius: 0;
+                padding: 80px 20px 40px;
+                box-shadow: none;
+                max-height: none;
+                overflow-y: visible;
                 -webkit-overflow-scrolling: touch;
                 width: 100%;
                 box-sizing: border-box;
@@ -622,8 +616,9 @@
             }
             
             .dropdown-menu.active {
-                transform: translateY(-50%) scale(1) !important;
-                opacity: 1 !important;
+                max-height: 400px;
+                opacity: 1;
+                visibility: visible;
             }
             
             .dropdown-item {
@@ -653,17 +648,8 @@
         
         /* 超小屏幕 */
         @media screen and (max-width: 480px) {
-            .dropdown-menu {
-                left: 4vw !important;
-                right: 4vw !important;
-                width: 92vw !important;
-                min-width: 92vw !important;
-                max-width: 92vw !important;
-            }
-            
             .dropdown-content {
-                padding: 3px;
-                max-height: 35vh;
+                padding: 70px 16px 30px;
             }
             
             .dropdown-item {
@@ -689,22 +675,9 @@
             }
         }
         
-        /* Products 链接添加下拉箭头 */
+        /* Products 链接不再显示下拉箭头 */
         .nav-items li:has(.dropdown-menu) > a::after {
-            content: '';
-            display: inline-block;
-            width: 0;
-            height: 0;
-            border-left: 4px solid transparent;
-            border-right: 4px solid transparent;
-            border-top: 5px solid currentColor;
-            margin-left: 6px;
-            opacity: 0.7;
-            transition: transform 0.2s ease;
-        }
-        
-        .nav-items li:hover > a::after {
-            transform: rotate(180deg);
+            display: none;
         }
         
         /* ========================================
@@ -902,8 +875,9 @@
             }
             
             .nav-container {
-                flex-direction: column;
+                flex-direction: row;
                 align-items: center;
+                justify-content: space-between;
                 padding: 20px 4% 12px;
                 gap: 16px;
             }
@@ -911,21 +885,18 @@
             .nav-logo {
                 margin-right: 0;
                 font-size: 22px;
-                font-weight: 340;  /* 和Artwork一样细 */
+                font-weight: 340;
                 color: #000000;
                 text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
-                order: 2;  /* Logo移到下面 */
+                order: 1;  /* Logo在左边 */
             }
             
             .nav-items {
-                order: 1;  /* Products按钮移到上面 */
-            }
-            
-            .nav-items {
-                flex-wrap: wrap;
-                justify-content: center;
+                order: 2;  /* Products按钮在右边 */
+                flex-wrap: nowrap;
+                justify-content: flex-end;
                 gap: 8px;
-                width: 100%;
+                width: auto;
             }
             
             .nav-items a {
