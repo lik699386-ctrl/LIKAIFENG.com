@@ -1367,6 +1367,72 @@
         }
         
         /* ========================================
+           光标控制 - 屏蔽不必要的光标
+           ======================================== */
+        
+        /* 全局禁用文本光标，只在指定元素中启用 */
+        * {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            cursor: default !important;
+        }
+        
+        /* 允许在真正的输入框和搜索框中显示光标和选择文本 */
+        input[type="text"],
+        input[type="search"], 
+        input[type="email"],
+        input[type="password"],
+        input[type="tel"],
+        input[type="url"],
+        textarea,
+        [contenteditable="true"],
+        .search-input,
+        .input-field {
+            -webkit-user-select: text !important;
+            -moz-user-select: text !important;
+            -ms-user-select: text !important;
+            user-select: text !important;
+            cursor: text !important;
+        }
+        
+        /* 确保可交互元素有正确的光标样式 */
+        a, 
+        button,
+        [role="button"],
+        .btn-primary,
+        .btn-ghost,
+        .nav-items a,
+        .dropdown-nav-btn,
+        .platform-section {
+            cursor: pointer !important;
+        }
+        
+        /* 禁用所有元素的文本选择和拖拽 */
+        * {
+            -webkit-touch-callout: none;
+            -webkit-user-drag: none;
+            -khtml-user-drag: none;
+            -moz-user-drag: none;
+            -ms-user-drag: none;
+            user-drag: none;
+        }
+        
+        /* 特殊处理：确保没有元素意外获得焦点时显示光标 */
+        *:focus {
+            outline: none;
+        }
+        
+        /* 只有真正的输入元素获得焦点时才显示焦点样式 */
+        input:focus,
+        textarea:focus,
+        [contenteditable="true"]:focus {
+            outline: 2px solid #2A6BFF;
+            outline-offset: 1px;
+        }
+
+        /* ========================================
            Accessibility - 可达性
            ======================================== */
         /* 焦点环覆盖所有可交互元素 */
