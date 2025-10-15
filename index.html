@@ -3,7 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>LIKAIFENG.Net - Stay Secure. Be Unstoppable.</title>
+    <!-- Version: 2.4.1 - Mobile Dropdown Fix -->
     
     <style>
         /* ========================================
@@ -503,21 +507,22 @@
             margin: 6px 8px;
         }
         
-        /* 移动端优化 */
-        @media (max-width: 768px) {
+        /* 移动端优化 - v2.4.1 */
+        @media screen and (max-width: 768px) {
             .dropdown-menu {
                 position: fixed !important;
                 top: 50% !important;
-                left: 20px !important;
-                right: 20px !important;
-                width: auto !important;
-                min-width: 0 !important;
-                max-width: none !important;
+                left: 5vw !important;
+                right: 5vw !important;
+                width: 90vw !important;
+                min-width: 90vw !important;
+                max-width: 90vw !important;
                 margin: 0 !important;
                 padding: 0 !important;
                 padding-top: 0 !important;
                 transform: translateY(-50%) scale(0.95) !important;
                 transform-origin: center center !important;
+                box-sizing: border-box !important;
             }
             
             .dropdown-content {
@@ -527,6 +532,8 @@
                 max-height: 70vh;
                 overflow-y: auto;
                 -webkit-overflow-scrolling: touch;
+                width: 100%;
+                box-sizing: border-box;
             }
             
             .dropdown-menu.active {
@@ -537,6 +544,7 @@
                 padding: 16px 20px;
                 min-height: 56px;
                 border-radius: 12px;
+                box-sizing: border-box;
             }
             
             .dropdown-item-title {
@@ -551,10 +559,13 @@
         }
         
         /* 超小屏幕 */
-        @media (max-width: 480px) {
+        @media screen and (max-width: 480px) {
             .dropdown-menu {
-                left: 16px !important;
-                right: 16px !important;
+                left: 4vw !important;
+                right: 4vw !important;
+                width: 92vw !important;
+                min-width: 92vw !important;
+                max-width: 92vw !important;
             }
             
             .dropdown-content {
