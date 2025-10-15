@@ -411,6 +411,25 @@
             transform: translateX(-50%) translateY(0) scale(1);
         }
         
+        /* 移动端菜单背景遮罩 */
+        .dropdown-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            opacity: 0;
+            transition: opacity 0.25s ease;
+        }
+        
+        .dropdown-overlay.active {
+            display: block;
+            opacity: 1;
+        }
+        
         /* 下拉菜单项 */
         .dropdown-item {
             display: flex;
@@ -488,47 +507,57 @@
         @media (max-width: 768px) {
             .dropdown-menu {
                 position: fixed;
-                top: auto;
-                bottom: 80px;
+                top: 50%;
+                bottom: auto;
                 left: 50%;
                 right: auto;
-                min-width: calc(100vw - 32px);
-                max-width: calc(100vw - 32px);
+                min-width: calc(100vw - 40px);
+                max-width: calc(100vw - 40px);
                 margin: 0;
                 padding: 0;
+                transform: translate(-50%, -50%) scale(0.95);
             }
             
             .dropdown-content {
-                border-radius: 16px;
-                padding: 12px;
-                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+                border-radius: 18px;
+                padding: 16px;
+                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+                max-height: 70vh;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
             }
             
             .dropdown-menu.active {
-                transform: translateX(-50%) translateY(0) scale(1);
+                transform: translate(-50%, -50%) scale(1);
             }
             
             .dropdown-item {
-                padding: 14px 20px;
-                min-height: 52px;
-                border-radius: 10px;
+                padding: 16px 20px;
+                min-height: 56px;
+                border-radius: 12px;
             }
             
             .dropdown-item-title {
-                font-size: 16px;
+                font-size: 17px;
+                font-weight: 500;
             }
             
             .dropdown-item-subtitle {
                 font-size: 14px;
+                margin-top: 2px;
             }
         }
         
         /* 超小屏幕 */
         @media (max-width: 480px) {
             .dropdown-menu {
-                min-width: calc(100vw - 24px);
-                max-width: calc(100vw - 24px);
-                bottom: 60px;
+                min-width: calc(100vw - 32px);
+                max-width: calc(100vw - 32px);
+            }
+            
+            .dropdown-content {
+                padding: 14px;
+                max-height: 65vh;
             }
         }
         
@@ -935,6 +964,9 @@
     </style>
 </head>
 <body>
+    <!-- 移动端下拉菜单背景遮罩 -->
+    <div class="dropdown-overlay" id="dropdownOverlay"></div>
+    
     <!-- 背景3D场景 -->
     <div class="bg-scene" aria-hidden="true">
         <div class="bg-orb"></div>
@@ -1049,6 +1081,13 @@
         if (isMobile) {
             const dropdownTriggers = document.querySelectorAll('.nav-items li:has(.dropdown-menu) > a');
             const dropdownMenus = document.querySelectorAll('.dropdown-menu');
+            const overlay = document.getElementById('dropdownOverlay');
+            
+            function closeAllDropdowns() {
+                dropdownMenus.forEach(menu => menu.classList.remove('active'));
+                overlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
             
             dropdownTriggers.forEach(trigger => {
                 trigger.addEventListener('click', function(e) {
@@ -1056,28 +1095,25 @@
                     const dropdown = this.nextElementSibling;
                     const isActive = dropdown.classList.contains('active');
                     
-                    // 关闭所有其他下拉菜单
-                    dropdownMenus.forEach(menu => menu.classList.remove('active'));
+                    // 关闭所有菜单
+                    closeAllDropdowns();
                     
-                    // 切换当前菜单
+                    // 如果之前是关闭的，打开当前菜单
                     if (!isActive) {
                         dropdown.classList.add('active');
+                        overlay.classList.add('active');
+                        document.body.style.overflow = 'hidden'; // 防止背景滚动
                     }
                 });
             });
             
-            // 点击外部关闭下拉菜单
-            document.addEventListener('click', function(e) {
-                const isDropdownClick = e.target.closest('.nav-items li:has(.dropdown-menu)');
-                if (!isDropdownClick) {
-                    dropdownMenus.forEach(menu => menu.classList.remove('active'));
-                }
-            });
+            // 点击遮罩关闭菜单
+            overlay.addEventListener('click', closeAllDropdowns);
             
             // 点击菜单项后关闭
             document.querySelectorAll('.dropdown-item').forEach(item => {
                 item.addEventListener('click', function() {
-                    dropdownMenus.forEach(menu => menu.classList.remove('active'));
+                    closeAllDropdowns();
                 });
             });
         }
