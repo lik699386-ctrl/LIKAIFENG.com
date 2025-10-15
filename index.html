@@ -770,6 +770,60 @@
             display: none;
         }
         
+        /* 下拉菜单顶部导航栏 */
+        .dropdown-nav {
+            position: sticky;
+            top: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px clamp(5%, 8vw, 15%);
+            background: rgba(0, 0, 0, 0.98);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            z-index: 10;
+        }
+        
+        .dropdown-nav-logo {
+            font-size: 22px;
+            font-weight: 700;
+            color: #FFFFFF;
+            letter-spacing: -0.01em;
+        }
+        
+        .dropdown-nav-buttons {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .dropdown-nav-btn {
+            background: transparent;
+            border: none;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 15px;
+            font-weight: 500;
+            padding: 6px 14px;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            outline: none;
+        }
+        
+        .dropdown-nav-btn:hover {
+            color: #FFFFFF;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .dropdown-nav-btn.active {
+            color: #FFFFFF;
+            background: rgba(255, 255, 255, 0.2);
+            font-weight: 600;
+        }
+        
         /* 语言选项选中状态 */
         .language-item.active {
             background: rgba(255, 255, 255, 0.12);
