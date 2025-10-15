@@ -956,7 +956,7 @@
             .dropdown-content,
             .dropdown-content-apple {
                 border-radius: 0;
-                padding: 80px 20px 40px;
+                padding: 70px 24px 30px; /* 减小内边距，更紧凑 */
                 box-shadow: none;
                 max-height: none;
                 overflow-y: visible;
@@ -965,6 +965,7 @@
                 box-sizing: border-box;
                 backdrop-filter: saturate(180%) blur(20px);
                 -webkit-backdrop-filter: saturate(180%) blur(20px);
+                gap: 24px; /* 减小选项之间的间距 */
             }
             
             .dropdown-menu.active {
@@ -973,14 +974,20 @@
                 visibility: visible;
             }
             
-            /* 移动端Apple风格布局调整 */
+            /* 移动端Apple风格布局调整 - 保持与桌面端相同的布局，但缩小尺寸 */
             .platform-section {
-                grid-template-columns: 1fr;
-                gap: 24px;
+                grid-template-columns: 100px 1fr; /* 保持左右布局，缩小左侧宽度 */
+                gap: 16px;
+                padding: 8px 0;
             }
             
             .platform-title {
-                font-size: 32px;
+                font-size: clamp(16px, 4vw, 20px); /* 自适应，比桌面端小 */
+            }
+            
+            .language-info,
+            .product-info {
+                font-size: clamp(12px, 3vw, 14px) !important; /* 自适应副标题 */
             }
             
             .products-grid {
@@ -989,7 +996,7 @@
             }
             
             .product-card {
-                padding: 24px 20px;
+                padding: 20px 16px;
             }
             
             .dropdown-item {
@@ -1019,8 +1026,25 @@
         
         /* 超小屏幕 */
         @media screen and (max-width: 480px) {
-            .dropdown-content {
-                padding: 70px 16px 30px;
+            .dropdown-content,
+            .dropdown-content-apple {
+                padding: 65px 16px 25px; /* 进一步缩小内边距 */
+                gap: 16px; /* 减小间距 */
+            }
+            
+            .platform-section {
+                grid-template-columns: 80px 1fr; /* 进一步缩小左侧宽度 */
+                gap: 12px;
+                padding: 6px 0;
+            }
+            
+            .platform-title {
+                font-size: clamp(14px, 3.5vw, 18px) !important; /* 更小的标题 */
+            }
+            
+            .language-info,
+            .product-info {
+                font-size: clamp(11px, 2.8vw, 13px) !important; /* 更小的副标题 */
             }
             
             .dropdown-item {
