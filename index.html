@@ -500,44 +500,21 @@
             position: relative;
         }
         
-        /* 桌面端：hover任一菜单时Logo变白，按钮也融入黑色背景 */
+        /* 桌面端：hover任一菜单时隐藏原按钮和Logo */
         @media (hover: hover) and (pointer: fine) {
-            .glass-nav:has(.language-menu-item:hover .dropdown-menu) .nav-logo,
-            .glass-nav:has(.products-menu-item:hover .dropdown-menu) .nav-logo,
-            .glass-nav:has(.language-dropdown:hover) .nav-logo,
-            .glass-nav:has(.products-dropdown:hover) .nav-logo {
-                color: #FFFFFF !important;
-            }
-            
-            /* 菜单打开时，导航按钮取消背景形状，只保留白色文字 */
-            .glass-nav:has(.dropdown-menu:hover) .nav-items a,
-            .glass-nav:has(.dropdown-menu.active) .nav-items a {
-                background: transparent !important;
-                color: #FFFFFF !important;
-                position: relative;
-                z-index: 2100;
-                box-shadow: none !important;
-            }
-            
-            .glass-nav:has(.dropdown-menu:hover) .nav-items a:hover {
-                background: transparent !important;
-            }
-            
-            /* 确保Logo也在上层 */
-            .glass-nav:has(.dropdown-menu:hover) .nav-logo {
-                position: relative;
-                z-index: 2100;
+            /* 菜单打开时隐藏原导航元素 */
+            .glass-nav:has(.dropdown-menu:hover) .nav-logo,
+            .glass-nav:has(.dropdown-menu:hover) .nav-items {
+                opacity: 0;
+                pointer-events: none;
             }
         }
         
-        /* 移动端：任一菜单active时Logo变白，按钮也融入黑色背景 */
-        .glass-nav:has(.dropdown-menu.active) .nav-logo {
-            color: #FFFFFF !important;
-        }
-        
-        .glass-nav:has(.dropdown-menu.active) .nav-items a {
-            background: rgba(255, 255, 255, 0.1) !important;
-            color: #FFFFFF !important;
+        /* 移动端：任一菜单active时隐藏原导航元素 */
+        .glass-nav:has(.dropdown-menu.active) .nav-logo,
+        .glass-nav:has(.dropdown-menu.active) .nav-items {
+            opacity: 0;
+            pointer-events: none;
         }
         
         /* 桌面端：hover显示 */
@@ -1015,14 +992,18 @@
         .btn-primary {
             background: rgba(255, 255, 255, 0.95);
             color: var(--text-dark);
-            height: 60px;
+            height: 64px;
             box-shadow: 0 12px 30px -12px rgba(0,0,0,.15),
                         inset 0 0 0 1px rgba(0, 0, 0, 0.08);
-            padding-right: 24px;
-            padding-left: 36px;
+            padding: 0 40px;
             position: relative;
             transform: translateZ(0);
             will-change: transform, box-shadow;
+            font-size: 19px;
+            text-align: center;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .btn-primary:hover {
@@ -1338,6 +1319,14 @@
                 <li role="none" class="language-menu-item">
                     <a href="#language" role="menuitem" class="language-trigger" data-lang>语言</a>
                     <div class="dropdown-menu language-dropdown">
+                        <!-- 下拉菜单顶部导航栏复刻 -->
+                        <div class="dropdown-nav">
+                            <div class="dropdown-nav-logo">LIKAIFENG.Net</div>
+                            <div class="dropdown-nav-buttons">
+                                <button class="dropdown-nav-btn language-btn active" data-lang>语言</button>
+                                <button class="dropdown-nav-btn products-btn" data-products>产品</button>
+                            </div>
+                        </div>
                         <div class="dropdown-content-apple" id="languageDropdownContent">
                             <!-- 简体中文 -->
                             <div class="platform-section">
@@ -1380,6 +1369,14 @@
                 <li role="none" class="products-menu-item">
                     <a href="#products" role="menuitem" class="products-trigger" data-products>产品</a>
                     <div class="dropdown-menu products-dropdown">
+                        <!-- 下拉菜单顶部导航栏复刻 -->
+                        <div class="dropdown-nav">
+                            <div class="dropdown-nav-logo">LIKAIFENG.Net</div>
+                            <div class="dropdown-nav-buttons">
+                                <button class="dropdown-nav-btn language-btn" data-lang>语言</button>
+                                <button class="dropdown-nav-btn products-btn active" data-products>产品</button>
+                            </div>
+                        </div>
                         <div class="dropdown-content-apple" id="productsDropdownContent">
                             <!-- Windows Platform -->
                             <div class="platform-section">
