@@ -43,3 +43,4 @@ SECURITY.md text eol=lf
 # Git LFS (if needed in future)
 # *.psd filter=lfs diff=lfs merge=lfs -text
 
+

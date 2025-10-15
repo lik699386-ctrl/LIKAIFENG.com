@@ -18,3 +18,4 @@ Acknowledgments: https://lik699386-ctrl.github.io/cyberone-website/SECURITY.md#a
 # Expected Response Time: 24-48 hours
 # Vulnerability Disclosure: Coordinated disclosure after fix
 
+
