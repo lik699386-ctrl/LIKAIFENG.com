@@ -18,39 +18,39 @@
         */
 
         /* ========================================
-           设计令牌 - CSS 变量
+           设计令牌 - CSS 变量（更通透暖灰）
            ======================================== */
         :root {
-            /* 画布 & 玻璃（暖灰/棕调） */
-            --canvas: #EAE2D8;
-            --panel-bg: rgba(40, 34, 30, .62);
-            --panel-border: #FFFFFF1F;
-            --panel-shadow: 0 30px 80px -30px rgba(0, 0, 0, .45);
+            /* 画布 & 玻璃（更明亮通透的暖灰） */
+            --canvas: #EFE6DA;
+            --panel-bg: rgba(58, 53, 49, .50);
+            --panel-border: #FFFFFF26;
+            --panel-shadow: 0 40px 90px -30px rgba(0, 0, 0, .45);
             --panel-radius: 24px;
-            --panel-blur: 16px;
+            --panel-blur: 18px;
             
             /* 文本 */
             --txt: #F5F2EE;
             --txt-2: #D0C7BD;
-            --txt-invert: #1F2328;
+            --txt-invert: #2B2B2B;
 
-            /* 分类 Chips 渐变 */
-            --chip-flight-from: #FDB8C4;
-            --chip-flight-to: #F892A2;
-            --chip-vac-from: #CFF57A;
-            --chip-vac-to: #A7E063;
-            --chip-stays-from: #9FD3FF;
-            --chip-stays-to: #6BAEF5;
-            --chip-rest-from: #9CC7FF;
-            --chip-rest-to: #6DA7F0;
-            --chip-attr-from: #FFB7B1;
-            --chip-attr-to: #FF8AA2;
-            --chip-bus-from: #F5E39A;
-            --chip-bus-to: #E9D07B;
+            /* 分类 Chips 渐变（更亮更糖果） */
+            --chip-flight-from: #FDC2CF;
+            --chip-flight-to: #F999A8;
+            --chip-vac-from: #D5FA7F;
+            --chip-vac-to: #B0E468;
+            --chip-stays-from: #A9D9FF;
+            --chip-stays-to: #74B7F6;
+            --chip-rest-from: #A6CEFF;
+            --chip-rest-to: #70ACF2;
+            --chip-attr-from: #FFC0B9;
+            --chip-attr-to: #FF93A6;
+            --chip-bus-from: #F7EAA8;
+            --chip-bus-to: #EBD582;
 
-            /* 卡片 */
-            --card-bg: rgba(38, 34, 31, .60);
-            --card-border: #FFFFFF17;
+            /* 卡片（更轻的暗玻璃） */
+            --card-bg: rgba(46, 42, 39, .55);
+            --card-border: #FFFFFF24;
             --card-radius: 18px;
             --card-shadow: 0 18px 48px -18px rgba(0, 0, 0, .35);
 
@@ -62,19 +62,15 @@
 
             /* 排版与间距 */
             --container: 1200px;
-            --gutter: 24px;
-            --h1: clamp(28px, 5.2vw, 44px);
-            --body: clamp(14px, 1.35vw, 18px);
+            --gutter: 20px;
+            --h1: clamp(32px, 4.6vw, 48px);
+            --body: clamp(14px, 1.6vw, 18px);
             --meta: clamp(12px, 1.1vw, 16px);
-            --radius-xl: 28px;
-            --radius-lg: 24px;
-            --radius-md: 18px;
-            --radius-sm: 12px;
             --easing: cubic-bezier(.22, .61, .36, 1);
         }
 
         /* ========================================
-           基础重置与画布
+           基础重置与画布（温暖室内氛围）
            ======================================== */
         *, *::before, *::after {
             box-sizing: border-box;
@@ -85,24 +81,35 @@
         html {
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            background:
+                radial-gradient(60% 60% at 20% 30%, #F5EEE6 0%, #EFE6DA 45%, #E7DAC8 100%),
+                radial-gradient(70% 70% at 85% 15%, #F3E6D3 0%, transparent 60%),
+                var(--canvas);
         }
         
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-            background: var(--canvas);
             color: var(--txt);
             font-size: var(--body);
             line-height: 1.6;
             min-height: 100vh;
             overflow-x: hidden;
-            /* 淡噪点纹理 */
-            background-image: 
-                radial-gradient(circle at 20% 30%, rgba(255, 220, 180, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(200, 180, 160, 0.12) 0%, transparent 50%);
+            position: relative;
+        }
+
+        /* 细噪点纹理 */
+        body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            opacity: .08;
+            mix-blend-mode: multiply;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23n)" opacity=".4"/></svg>');
         }
 
         /* ========================================
-           顶部工具条（浅玻璃）
+           顶部工具条（浏览器风格）
            ======================================== */
         .toolbar {
             position: fixed;
@@ -112,44 +119,46 @@
             z-index: 100;
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 10px 18px;
-            background: rgba(255, 255, 255, 0.75);
+            gap: 10px;
+            padding: 8px 16px;
+            height: 44px;
+            background: #FFFFFFD9;
             backdrop-filter: blur(12px) saturate(1.1);
-            border: 1.5px solid rgba(0, 0, 0, 0.08);
+            border: 1px solid #00000012;
             border-radius: 999px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, .10);
         }
 
         .toolbar-btn {
             width: 32px;
             height: 32px;
             border: none;
-            background: var(--icon-bg);
+            background: transparent;
             border-radius: 50%;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             color: var(--txt-invert);
-            transition: all 0.25s var(--easing);
+            transition: all 0.15s var(--easing);
+            font-size: 16px;
         }
 
         .toolbar-btn:hover {
-            background: rgba(255, 255, 255, 0.25);
-            transform: scale(1.05);
+            background: rgba(0, 0, 0, 0.06);
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.08);
         }
 
         .toolbar-btn:focus-visible {
             outline: none;
-            box-shadow: 0 0 0 3px #2F6BFF55;
+            box-shadow: 0 0 0 3px #FFFFFF66;
         }
 
         .toolbar-address {
-            padding: 8px 16px;
-            background: rgba(255, 255, 255, 0.5);
+            padding: 6px 14px;
+            background: rgba(0, 0, 0, 0.04);
             border-radius: 999px;
-            font-size: var(--meta);
+            font-size: 14px;
             color: var(--txt-invert);
             min-width: 200px;
             text-align: center;
@@ -161,21 +170,35 @@
         .container {
             max-width: var(--container);
             margin: 0 auto;
-            padding: 120px var(--gutter) 60px;
+            padding: 100px 32px 60px;
         }
 
         /* ========================================
-           主毛玻璃面板
+           主毛玻璃面板（通透暖灰 + 内高光）
            ======================================== */
         .panel {
-            background: linear-gradient(180deg, var(--panel-bg), rgba(40, 34, 30, .54));
-            backdrop-filter: blur(var(--panel-blur)) saturate(1.05);
-            -webkit-backdrop-filter: blur(var(--panel-blur)) saturate(1.05);
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, .06), rgba(255, 255, 255, .02)),
+                linear-gradient(180deg, var(--panel-bg), rgba(58, 53, 49, .44));
             border: 1px solid var(--panel-border);
             border-radius: var(--panel-radius);
+            backdrop-filter: blur(var(--panel-blur)) saturate(1.05);
+            -webkit-backdrop-filter: blur(var(--panel-blur)) saturate(1.05);
             box-shadow: var(--panel-shadow);
-            padding: clamp(32px, 4vw, 48px);
+            padding: 32px;
             margin-bottom: var(--gutter);
+            position: relative;
+        }
+
+        .panel::before {
+            content: "";
+            position: absolute;
+            inset: 0 0 auto 0;
+            height: 10%;
+            border-radius: inherit;
+            pointer-events: none;
+            background: linear-gradient(180deg, #FFFFFFB0, #FFFFFF00);
+            opacity: .35;
         }
 
         /* 面板顶部 */
@@ -183,7 +206,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: clamp(32px, 3.5vw, 48px);
+            margin-bottom: clamp(28px, 3vw, 40px);
             gap: 16px;
         }
 
@@ -216,14 +239,14 @@
             outline: none;
             background: rgba(255, 255, 255, 0.15);
             border-color: #FFFFFF44;
-            box-shadow: 0 0 0 3px #FFFFFF33;
+            box-shadow: 0 0 0 3px #FFFFFF66;
         }
 
         .user-avatar {
             width: 48px;
             height: 48px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #6BAEF5, #9FD3FF);
+            background: linear-gradient(135deg, #74B7F6, #A9D9FF);
             border: 2px solid var(--icon-border);
             cursor: pointer;
             transition: all 0.25s var(--easing);
@@ -236,7 +259,7 @@
 
         .user-avatar:focus-visible {
             outline: none;
-            box-shadow: 0 0 0 3px #FFFFFF55;
+            box-shadow: 0 0 0 3px #FFFFFF66;
         }
 
         /* 主标题区 */
@@ -245,23 +268,25 @@
             font-weight: 800;
             letter-spacing: -0.01em;
             color: var(--txt);
-            margin-bottom: 12px;
-            line-height: 1.2;
+            margin-bottom: 10px;
+            line-height: 1.15;
         }
 
         .hero-subtitle {
             font-size: var(--body);
             color: var(--txt-2);
-            margin-bottom: clamp(28px, 3vw, 40px);
+            margin-bottom: clamp(24px, 2.8vw, 36px);
             line-height: 1.5;
         }
 
         /* ========================================
-           分类 Chips 横向滚动
+           分类 Chips（糖果风格 + 半悬浮溢出）
            ======================================== */
         .chips-container {
             position: relative;
-            margin-bottom: clamp(28px, 3vw, 40px);
+            margin-bottom: clamp(24px, 2.8vw, 36px);
+            overflow: visible;
+            padding-right: 60px;
         }
 
         .chips-scroll {
@@ -275,7 +300,7 @@
         }
 
         .chips-scroll::-webkit-scrollbar {
-            height: 6px;
+            height: 5px;
         }
 
         .chips-scroll::-webkit-scrollbar-track {
@@ -288,56 +313,57 @@
             border-radius: 3px;
         }
 
-        .chips-scroll::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 255, 255, 0.25);
-        }
-
         .chip {
-            height: var(--chip-h);
+            height: 44px;
             padding: 0 16px;
             border-radius: 999px;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             color: var(--txt-invert);
-            box-shadow: inset 0 -1px 0 rgba(255, 255, 255, .35), 0 6px 16px rgba(0, 0, 0, .18);
             border: 1px solid #00000020;
+            box-shadow: inset 0 -2px 0 rgba(255, 255, 255, .45), 0 8px 18px rgba(0, 0, 0, .16);
             cursor: pointer;
             white-space: nowrap;
             flex-shrink: 0;
-            transition: all 0.25s var(--easing);
-            font-size: var(--meta);
+            transition: transform .18s var(--easing), box-shadow .18s var(--easing);
+            font-size: 15px;
             font-weight: 600;
         }
 
         .chip:hover {
             transform: translateY(-4px);
-            box-shadow: inset 0 -2px 0 rgba(255, 255, 255, .45), 0 10px 24px rgba(0, 0, 0, .25);
+            box-shadow: inset 0 -3px 0 rgba(255, 255, 255, .5), 0 12px 24px rgba(0, 0, 0, .22);
         }
 
         .chip:focus-visible {
             outline: none;
-            box-shadow: 0 0 0 3px #FFFFFF55, inset 0 -1px 0 rgba(255, 255, 255, .35);
+            box-shadow: 0 0 0 3px #FFFFFF66, inset 0 -2px 0 rgba(255, 255, 255, .45);
         }
 
         .chip.active {
-            border-color: #00000035;
-            box-shadow: inset 0 -2px 0 rgba(255, 255, 255, .5), 0 8px 20px rgba(0, 0, 0, .3);
+            border-color: #00000030;
         }
 
-        .chip.flight { background: linear-gradient(180deg, var(--chip-flight-from), var(--chip-flight-to)); }
-        .chip.vac { background: linear-gradient(180deg, var(--chip-vac-from), var(--chip-vac-to)); }
-        .chip.stays { background: linear-gradient(180deg, var(--chip-stays-from), var(--chip-stays-to)); }
-        .chip.rest { background: linear-gradient(180deg, var(--chip-rest-from), var(--chip-rest-to)); }
-        .chip.attr { background: linear-gradient(180deg, var(--chip-attr-from), var(--chip-attr-to)); }
-        .chip.bus { background: linear-gradient(180deg, var(--chip-bus-from), var(--chip-bus-to)); }
+        .chip.flight { background: linear-gradient(180deg, #FDC2CF 0%, #F999A8 100%); }
+        .chip.vac { background: linear-gradient(180deg, #D5FA7F 0%, #B0E468 100%); }
+        .chip.stays { background: linear-gradient(180deg, #A9D9FF 0%, #74B7F6 100%); }
+        .chip.rest { background: linear-gradient(180deg, #A6CEFF 0%, #70ACF2 100%); }
+        .chip.attr { background: linear-gradient(180deg, #FFC0B9 0%, #FF93A6 100%); }
+        .chip.bus { 
+            background: linear-gradient(180deg, #F7EAA8 0%, #EBD582 100%);
+            transform: translateX(12px); /* 半悬浮溢出 */
+        }
 
         .chip-icon {
-            width: 24px;
-            height: 24px;
-            background: rgba(0, 0, 0, 0.15);
+            width: 26px;
+            height: 26px;
             border-radius: 50%;
+            background: rgba(255, 255, 255, .30);
+            border: 1px solid #FFFFFF66;
             flex-shrink: 0;
+            display: grid;
+            place-items: center;
         }
 
         .chip-info {
@@ -348,7 +374,8 @@
 
         .chip-count {
             font-size: 11px;
-            opacity: 0.75;
+            opacity: 0.7;
+            font-weight: 400;
         }
 
         /* ========================================
@@ -358,13 +385,13 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
             gap: 16px;
             flex-wrap: wrap;
         }
 
         .explore-title {
-            font-size: clamp(20px, 2.5vw, 28px);
+            font-size: clamp(22px, 2.5vw, 28px);
             font-weight: 700;
             color: var(--txt);
         }
@@ -375,34 +402,35 @@
             flex-wrap: wrap;
         }
 
+        /* 过滤 Pills（深玻璃气质） */
         .pill {
-            height: var(--pill-h);
+            height: 40px;
             padding: 0 14px;
             border-radius: 999px;
-            background: rgba(255, 255, 255, .08);
-            border: 1.5px solid var(--icon-border);
-            color: var(--txt);
+            background: rgba(255, 255, 255, .10);
+            color: #F5F2EE;
+            border: 1.5px solid #FFFFFF26;
             font-size: var(--meta);
             cursor: pointer;
-            transition: all 0.25s var(--easing);
+            transition: all 0.2s var(--easing);
             white-space: nowrap;
             font-family: inherit;
             font-weight: 500;
         }
 
         .pill:hover {
-            background: rgba(255, 255, 255, .12);
+            background: rgba(255, 255, 255, .14);
             border-color: #FFFFFF33;
         }
 
         .pill.active {
-            background: #FFFFFF14;
-            border-color: #FFFFFF33;
+            background: #FFFFFF18;
+            border-color: #FFFFFF3A;
         }
 
         .pill:focus-visible {
             outline: none;
-            box-shadow: 0 0 0 3px #FFFFFF55;
+            box-shadow: 0 0 0 3px #FFFFFF66;
         }
 
         .see-more {
@@ -412,7 +440,7 @@
             color: var(--txt);
             font-size: var(--meta);
             cursor: pointer;
-            transition: all 0.25s var(--easing);
+            transition: all 0.2s var(--easing);
             padding: 8px 12px;
             border-radius: 8px;
         }
@@ -426,27 +454,27 @@
         }
 
         .arrow {
-            transition: transform 0.25s var(--easing);
+            transition: transform 0.2s var(--easing);
         }
 
         /* ========================================
-           卡片网格
+           卡片网格（更轻的暗玻璃）
            ======================================== */
         .cards-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: var(--gutter);
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
             margin-top: var(--gutter);
         }
 
         .card {
-            background: linear-gradient(180deg, var(--card-bg), rgba(38, 34, 31, .52));
+            background: linear-gradient(180deg, var(--card-bg), rgba(46, 42, 39, .50));
             border: 1px solid var(--card-border);
             border-radius: var(--card-radius);
             box-shadow: var(--card-shadow);
             overflow: hidden;
             cursor: pointer;
-            transition: all 0.35s var(--easing);
+            transition: transform .2s var(--easing), box-shadow .2s var(--easing), border-color .2s;
             text-decoration: none;
             color: inherit;
             display: block;
@@ -454,18 +482,18 @@
 
         .card:hover {
             transform: translateY(-6px);
-            box-shadow: 0 24px 64px -24px rgba(0, 0, 0, .45);
-            border-color: #FFFFFF25;
+            border-color: #FFFFFF33;
+            box-shadow: 0 24px 50px -22px rgba(0, 0, 0, .45);
         }
 
         .card:focus-visible {
             outline: none;
-            box-shadow: 0 0 0 3px #2F6BFF55, 0 24px 64px -24px rgba(0, 0, 0, .45);
+            box-shadow: 0 0 0 3px #FFFFFF66, 0 24px 50px -22px rgba(0, 0, 0, .45);
         }
 
         .thumb {
-            aspect-ratio: 16/10;
-            background: linear-gradient(135deg, #C7D7E8, #A8C0D8);
+            aspect-ratio: 16/9;
+            background: linear-gradient(135deg, #AFC2D6, #97B0C8);
             position: relative;
             overflow: hidden;
         }
@@ -473,18 +501,19 @@
         .thumb::after {
             content: '';
             position: absolute;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.15);
+            inset: auto 0 0 0;
+            height: 46%;
+            background: linear-gradient(180deg, transparent, rgba(0, 0, 0, .55));
         }
 
         .card-content {
-            padding: 18px;
+            padding: 16px;
         }
 
         .card-title {
-            font-size: clamp(16px, 1.5vw, 20px);
-            font-weight: 700;
-            color: var(--txt);
+            font-size: 18px;
+            font-weight: 600;
+            color: #F5F2EE;
             margin-bottom: 8px;
         }
 
@@ -492,11 +521,11 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
 
         .stars {
-            color: #FDB8C4;
+            color: #FFB957;
             font-size: 14px;
         }
 
@@ -507,35 +536,39 @@
 
         .card .meta {
             color: var(--txt-2);
-            font-size: var(--meta);
+            font-size: 14px;
             line-height: 1.4;
         }
 
         .price {
+            font-size: 15px;
             font-weight: 700;
-            color: var(--txt);
-            margin-top: 12px;
+            color: #F5F2EE;
+            margin-top: 10px;
         }
 
         /* ========================================
            响应式设计
            ======================================== */
-        @media (min-width: 1200px) {
-            .cards-grid {
-                grid-template-columns: repeat(4, 1fr);
+        @media (max-width: 1199px) {
+            .container {
+                padding: 100px 24px 60px;
             }
-        }
 
-        @media (min-width: 768px) and (max-width: 1199px) {
+            .panel {
+                padding: 24px;
+            }
+
             .cards-grid {
                 grid-template-columns: repeat(3, 1fr);
+                gap: 18px;
             }
         }
 
         @media (max-width: 767px) {
             .toolbar {
                 top: 10px;
-                padding: 8px 12px;
+                padding: 6px 12px;
                 gap: 8px;
             }
 
@@ -548,7 +581,7 @@
             }
 
             .panel {
-                padding: 24px 16px;
+                padding: 18px 16px 24px;
             }
 
             .panel-header {
@@ -566,10 +599,29 @@
 
             .hero-title {
                 text-align: center;
+                font-size: clamp(28px, 7vw, 38px);
             }
 
             .hero-subtitle {
                 text-align: center;
+            }
+
+            .chips-container {
+                padding-right: 0;
+            }
+
+            .chips-scroll {
+                overflow: auto;
+                gap: 12px;
+                scroll-snap-type: x mandatory;
+            }
+
+            .chips-scroll > * {
+                scroll-snap-align: start;
+            }
+
+            .chip.bus {
+                transform: none;
             }
 
             .explore-header {
@@ -583,7 +635,7 @@
 
             .cards-grid {
                 grid-template-columns: repeat(2, 1fr);
-                gap: 16px;
+                gap: 14px;
             }
         }
         
@@ -600,12 +652,32 @@
             .chip:hover,
             .card:hover,
             .pill:hover,
-            .toolbar-btn:hover {
+            .toolbar-btn:hover,
+            .user-avatar:hover {
                 transform: none;
             }
 
             .see-more:hover .arrow {
                 transform: none;
+            }
+        }
+
+        /* ========================================
+           Backdrop-filter 降级支持
+           ======================================== */
+        @supports not (backdrop-filter: blur(1px)) {
+            .panel {
+                background: #5A524B;
+                border-color: #FFFFFF12;
+            }
+
+            .card {
+                background: #5A524B;
+                border-color: #FFFFFF12;
+            }
+
+            .toolbar {
+                background: #F5F2EE;
             }
         }
     </style>
@@ -706,7 +778,7 @@
                             <span class="stars" aria-label="评分 4.8">★★★★★</span>
                             <span class="rating-num">4.8</span>
                         </div>
-                        <p class="meta">Tropical paradise with stunning beaches and rich culture</p>
+                        <p class="meta">Tropical paradise with stunning beaches</p>
                         <p class="price">From $599/night</p>
                     </div>
                 </a>
@@ -719,7 +791,7 @@
                             <span class="stars" aria-label="评分 4.9">★★★★★</span>
                             <span class="rating-num">4.9</span>
                         </div>
-                        <p class="meta">The city of lights, romance, and world-class cuisine</p>
+                        <p class="meta">City of lights and romance</p>
                         <p class="price">From $799/night</p>
                     </div>
                 </a>
@@ -732,7 +804,7 @@
                             <span class="stars" aria-label="评分 4.7">★★★★★</span>
                             <span class="rating-num">4.7</span>
                         </div>
-                        <p class="meta">Modern metropolis blending tradition with innovation</p>
+                        <p class="meta">Modern metropolis with tradition</p>
                         <p class="price">From $699/night</p>
                     </div>
                 </a>
@@ -745,7 +817,7 @@
                             <span class="stars" aria-label="评分 4.8">★★★★★</span>
                             <span class="rating-num">4.8</span>
                         </div>
-                        <p class="meta">Ancient history meets vibrant contemporary culture</p>
+                        <p class="meta">Ancient history meets vibrant culture</p>
                         <p class="price">From $649/night</p>
                     </div>
                 </a>
@@ -758,7 +830,7 @@
                             <span class="stars" aria-label="评分 4.9">★★★★★</span>
                             <span class="rating-num">4.9</span>
                         </div>
-                        <p class="meta">Iconic white-washed buildings with breathtaking sunsets</p>
+                        <p class="meta">Iconic white buildings and sunsets</p>
                         <p class="price">From $899/night</p>
                     </div>
                 </a>
@@ -771,7 +843,7 @@
                             <span class="stars" aria-label="评分 4.7">★★★★★</span>
                             <span class="rating-num">4.7</span>
                         </div>
-                        <p class="meta">Luxury shopping, ultramodern architecture and lively nightlife</p>
+                        <p class="meta">Luxury and ultramodern architecture</p>
                         <p class="price">From $999/night</p>
                     </div>
                 </a>
@@ -784,7 +856,7 @@
                             <span class="stars" aria-label="评分 4.8">★★★★★</span>
                             <span class="rating-num">4.8</span>
                         </div>
-                        <p class="meta">The city that never sleeps, endless entertainment</p>
+                        <p class="meta">The city that never sleeps</p>
                         <p class="price">From $849/night</p>
                     </div>
                 </a>
@@ -797,13 +869,13 @@
                             <span class="stars" aria-label="评分 4.8">★★★★★</span>
                             <span class="rating-num">4.8</span>
                         </div>
-                        <p class="meta">Gaudi's masterpieces and Mediterranean beaches</p>
+                        <p class="meta">Gaudi's masterpieces and beaches</p>
                         <p class="price">From $699/night</p>
                     </div>
                 </a>
             </div>
 
-            <div style="margin-top: 32px; text-align: center;">
+            <div style="margin-top: 28px; text-align: center;">
                 <span class="see-more" tabindex="0" role="button">
                     See more destinations
                     <span class="arrow">→</span>
