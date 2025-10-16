@@ -831,32 +831,33 @@
         
         .dropdown-nav-buttons {
             display: flex;
-            gap: 12px;
+            gap: 24px; /* 增加按钮间距 */
+            align-items: center;
         }
         
         .dropdown-nav-btn {
-            background: transparent;
-            border: none;
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 15px;
-            font-weight: 500;
-            padding: 6px 14px;
+            background: none; /* 移除背景 */
+            border: none; /* 移除边框 */
+            color: rgba(255, 255, 255, 0.6); /* 默认半透明白色 */
+            font-size: 18px; /* 放大字体 */
+            font-weight: 400; /* 正常字重 */
+            padding: 8px 12px; /* 调整内边距 */
             cursor: pointer;
-            border-radius: 6px;
-            transition: all 0.2s ease;
+            border-radius: 0; /* 移除圆角 */
+            transition: color 0.3s ease; /* 只过渡颜色 */
             font-family: inherit;
             outline: none;
         }
         
         .dropdown-nav-btn:hover {
-            color: #FFFFFF;
-            background: rgba(255, 255, 255, 0.1);
+            color: #FFFFFF; /* 悬停时全白 */
+            background: none; /* 悬停时无背景 */
         }
         
         .dropdown-nav-btn.active {
-            color: #FFFFFF;
-            background: rgba(255, 255, 255, 0.2);
-            font-weight: 600;
+            color: #FFFFFF; /* 激活时全白 */
+            background: none; /* 激活时无背景 */
+            font-weight: 600; /* 激活时加粗 */
         }
         
         /* 语言选项选中状态 */
