@@ -1249,6 +1249,14 @@
                 --body: 17px;
             }
             
+            /* 禁用手机端页面滚动 */
+            html, body {
+                overflow: hidden;
+                height: 100vh;
+                position: fixed;
+                width: 100%;
+            }
+            
             .glass-nav {
                 background: transparent;
                 backdrop-filter: none;
