@@ -1288,7 +1288,7 @@
                 order: 2;  /* Products按钮在右边 */
                 flex-wrap: nowrap;
                 justify-content: flex-end;
-                gap: 4px; /* 进一步减小按钮间隙（从6px改为4px）*/
+                gap: 2px; /* 精确设置按钮间隙为2px */
                 width: auto;
                 flex-shrink: 1; /* 允许按钮收缩 */
                 margin-left: auto; /* 按钮组向右推 */
@@ -1296,7 +1296,7 @@
             
             .nav-items a {
                 padding: 8px 10px; /* 减小padding */
-                font-size: 13px; /* 减小字体 */
+                font-size: 12px; /* 缩小字体（从13px改为12px）*/
                 height: auto; /* 自动高度 */
                 min-width: auto; /* 移除最小宽度限制 */
                 white-space: nowrap;
@@ -1305,9 +1305,9 @@
                 border-radius: 0 !important; /* 移除圆角 */
             }
             
-            /* 语言按钮调整与产品按钮的距离为3px */
+            /* 移除语言按钮额外的margin，使用gap统一控制间距 */
             .nav-items .language-menu-item a {
-                margin-right: -1px; /* 调整使语言和产品按钮之间保持3px距离 */
+                margin-right: 0;
             }
             
             .nav-items .btn-primary {
@@ -1383,12 +1383,12 @@
             }
             
             .nav-items {
-                gap: 3px; /* 更小的间隙（从5px改为3px）*/
+                gap: 2px; /* 精确2px间隙 */
             }
             
             .nav-items a {
-                padding: 8px 10px; /* 更小的padding */
-                font-size: 12px; /* 更小的字体 */
+                padding: 7px 8px; /* 更小的padding */
+                font-size: 11px; /* 更小的字体 */
                 height: auto; /* 自动高度 */
                 background: none !important; /* 移除背景 */
                 box-shadow: none !important; /* 移除阴影 */
@@ -1433,8 +1433,8 @@
             }
             
             .nav-items a {
-                padding: 7px 8px; /* 最小padding */
-                font-size: 11px; /* 最小字体 */
+                padding: 6px 7px; /* 最小padding */
+                font-size: 10px; /* 更小字体 */
                 height: auto; /* 自动高度 */
                 background: none !important; /* 移除背景 */
                 box-shadow: none !important; /* 移除阴影 */
