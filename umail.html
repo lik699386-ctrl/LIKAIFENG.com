@@ -3,54 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- 安全头部继承主网站配置 -->
-    <meta http-equiv="Content-Security-Policy" content="
-        default-src 'self';
-        script-src 'self' 'unsafe-inline';
-        style-src 'self' 'unsafe-inline';
-        img-src 'self' data: https:;
-        font-src 'self' data:;
-        connect-src 'self';
-        frame-ancestors 'none';
-        base-uri 'self';
-        form-action 'self';
-        upgrade-insecure-requests;
-        block-all-mixed-content;
-    ">
-    
-    <title>Umail - 邮箱安全专家 | LIKAIFENG.Net</title>
-    
+    <title>Umail - Discover Your Dream Vacation</title>
     <style>
-        /* 继承主网站设计令牌 */
+        /* ========================================
+           路由接入示例（在主站点中使用）
+           ======================================== */
+        /*
+        // 在主站 index.html 的 <script> 中：
+        document.getElementById('umailBtn')?.addEventListener('click', e => {
+            e.preventDefault();
+            window.location.href = '/umail.html';
+        });
+        // 或使用标准 <a href="umail.html">Umail</a> 即可直接跳转
+        */
+
+        /* ========================================
+           设计令牌 - CSS 变量
+           ======================================== */
         :root {
-            /* 品牌色 */
-            --blue: #2A6BFF;
-            --cyan: #67E0FF;
-            --violet: #C69BFF;
-            
-            /* Umail专属渐变 */
-            --umail-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --umail-secondary: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
-            --umail-accent: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            /* 画布 & 玻璃（暖灰/棕调） */
+            --canvas: #EAE2D8;
+            --panel-bg: rgba(40, 34, 30, .62);
+            --panel-border: #FFFFFF1F;
+            --panel-shadow: 0 30px 80px -30px rgba(0, 0, 0, .45);
+            --panel-radius: 24px;
+            --panel-blur: 16px;
             
             /* 文本 */
-            --text: #0B0B0E;
-            --text-2: #6B7280;
-            --text-inv: #FAFAFA;
-            
-            /* 组件 */
-            --radius-btn: 16px;
-            --radius-card: 20px;
-            --shadow-soft: 0 20px 40px -20px rgba(32,56,100,.25);
-            
-            /* 动效 */
-            --easing: cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            --dur-smooth: 0.6s;
-            --dur-quick: 0.3s;
+            --txt: #F5F2EE;
+            --txt-2: #D0C7BD;
+            --txt-invert: #1F2328;
+
+            /* 分类 Chips 渐变 */
+            --chip-flight-from: #FDB8C4;
+            --chip-flight-to: #F892A2;
+            --chip-vac-from: #CFF57A;
+            --chip-vac-to: #A7E063;
+            --chip-stays-from: #9FD3FF;
+            --chip-stays-to: #6BAEF5;
+            --chip-rest-from: #9CC7FF;
+            --chip-rest-to: #6DA7F0;
+            --chip-attr-from: #FFB7B1;
+            --chip-attr-to: #FF8AA2;
+            --chip-bus-from: #F5E39A;
+            --chip-bus-to: #E9D07B;
+
+            /* 卡片 */
+            --card-bg: rgba(38, 34, 31, .60);
+            --card-border: #FFFFFF17;
+            --card-radius: 18px;
+            --card-shadow: 0 18px 48px -18px rgba(0, 0, 0, .35);
+
+            /* 按钮/控件 */
+            --pill-h: 40px;
+            --chip-h: 44px;
+            --icon-bg: rgba(255, 255, 255, .14);
+            --icon-border: #FFFFFF26;
+
+            /* 排版与间距 */
+            --container: 1200px;
+            --gutter: 24px;
+            --h1: clamp(28px, 5.2vw, 44px);
+            --body: clamp(14px, 1.35vw, 18px);
+            --meta: clamp(12px, 1.1vw, 16px);
+            --radius-xl: 28px;
+            --radius-lg: 24px;
+            --radius-md: 18px;
+            --radius-sm: 12px;
+            --easing: cubic-bezier(.22, .61, .36, 1);
         }
-        
-        /* Reset & Base */
+
+        /* ========================================
+           基础重置与画布
+           ======================================== */
         *, *::before, *::after {
             box-sizing: border-box;
             margin: 0;
@@ -63,610 +88,768 @@
         }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif;
-            background: var(--umail-primary);
-            color: var(--text);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+            background: var(--canvas);
+            color: var(--txt);
+            font-size: var(--body);
+            line-height: 1.6;
+            min-height: 100vh;
             overflow-x: hidden;
-            min-height: 100vh;
+            /* 淡噪点纹理 */
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(255, 220, 180, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(200, 180, 160, 0.12) 0%, transparent 50%);
         }
-        
-        /* 光标控制 - 继承主网站设置 */
-        * {
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            user-select: none;
-            cursor: default;
-        }
-        
-        a, button, [role="button"] {
-            cursor: pointer !important;
-        }
-        
-        /* 导航栏 - 与主网站一致 */
-        .glass-nav {
+
+        /* ========================================
+           顶部工具条（浅玻璃）
+           ======================================== */
+        .toolbar {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: saturate(180%) blur(20px);
-            -webkit-backdrop-filter: saturate(180%) blur(20px);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-            z-index: 1000;
-            transition: all var(--dur-quick) var(--easing);
-        }
-        
-        .nav-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px clamp(5%, 8vw, 15%);
-            max-width: 1600px;
-            margin: 0 auto;
-        }
-        
-        .nav-logo {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--text);
-            text-decoration: none;
-            transition: color var(--dur-quick) var(--easing);
-        }
-        
-        .nav-back {
-            background: rgba(255, 255, 255, 0.95);
-            color: var(--text);
-            border: none;
-            padding: 12px 24px;
-            border-radius: var(--radius-btn);
-            font-weight: 500;
-            font-size: 15px;
-            transition: all var(--dur-quick) var(--easing);
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-        }
-        
-        .nav-back:hover {
-            background: rgba(255, 255, 255, 1);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-        }
-        
-        /* 主容器 */
-        .main-container {
-            min-height: 100vh;
-            padding-top: 100px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-        
-        /* 背景装饰 - iOS风格 */
-        .bg-decoration {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            overflow: hidden;
-        }
-        
-        .bg-orb {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(40px);
-            opacity: 0.3;
-            animation: float 20s ease-in-out infinite;
-        }
-        
-        .bg-orb:nth-child(1) {
-            width: 400px;
-            height: 400px;
-            background: var(--umail-secondary);
-            top: -100px;
-            right: -100px;
-            animation-delay: 0s;
-        }
-        
-        .bg-orb:nth-child(2) {
-            width: 300px;
-            height: 300px;
-            background: var(--umail-accent);
-            bottom: -150px;
-            left: -150px;
-            animation-delay: -10s;
-        }
-        
-        .bg-orb:nth-child(3) {
-            width: 200px;
-            height: 200px;
-            background: linear-gradient(135deg, var(--cyan) 0%, var(--violet) 100%);
-            top: 50%;
+            top: 20px;
             left: 50%;
-            transform: translate(-50%, -50%);
-            animation-delay: -5s;
+            transform: translateX(-50%);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 18px;
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(12px) saturate(1.1);
+            border: 1.5px solid rgba(0, 0, 0, 0.08);
+            border-radius: 999px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
         }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            33% { transform: translateY(-30px) rotate(120deg); }
-            66% { transform: translateY(20px) rotate(240deg); }
-        }
-        
-        /* 产品卡片 */
-        .product-hero {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: saturate(180%) blur(20px);
-            -webkit-backdrop-filter: saturate(180%) blur(20px);
-            border-radius: var(--radius-card);
-            padding: 60px 40px;
-            max-width: 600px;
-            width: 90%;
-            text-align: center;
-            box-shadow: var(--shadow-soft);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            transform: translateY(20px);
-            opacity: 0;
-            animation: slideIn var(--dur-smooth) var(--easing) 0.2s forwards;
-        }
-        
-        @keyframes slideIn {
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-        
-        /* 产品图标 */
-        .product-icon {
-            width: 120px;
-            height: 120px;
-            margin: 0 auto 32px;
-            background: var(--umail-primary);
-            border-radius: 28px;
+
+        .toolbar-btn {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: var(--icon-bg);
+            border-radius: 50%;
+            cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            font-size: 48px;
-            font-weight: 300;
-            letter-spacing: -0.02em;
-            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.3);
-            transform: scale(0.8);
-            animation: iconPop var(--dur-smooth) var(--easing) 0.4s forwards;
+            color: var(--txt-invert);
+            transition: all 0.25s var(--easing);
         }
-        
-        @keyframes iconPop {
-            to { transform: scale(1); }
+
+        .toolbar-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: scale(1.05);
         }
-        
-        /* 产品标题 */
-        .product-title {
-            font-size: clamp(36px, 8vw, 56px);
-            font-weight: 700;
-            color: var(--text);
-            margin-bottom: 16px;
-            letter-spacing: -0.02em;
-            transform: translateY(20px);
-            opacity: 0;
-            animation: slideIn var(--dur-smooth) var(--easing) 0.6s forwards;
+
+        .toolbar-btn:focus-visible {
+            outline: none;
+            box-shadow: 0 0 0 3px #2F6BFF55;
         }
-        
-        /* 产品副标题 */
-        .product-subtitle {
-            font-size: clamp(18px, 4vw, 24px);
-            color: var(--text-2);
-            margin-bottom: 32px;
-            line-height: 1.4;
-            transform: translateY(20px);
-            opacity: 0;
-            animation: slideIn var(--dur-smooth) var(--easing) 0.8s forwards;
+
+        .toolbar-address {
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 999px;
+            font-size: var(--meta);
+            color: var(--txt-invert);
+            min-width: 200px;
+            text-align: center;
         }
-        
-        /* 特性列表 */
-        .features-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 24px;
-            margin-bottom: 48px;
-            transform: translateY(20px);
-            opacity: 0;
-            animation: slideIn var(--dur-smooth) var(--easing) 1s forwards;
+
+        /* ========================================
+           主容器
+           ======================================== */
+        .container {
+            max-width: var(--container);
+            margin: 0 auto;
+            padding: 120px var(--gutter) 60px;
         }
-        
-        .feature-item {
-            text-align: left;
-            padding: 24px;
-            background: rgba(255, 255, 255, 0.6);
-            border-radius: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            transition: all var(--dur-quick) var(--easing);
+
+        /* ========================================
+           主毛玻璃面板
+           ======================================== */
+        .panel {
+            background: linear-gradient(180deg, var(--panel-bg), rgba(40, 34, 30, .54));
+            backdrop-filter: blur(var(--panel-blur)) saturate(1.05);
+            -webkit-backdrop-filter: blur(var(--panel-blur)) saturate(1.05);
+            border: 1px solid var(--panel-border);
+            border-radius: var(--panel-radius);
+            box-shadow: var(--panel-shadow);
+            padding: clamp(32px, 4vw, 48px);
+            margin-bottom: var(--gutter);
         }
-        
-        .feature-item:hover {
-            background: rgba(255, 255, 255, 0.8);
-            transform: translateY(-4px);
-            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
+
+        /* 面板顶部 */
+        .panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: clamp(32px, 3.5vw, 48px);
+            gap: 16px;
         }
-        
-        .feature-icon {
+
+        .brand-search {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+            max-width: 400px;
+        }
+
+        .search-pill {
+            flex: 1;
+            height: var(--pill-h);
+            padding: 0 18px;
+            background: rgba(255, 255, 255, 0.10);
+            border: 1.5px solid var(--icon-border);
+            border-radius: 999px;
+            color: var(--txt);
+            font-size: var(--meta);
+            font-family: inherit;
+            transition: all 0.25s var(--easing);
+        }
+
+        .search-pill::placeholder {
+            color: var(--txt-2);
+        }
+
+        .search-pill:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.15);
+            border-color: #FFFFFF44;
+            box-shadow: 0 0 0 3px #FFFFFF33;
+        }
+
+        .user-avatar {
             width: 48px;
             height: 48px;
-            background: var(--umail-primary);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 16px;
-            font-size: 20px;
-            color: white;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6BAEF5, #9FD3FF);
+            border: 2px solid var(--icon-border);
+            cursor: pointer;
+            transition: all 0.25s var(--easing);
         }
-        
-        .feature-title {
-            font-size: 18px;
-            font-weight: 600;
-            color: var(--text);
-            margin-bottom: 8px;
+
+        .user-avatar:hover {
+            transform: scale(1.08);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
         }
-        
-        .feature-desc {
-            font-size: 14px;
-            color: var(--text-2);
+
+        .user-avatar:focus-visible {
+            outline: none;
+            box-shadow: 0 0 0 3px #FFFFFF55;
+        }
+
+        /* 主标题区 */
+        .hero-title {
+            font-size: var(--h1);
+            font-weight: 800;
+            letter-spacing: -0.01em;
+            color: var(--txt);
+            margin-bottom: 12px;
+            line-height: 1.2;
+        }
+
+        .hero-subtitle {
+            font-size: var(--body);
+            color: var(--txt-2);
+            margin-bottom: clamp(28px, 3vw, 40px);
             line-height: 1.5;
         }
-        
-        /* 行动按钮 */
-        .cta-buttons {
-            display: flex;
-            gap: 16px;
-            justify-content: center;
-            flex-wrap: wrap;
-            transform: translateY(20px);
-            opacity: 0;
-            animation: slideIn var(--dur-smooth) var(--easing) 1.2s forwards;
+
+        /* ========================================
+           分类 Chips 横向滚动
+           ======================================== */
+        .chips-container {
+            position: relative;
+            margin-bottom: clamp(28px, 3vw, 40px);
         }
-        
-        .btn-primary {
-            background: var(--umail-primary);
-            color: white;
-            border: none;
-            padding: 16px 32px;
-            border-radius: var(--radius-btn);
-            font-size: 16px;
+
+        .chips-scroll {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding-bottom: 8px;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .chips-scroll::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .chips-scroll::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 3px;
+        }
+
+        .chips-scroll::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 3px;
+        }
+
+        .chips-scroll::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .chip {
+            height: var(--chip-h);
+            padding: 0 16px;
+            border-radius: 999px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--txt-invert);
+            box-shadow: inset 0 -1px 0 rgba(255, 255, 255, .35), 0 6px 16px rgba(0, 0, 0, .18);
+            border: 1px solid #00000020;
+            cursor: pointer;
+            white-space: nowrap;
+            flex-shrink: 0;
+            transition: all 0.25s var(--easing);
+            font-size: var(--meta);
             font-weight: 600;
-            text-decoration: none;
+        }
+
+        .chip:hover {
+            transform: translateY(-4px);
+            box-shadow: inset 0 -2px 0 rgba(255, 255, 255, .45), 0 10px 24px rgba(0, 0, 0, .25);
+        }
+
+        .chip:focus-visible {
+            outline: none;
+            box-shadow: 0 0 0 3px #FFFFFF55, inset 0 -1px 0 rgba(255, 255, 255, .35);
+        }
+
+        .chip.active {
+            border-color: #00000035;
+            box-shadow: inset 0 -2px 0 rgba(255, 255, 255, .5), 0 8px 20px rgba(0, 0, 0, .3);
+        }
+
+        .chip.flight { background: linear-gradient(180deg, var(--chip-flight-from), var(--chip-flight-to)); }
+        .chip.vac { background: linear-gradient(180deg, var(--chip-vac-from), var(--chip-vac-to)); }
+        .chip.stays { background: linear-gradient(180deg, var(--chip-stays-from), var(--chip-stays-to)); }
+        .chip.rest { background: linear-gradient(180deg, var(--chip-rest-from), var(--chip-rest-to)); }
+        .chip.attr { background: linear-gradient(180deg, var(--chip-attr-from), var(--chip-attr-to)); }
+        .chip.bus { background: linear-gradient(180deg, var(--chip-bus-from), var(--chip-bus-to)); }
+
+        .chip-icon {
+            width: 24px;
+            height: 24px;
+            background: rgba(0, 0, 0, 0.15);
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .chip-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .chip-count {
+            font-size: 11px;
+            opacity: 0.75;
+        }
+
+        /* ========================================
+           次面板 - Explore the world
+           ======================================== */
+        .explore-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .explore-title {
+            font-size: clamp(20px, 2.5vw, 28px);
+            font-weight: 700;
+            color: var(--txt);
+        }
+
+        .filters {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .pill {
+            height: var(--pill-h);
+            padding: 0 14px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, .08);
+            border: 1.5px solid var(--icon-border);
+            color: var(--txt);
+            font-size: var(--meta);
+            cursor: pointer;
+            transition: all 0.25s var(--easing);
+            white-space: nowrap;
+            font-family: inherit;
+            font-weight: 500;
+        }
+
+        .pill:hover {
+            background: rgba(255, 255, 255, .12);
+            border-color: #FFFFFF33;
+        }
+
+        .pill.active {
+            background: #FFFFFF14;
+            border-color: #FFFFFF33;
+        }
+
+        .pill:focus-visible {
+            outline: none;
+            box-shadow: 0 0 0 3px #FFFFFF55;
+        }
+
+        .see-more {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            transition: all var(--dur-quick) var(--easing);
-            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
+            gap: 6px;
+            color: var(--txt);
+            font-size: var(--meta);
+            cursor: pointer;
+            transition: all 0.25s var(--easing);
+            padding: 8px 12px;
+            border-radius: 8px;
         }
-        
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 16px 48px rgba(102, 126, 234, 0.4);
+
+        .see-more:hover {
+            background: rgba(255, 255, 255, 0.08);
         }
-        
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.9);
-            color: var(--text);
-            border: 1px solid rgba(0, 0, 0, 0.1);
-            padding: 16px 32px;
-            border-radius: var(--radius-btn);
-            font-size: 16px;
-            font-weight: 500;
+
+        .see-more:hover .arrow {
+            transform: translateX(2px);
+        }
+
+        .arrow {
+            transition: transform 0.25s var(--easing);
+        }
+
+        /* ========================================
+           卡片网格
+           ======================================== */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: var(--gutter);
+            margin-top: var(--gutter);
+        }
+
+        .card {
+            background: linear-gradient(180deg, var(--card-bg), rgba(38, 34, 31, .52));
+            border: 1px solid var(--card-border);
+            border-radius: var(--card-radius);
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.35s var(--easing);
             text-decoration: none;
-            transition: all var(--dur-quick) var(--easing);
+            color: inherit;
+            display: block;
         }
-        
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 1);
-            transform: translateY(-3px);
-            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
+
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 24px 64px -24px rgba(0, 0, 0, .45);
+            border-color: #FFFFFF25;
         }
-        
-        /* 状态标签 */
-        .status-tag {
-            display: inline-block;
-            padding: 8px 16px;
-            background: rgba(52, 199, 89, 0.15);
-            color: #34C759;
-            border-radius: 20px;
+
+        .card:focus-visible {
+            outline: none;
+            box-shadow: 0 0 0 3px #2F6BFF55, 0 24px 64px -24px rgba(0, 0, 0, .45);
+        }
+
+        .thumb {
+            aspect-ratio: 16/10;
+            background: linear-gradient(135deg, #C7D7E8, #A8C0D8);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .thumb::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.15);
+        }
+
+        .card-content {
+            padding: 18px;
+        }
+
+        .card-title {
+            font-size: clamp(16px, 1.5vw, 20px);
+            font-weight: 700;
+            color: var(--txt);
+            margin-bottom: 8px;
+        }
+
+        .card-rating {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .stars {
+            color: #FDB8C4;
             font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 24px;
-            border: 1px solid rgba(52, 199, 89, 0.2);
         }
-        
-        /* 响应式设计 */
-        @media (max-width: 768px) {
-            .product-hero {
-                padding: 40px 24px;
-                margin-bottom: 40px;
+
+        .rating-num {
+            font-size: var(--meta);
+            color: var(--txt-2);
+        }
+
+        .card .meta {
+            color: var(--txt-2);
+            font-size: var(--meta);
+            line-height: 1.4;
+        }
+
+        .price {
+            font-weight: 700;
+            color: var(--txt);
+            margin-top: 12px;
+        }
+
+        /* ========================================
+           响应式设计
+           ======================================== */
+        @media (min-width: 1200px) {
+            .cards-grid {
+                grid-template-columns: repeat(4, 1fr);
             }
-            
-            .features-list {
-                grid-template-columns: 1fr;
-                gap: 16px;
+        }
+
+        @media (min-width: 768px) and (max-width: 1199px) {
+            .cards-grid {
+                grid-template-columns: repeat(3, 1fr);
             }
-            
-            .cta-buttons {
+        }
+
+        @media (max-width: 767px) {
+            .toolbar {
+                top: 10px;
+                padding: 8px 12px;
+                gap: 8px;
+            }
+
+            .toolbar-address {
+                display: none;
+            }
+
+            .container {
+                padding: 80px 16px 40px;
+            }
+
+            .panel {
+                padding: 24px 16px;
+            }
+
+            .panel-header {
                 flex-direction: column;
-                align-items: center;
+                align-items: stretch;
+            }
+
+            .brand-search {
+                max-width: none;
+            }
+
+            .user-avatar {
+                align-self: flex-end;
+            }
+
+            .hero-title {
+                text-align: center;
+            }
+
+            .hero-subtitle {
+                text-align: center;
+            }
+
+            .explore-header {
+                flex-direction: column;
+                align-items: stretch;
             }
             
-            .btn-primary,
-            .btn-secondary {
-                width: 100%;
-                max-width: 300px;
+            .filters {
                 justify-content: center;
             }
+
+            .cards-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 16px;
+            }
         }
         
-        /* 减少动画偏好 */
+        /* ========================================
+           减少动画（可访问性）
+           ======================================== */
         @media (prefers-reduced-motion: reduce) {
-            * {
+            *, *::before, *::after {
                 animation-duration: 0.01ms !important;
                 animation-iteration-count: 1 !important;
                 transition-duration: 0.01ms !important;
             }
-        }
-        
-        /* 高对比度模式 */
-        @media (prefers-contrast: high) {
-            .product-hero {
-                background: #FFFFFF;
-                border: 2px solid #000000;
+
+            .chip:hover,
+            .card:hover,
+            .pill:hover,
+            .toolbar-btn:hover {
+                transform: none;
             }
-            
-            .feature-item {
-                background: #F0F0F0;
-                border: 1px solid #666666;
+
+            .see-more:hover .arrow {
+                transform: none;
             }
         }
     </style>
 </head>
 <body>
-    <!-- 导航栏 -->
-    <nav class="glass-nav">
-        <div class="nav-container">
-            <a href="index.html" class="nav-logo">LIKAIFENG.Net</a>
-            <button class="nav-back" onclick="history.back()" data-i18n="nav.back">← 返回</button>
-        </div>
-    </nav>
-    
-    <!-- 背景装饰 -->
-    <div class="bg-decoration" aria-hidden="true">
-        <div class="bg-orb"></div>
-        <div class="bg-orb"></div>
-        <div class="bg-orb"></div>
+    <!-- 顶部工具条 -->
+    <div class="toolbar">
+        <button class="toolbar-btn" aria-label="返回" tabindex="0">←</button>
+        <button class="toolbar-btn" aria-label="前进" tabindex="0">→</button>
+        <div class="toolbar-address">likaifeng.net/umail</div>
+        <button class="toolbar-btn" aria-label="书签" tabindex="0">★</button>
+        <button class="toolbar-btn" aria-label="设置" tabindex="0">⚙</button>
     </div>
     
-    <!-- 主内容 -->
-    <main class="main-container">
-        <div class="product-hero">
-            <div class="status-tag" data-i18n="status.released">✓ 已发布</div>
-            
-            <div class="product-icon">
-                U
+    <!-- 主容器 -->
+    <div class="container">
+        <!-- 主毛玻璃面板 -->
+        <div class="panel">
+            <!-- 面板顶部 -->
+            <div class="panel-header">
+                <div class="brand-search">
+                    <input type="text" class="search-pill" placeholder="Search destinations..." aria-label="搜索目的地">
+                </div>
+                <button class="user-avatar" aria-label="用户头像" tabindex="0"></button>
             </div>
             
-            <h1 class="product-title">Umail</h1>
-            <p class="product-subtitle">
-                <span data-i18n="umail.subtitle">专业级邮箱安全管理工具</span><br>
-                <span data-i18n="umail.tagline">让每一封邮件都在您的掌控之中</span>
-            </p>
-            
-            <div class="features-list">
-                <div class="feature-item">
-                    <div class="feature-icon">🛡️</div>
-                    <div class="feature-title" data-i18n="umail.feature.security.title">安全至上</div>
-                    <div class="feature-desc" data-i18n="umail.feature.security.desc">军用级加密技术，保护您的邮件隐私安全</div>
+            <!-- 主标题 -->
+            <h1 class="hero-title">Discover the vacation of your dreams</h1>
+            <p class="hero-subtitle">Explore stunning destinations and create unforgettable memories</p>
+
+            <!-- 分类 Chips -->
+            <div class="chips-container">
+                <div class="chips-scroll" role="list" aria-label="旅行分类">
+                    <button class="chip flight active" role="listitem" aria-label="航班" tabindex="0">
+                        <div class="chip-icon" aria-hidden="true"></div>
+                        <div class="chip-info">
+                            <span>Flight</span>
+                            <span class="chip-count">256 deals</span>
+                        </div>
+                    </button>
+                    <button class="chip vac" role="listitem" aria-label="度假" tabindex="0">
+                        <div class="chip-icon" aria-hidden="true"></div>
+                        <div class="chip-info">
+                            <span>Vacations</span>
+                            <span class="chip-count">128 packages</span>
+                        </div>
+                    </button>
+                    <button class="chip stays" role="listitem" aria-label="住宿" tabindex="0">
+                        <div class="chip-icon" aria-hidden="true"></div>
+                        <div class="chip-info">
+                            <span>Stays</span>
+                            <span class="chip-count">512 hotels</span>
+                        </div>
+                    </button>
+                    <button class="chip rest" role="listitem" aria-label="餐厅" tabindex="0">
+                        <div class="chip-icon" aria-hidden="true"></div>
+                        <div class="chip-info">
+                            <span>Restaurant</span>
+                            <span class="chip-count">89 spots</span>
+                        </div>
+                    </button>
+                    <button class="chip attr" role="listitem" aria-label="景点" tabindex="0">
+                        <div class="chip-icon" aria-hidden="true"></div>
+                        <div class="chip-info">
+                            <span>Attractions</span>
+                            <span class="chip-count">342 places</span>
+                        </div>
+                    </button>
+                    <button class="chip bus" role="listitem" aria-label="机场巴士" tabindex="0">
+                        <div class="chip-icon" aria-hidden="true"></div>
+                        <div class="chip-info">
+                            <span>Bus Airport</span>
+                            <span class="chip-count">24 routes</span>
+                </div>
+                    </button>
+                </div>
                 </div>
                 
-                <div class="feature-item">
-                    <div class="feature-icon">⚡</div>
-                    <div class="feature-title" data-i18n="umail.feature.speed.title">极速体验</div>
-                    <div class="feature-desc" data-i18n="umail.feature.speed.desc">原生优化，毫秒级响应，丝滑如iOS</div>
-                </div>
-                
-                <div class="feature-item">
-                    <div class="feature-icon">🎯</div>
-                    <div class="feature-title" data-i18n="umail.feature.smart.title">智能过滤</div>
-                    <div class="feature-desc" data-i18n="umail.feature.smart.desc">AI驱动的垃圾邮件识别，准确率99.9%</div>
-                </div>
-                
-                <div class="feature-item">
-                    <div class="feature-icon">🌊</div>
-                    <div class="feature-title" data-i18n="umail.feature.design.title">简约设计</div>
-                    <div class="feature-desc" data-i18n="umail.feature.design.desc">少即是多的设计哲学，专注核心功能</div>
+            <!-- 次面板：Explore the world -->
+            <div class="explore-header">
+                <h2 class="explore-title">Explore the world</h2>
+                <div class="filters" role="group" aria-label="筛选选项">
+                    <button class="pill active" tabindex="0">Filters</button>
+                    <button class="pill" tabindex="0">Nearby</button>
+                    <button class="pill" tabindex="0">Popular</button>
+                    <button class="pill" tabindex="0">Recommendation</button>
+                    <button class="pill" tabindex="0">New</button>
                 </div>
             </div>
             
-            <div class="cta-buttons">
-                <a href="#download" class="btn-primary" data-i18n="umail.cta.download">
-                    ⬇️ 立即下载
+            <!-- 卡片网格 -->
+            <div class="cards-grid" role="list" aria-label="城市列表">
+                <a href="#" class="card" role="listitem" tabindex="0">
+                    <div class="thumb" aria-hidden="true"></div>
+                    <div class="card-content">
+                        <h3 class="card-title">Bali, Indonesia</h3>
+                        <div class="card-rating">
+                            <span class="stars" aria-label="评分 4.8">★★★★★</span>
+                            <span class="rating-num">4.8</span>
+                        </div>
+                        <p class="meta">Tropical paradise with stunning beaches and rich culture</p>
+                        <p class="price">From $599/night</p>
+                    </div>
                 </a>
-                <a href="#learn-more" class="btn-secondary" data-i18n="umail.cta.learn-more">
-                    了解更多
+
+                <a href="#" class="card" role="listitem" tabindex="0">
+                    <div class="thumb" aria-hidden="true"></div>
+                    <div class="card-content">
+                        <h3 class="card-title">Paris, France</h3>
+                        <div class="card-rating">
+                            <span class="stars" aria-label="评分 4.9">★★★★★</span>
+                            <span class="rating-num">4.9</span>
+                        </div>
+                        <p class="meta">The city of lights, romance, and world-class cuisine</p>
+                        <p class="price">From $799/night</p>
+                    </div>
                 </a>
+
+                <a href="#" class="card" role="listitem" tabindex="0">
+                    <div class="thumb" aria-hidden="true"></div>
+                    <div class="card-content">
+                        <h3 class="card-title">Tokyo, Japan</h3>
+                        <div class="card-rating">
+                            <span class="stars" aria-label="评分 4.7">★★★★★</span>
+                            <span class="rating-num">4.7</span>
+                        </div>
+                        <p class="meta">Modern metropolis blending tradition with innovation</p>
+                        <p class="price">From $699/night</p>
+                    </div>
+                </a>
+
+                <a href="#" class="card" role="listitem" tabindex="0">
+                    <div class="thumb" aria-hidden="true"></div>
+                    <div class="card-content">
+                        <h3 class="card-title">Rome, Italy</h3>
+                        <div class="card-rating">
+                            <span class="stars" aria-label="评分 4.8">★★★★★</span>
+                            <span class="rating-num">4.8</span>
+                        </div>
+                        <p class="meta">Ancient history meets vibrant contemporary culture</p>
+                        <p class="price">From $649/night</p>
+                    </div>
+                </a>
+
+                <a href="#" class="card" role="listitem" tabindex="0">
+                    <div class="thumb" aria-hidden="true"></div>
+                    <div class="card-content">
+                        <h3 class="card-title">Santorini, Greece</h3>
+                        <div class="card-rating">
+                            <span class="stars" aria-label="评分 4.9">★★★★★</span>
+                            <span class="rating-num">4.9</span>
+                        </div>
+                        <p class="meta">Iconic white-washed buildings with breathtaking sunsets</p>
+                        <p class="price">From $899/night</p>
+                    </div>
+                </a>
+
+                <a href="#" class="card" role="listitem" tabindex="0">
+                    <div class="thumb" aria-hidden="true"></div>
+                    <div class="card-content">
+                        <h3 class="card-title">Dubai, UAE</h3>
+                        <div class="card-rating">
+                            <span class="stars" aria-label="评分 4.7">★★★★★</span>
+                            <span class="rating-num">4.7</span>
+                        </div>
+                        <p class="meta">Luxury shopping, ultramodern architecture and lively nightlife</p>
+                        <p class="price">From $999/night</p>
+                    </div>
+                </a>
+
+                <a href="#" class="card" role="listitem" tabindex="0">
+                    <div class="thumb" aria-hidden="true"></div>
+                    <div class="card-content">
+                        <h3 class="card-title">New York, USA</h3>
+                        <div class="card-rating">
+                            <span class="stars" aria-label="评分 4.8">★★★★★</span>
+                            <span class="rating-num">4.8</span>
+                        </div>
+                        <p class="meta">The city that never sleeps, endless entertainment</p>
+                        <p class="price">From $849/night</p>
+                    </div>
+                </a>
+
+                <a href="#" class="card" role="listitem" tabindex="0">
+                    <div class="thumb" aria-hidden="true"></div>
+                    <div class="card-content">
+                        <h3 class="card-title">Barcelona, Spain</h3>
+                        <div class="card-rating">
+                            <span class="stars" aria-label="评分 4.8">★★★★★</span>
+                            <span class="rating-num">4.8</span>
+                        </div>
+                        <p class="meta">Gaudi's masterpieces and Mediterranean beaches</p>
+                        <p class="price">From $699/night</p>
+                    </div>
+                </a>
+            </div>
+
+            <div style="margin-top: 32px; text-align: center;">
+                <span class="see-more" tabindex="0" role="button">
+                    See more destinations
+                    <span class="arrow">→</span>
+                </span>
             </div>
         </div>
-    </main>
+    </div>
     
     <script>
         // ========================================
-        // 多语言支持系统 (从主页面复制)
+        // 交互逻辑
         // ========================================
-        const translations = {
-            'zh-CN': {
-                'nav.back': '← 返回',
-                'status.released': '✓ 已发布',
-                'umail.subtitle': '专业级邮箱安全管理工具',
-                'umail.tagline': '让每一封邮件都在您的掌控之中',
-                'umail.feature.security.title': '安全至上',
-                'umail.feature.security.desc': '军用级加密技术，保护您的邮件隐私安全',
-                'umail.feature.speed.title': '极速体验',
-                'umail.feature.speed.desc': '原生优化，毫秒级响应，丝滑如iOS',
-                'umail.feature.smart.title': '智能过滤',
-                'umail.feature.smart.desc': 'AI驱动的垃圾邮件识别，准确率99.9%',
-                'umail.feature.design.title': '简约设计',
-                'umail.feature.design.desc': '少即是多的设计哲学，专注核心功能',
-                'umail.cta.download': '⬇️ 立即下载',
-                'umail.cta.learn-more': '了解更多'
-            },
-            'en': {
-                'nav.back': '← Back',
-                'status.released': '✓ Released',
-                'umail.subtitle': 'Professional Email Security Management Tool',
-                'umail.tagline': 'Keep every email under your control',
-                'umail.feature.security.title': 'Security First',
-                'umail.feature.security.desc': 'Military-grade encryption technology protects your email privacy',
-                'umail.feature.speed.title': 'Lightning Fast',
-                'umail.feature.speed.desc': 'Native optimization, millisecond response, smooth as iOS',
-                'umail.feature.smart.title': 'Smart Filtering',
-                'umail.feature.smart.desc': 'AI-driven spam recognition with 99.9% accuracy',
-                'umail.feature.design.title': 'Minimalist Design',
-                'umail.feature.design.desc': 'Less is more design philosophy, focus on core functions',
-                'umail.cta.download': '⬇️ Download Now',
-                'umail.cta.learn-more': 'Learn More'
-            },
-            'ru': {
-                'nav.back': '← Назад',
-                'status.released': '✓ Выпущен',
-                'umail.subtitle': 'Профессиональный инструмент безопасности электронной почты',
-                'umail.tagline': 'Держите каждое письмо под своим контролем',
-                'umail.feature.security.title': 'Безопасность прежде всего',
-                'umail.feature.security.desc': 'Военная технология шифрования защищает конфиденциальность вашей почты',
-                'umail.feature.speed.title': 'Молниеносная скорость',
-                'umail.feature.speed.desc': 'Нативная оптимизация, миллисекундный отклик, плавность как iOS',
-                'umail.feature.smart.title': 'Умная фильтрация',
-                'umail.feature.smart.desc': 'ИИ-распознавание спама с точностью 99,9%',
-                'umail.feature.design.title': 'Минималистичный дизайн',
-                'umail.feature.design.desc': 'Философия "меньше значит больше", фокус на основных функциях',
-                'umail.cta.download': '⬇️ Скачать сейчас',
-                'umail.cta.learn-more': 'Узнать больше'
-            },
-            'fr': {
-                'nav.back': '← Retour',
-                'status.released': '✓ Publié',
-                'umail.subtitle': 'Outil professionnel de gestion de sécurité des emails',
-                'umail.tagline': 'Gardez chaque email sous votre contrôle',
-                'umail.feature.security.title': 'Sécurité d\'abord',
-                'umail.feature.security.desc': 'Technologie de cryptage de niveau militaire protège la confidentialité de vos emails',
-                'umail.feature.speed.title': 'Vitesse éclair',
-                'umail.feature.speed.desc': 'Optimisation native, réponse en millisecondes, fluide comme iOS',
-                'umail.feature.smart.title': 'Filtrage intelligent',
-                'umail.feature.smart.desc': 'Reconnaissance de spam alimentée par IA avec 99,9% de précision',
-                'umail.feature.design.title': 'Design minimaliste',
-                'umail.feature.design.desc': 'Philosophie "moins c\'est plus", focus sur les fonctions principales',
-                'umail.cta.download': '⬇️ Télécharger maintenant',
-                'umail.cta.learn-more': 'En savoir plus'
-            },
-            'de': {
-                'nav.back': '← Zurück',
-                'status.released': '✓ Veröffentlicht',
-                'umail.subtitle': 'Professionelles E-Mail-Sicherheits-Management-Tool',
-                'umail.tagline': 'Behalten Sie jede E-Mail unter Ihrer Kontrolle',
-                'umail.feature.security.title': 'Sicherheit zuerst',
-                'umail.feature.security.desc': 'Verschlüsselungstechnologie auf militärischem Niveau schützt Ihre E-Mail-Privatsphäre',
-                'umail.feature.speed.title': 'Blitzschnell',
-                'umail.feature.speed.desc': 'Native Optimierung, Millisekunden-Antwort, flüssig wie iOS',
-                'umail.feature.smart.title': 'Intelligente Filterung',
-                'umail.feature.smart.desc': 'KI-gesteuerte Spam-Erkennung mit 99,9% Genauigkeit',
-                'umail.feature.design.title': 'Minimalistisches Design',
-                'umail.feature.design.desc': 'Weniger ist mehr Designphilosophie, Fokus auf Kernfunktionen',
-                'umail.cta.download': '⬇️ Jetzt herunterladen',
-                'umail.cta.learn-more': 'Mehr erfahren'
-            },
-            'es': {
-                'nav.back': '← Volver',
-                'status.released': '✓ Lanzado',
-                'umail.subtitle': 'Herramienta profesional de gestión de seguridad de correo electrónico',
-                'umail.tagline': 'Mantén cada correo bajo tu control',
-                'umail.feature.security.title': 'Seguridad primero',
-                'umail.feature.security.desc': 'Tecnología de encriptación de nivel militar protege la privacidad de tu correo',
-                'umail.feature.speed.title': 'Velocidad relámpago',
-                'umail.feature.speed.desc': 'Optimización nativa, respuesta en milisegundos, fluido como iOS',
-                'umail.feature.smart.title': 'Filtrado inteligente',
-                'umail.feature.smart.desc': 'Reconocimiento de spam impulsado por IA con 99.9% de precisión',
-                'umail.feature.design.title': 'Diseño minimalista',
-                'umail.feature.design.desc': 'Filosofía de diseño "menos es más", enfoque en funciones principales',
-                'umail.cta.download': '⬇️ Descargar ahora',
-                'umail.cta.learn-more': 'Saber más'
-            }
-        };
 
-        // 当前语言（从localStorage读取或默认简体中文）
-        let currentLang = localStorage.getItem('language') || 'zh-CN';
+        // Chips 点击切换 active 态
+        document.querySelectorAll('.chip').forEach(chip => {
+            chip.addEventListener('click', function() {
+                document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
 
-        // 更新页面文本
-        function updateLanguage(lang) {
-            currentLang = lang;
-            localStorage.setItem('language', lang);
-            
-            // 更新所有带有 data-i18n 的元素
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                const translation = translations[lang][key];
-                if (translation !== undefined) {
-                    el.textContent = translation;
+        // 筛选胶囊切换
+        document.querySelectorAll('.pill').forEach(pill => {
+            pill.addEventListener('click', function() {
+                document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // 键盘导航支持
+        document.querySelectorAll('[tabindex="0"]').forEach(element => {
+            element.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    this.click();
                 }
             });
-            
-            // 更新页面标题
-            document.title = `Umail - ${translations[lang]['umail.subtitle']} | LIKAIFENG.Net`;
-        }
+        });
 
-        // iOS风格交互增强
-        document.addEventListener('DOMContentLoaded', function() {
-            // 应用当前语言
-            updateLanguage(currentLang);
-            // 按钮交互反馈
-            const buttons = document.querySelectorAll('.btn-primary, .btn-secondary, .nav-back');
-            
-            buttons.forEach(button => {
-                button.addEventListener('touchstart', function() {
-                    this.style.transform = 'scale(0.95)';
-                });
-                
-                button.addEventListener('touchend', function() {
-                    this.style.transform = '';
-                });
-                
-                button.addEventListener('mousedown', function() {
-                    this.style.transform = 'scale(0.95)';
-                });
-                
-                button.addEventListener('mouseup', function() {
-                    this.style.transform = '';
-                });
-            });
-            
-            // 特性卡片视觉反馈
-            const featureItems = document.querySelectorAll('.feature-item');
-            featureItems.forEach(item => {
-                item.addEventListener('mouseenter', function() {
-                    this.style.transform = 'translateY(-8px) scale(1.02)';
-                });
-                
-                item.addEventListener('mouseleave', function() {
-                    this.style.transform = '';
-                });
-            });
-            
-            // 滚动视觉差效果
-            window.addEventListener('scroll', function() {
-                const scrolled = window.pageYOffset;
-                const parallax = scrolled * 0.5;
-                
-                document.querySelectorAll('.bg-orb').forEach((orb, index) => {
-                    const speed = 0.2 + (index * 0.1);
-                    orb.style.transform = `translateY(${parallax * speed}px)`;
-                });
-            });
+        // 工具栏返回按钮功能
+        document.querySelector('.toolbar-btn[aria-label="返回"]').addEventListener('click', () => {
+            if (document.referrer && document.referrer.includes(window.location.host)) {
+                window.history.back();
+            } else {
+                window.location.href = '/';
+            }
         });
     </script>
 </body>
