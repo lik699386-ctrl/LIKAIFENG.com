@@ -383,17 +383,18 @@
             font-weight: 700;
             color: #000000;
             letter-spacing: -0.01em;
-            margin-right: auto;
+            margin-right: auto; /* Logo靠左，按钮靠右 */
         }
         
         .nav-items {
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 8px; /* 减小按钮之间的间距（从16px改为8px）*/
             list-style: none;
             overflow: visible;
             -webkit-overflow-scrolling: touch;
             scrollbar-width: none;
+            margin-left: auto; /* 按钮组向右推，增加与Logo的距离 */
         }
         
         .nav-items::-webkit-scrollbar {
@@ -1277,9 +1278,10 @@
                 order: 2;  /* Products按钮在右边 */
                 flex-wrap: nowrap;
                 justify-content: flex-end;
-                gap: 6px; /* 减小按钮间隙 */
+                gap: 4px; /* 进一步减小按钮间隙（从6px改为4px）*/
                 width: auto;
                 flex-shrink: 1; /* 允许按钮收缩 */
+                margin-left: auto; /* 按钮组向右推 */
             }
             
             .nav-items a {
@@ -1366,7 +1368,7 @@
             }
             
             .nav-items {
-                gap: 5px; /* 更小的间隙 */
+                gap: 3px; /* 更小的间隙（从5px改为3px）*/
             }
             
             .nav-items a {
@@ -1412,7 +1414,7 @@
             }
             
             .nav-items {
-                gap: 4px; /* 最小间隙 */
+                gap: 2px; /* 最小间隙（从4px改为2px）*/
             }
             
             .nav-items a {
