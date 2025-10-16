@@ -879,9 +879,119 @@
         @supports not (backdrop-filter: blur(1px)){
           .panel,.subpanel-wrapper,.card{ background:#5A524B; border-color:#FFFFFF12; }
         }
+
+        /* ========================================
+           画布插画：环境氛围（客厅/工作室 + 视差）
+           ======================================== */
+        .scene{
+          position: fixed; inset: 0; z-index: 0; pointer-events: none;
+          overflow: hidden;
+          /* 背景基底仍是暖奶油径向渐变 */
+          background:
+            radial-gradient(60% 60% at 22% 28%, #F6EFE7 0%, #EFE6DA 48%, #E7DAC8 100%),
+            radial-gradient(70% 70% at 84% 16%, #F3E6D3 0%, transparent 60%),
+            #EFE6DA;
+        }
+        .scene__layer{ position:absolute; inset:0; }
+        .scene__grain{
+          position:absolute; inset:0; mix-blend-mode:multiply; opacity:.06;
+          background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180" viewBox="0 0 180 180"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="2" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23n)" opacity=".35"/></svg>');
+        }
+
+        /* 左侧：绿植+边柜（矢量、轻模糊） */
+        .scene__props-left{
+          background:
+            url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 800'><g opacity='0.92'><rect x='80' y='520' width='220' height='120' rx='14' fill='%23B26B3D'/><rect x='92' y='532' width='196' height='96' rx='10' fill='%23D48A54'/><circle cx='160' cy='520' r='14' fill='%23985A30'/><g opacity='0.9'><rect x='118' y='464' width='44' height='12' rx='6' fill='%23C9BBAF'/><rect x='172' y='452' width='12' height='24' rx='6' fill='%2375A66C'/><path d='M176 452c-10 -28 24 -36 30 -60 6 24 40 30 24 60' fill='%2378B27D'/><path d='M172 464c-8 -26 16 -30 20 -48 6 20 28 26 18 48' fill='%2386C08C'/></g><circle cx='240' cy='496' r='10' fill='%23A65B2D'/></g></svg>") left 0 bottom 0/ 900px auto no-repeat;
+          filter: blur(1px) saturate(0.95);
+          transform: translateY(0);
+          animation: parallax-slow 18s ease-in-out infinite alternate;
+        }
+
+        /* 右侧：壁架+装饰灯 */
+        .scene__props-right{
+          background:
+            url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 800'><g opacity='0.92'><rect x='920' y='160' width='200' height='16' rx='8' fill='%23A38D7E'/><rect x='940' y='124' width='160' height='18' rx='9' fill='%23B9A69A'/><rect x='980' y='176' width='120' height='12' rx='6' fill='%23C9BBAF'/><circle cx='1020' cy='214' r='14' fill='%23E3B57C'/><rect x='1000' y='228' width='40' height='6' rx='3' fill='%23C9BBAF'/></g></svg>") right 2% 8%/ 720px auto no-repeat;
+          filter: blur(0.8px) saturate(0.95);
+          animation: parallax-slower 22s ease-in-out infinite alternate;
+        }
+
+        /* 顶部光扫 */
+        .scene__light-sweep{
+          background:
+            radial-gradient(60% 40% at 50% 0%, rgba(255,255,255,.35), rgba(255,255,255,0) 70%),
+            radial-gradient(30% 20% at 80% 12%, rgba(255,241,210,.35), rgba(255,241,210,0) 70%);
+          mix-blend-mode: screen; opacity:.35;
+          animation: sweep 14s ease-in-out infinite alternate;
+        }
+
+        /* 背景墙纹理（比之前更细，避免同心圆感） */
+        .scene__wall{
+          background:
+            radial-gradient(32% 22% at 28% 20%, rgba(255,255,255,.20), rgba(255,255,255,0) 70%),
+            radial-gradient(18% 16% at 82% 18%, rgba(255,255,255,.18), rgba(255,255,255,0) 70%);
+          mix-blend-mode: screen;
+        }
+
+        @keyframes sweep{
+          0%   { transform: translateY(-2%); opacity:.28; }
+          100% { transform: translateY(2%);  opacity:.38; }
+        }
+        @keyframes parallax-slow   { from{ transform: translateY(0px);} to{ transform: translateY(8px);} }
+        @keyframes parallax-slower { from{ transform: translateY(0px);} to{ transform: translateY(5px);} }
+
+        /* 保证主面板在上面 */
+        .panel{ position: relative; z-index: 1; }
+
+        /* ========================================
+           卡片缩略图插画（主题占位，浅色扁平风）
+           ======================================== */
+        .thumb{ position:relative; }
+        .thumb > .art{
+          position:absolute; inset:0; background-size: cover; background-position:center;
+          filter: saturate(1.05);
+        }
+
+        /* 每类/城市一个轻插画 */
+        .card[data-city="bali"] .thumb > .art{ background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450"><defs><linearGradient id="s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="%23B8D9FF"/><stop offset="1" stop-color="%238FB7E6"/></linearGradient></defs><rect width="800" height="450" fill="url(%23s)"/><path d="M0 310 C120 280, 220 280, 360 300 S640 340, 800 310 L800 450 L0 450 Z" fill="%2374A7D6"/><g fill="%232B6642"><rect x="140" y="210" width="26" height="120" rx="8"/><path d="M153 90 l40 50 -40 14 -40 -14 z"/><circle cx="153" cy="86" r="12" fill="%233C7B53"/></g></svg>'); }
+
+        .card[data-city="paris"] .thumb > .art{ background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450"><defs><linearGradient id="s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="%23FFD7C8"/><stop offset="1" stop-color="%23FFC1A8"/></linearGradient></defs><rect width="800" height="450" fill="url(%23s)"/><g fill="%23A6422C"><rect x="384" y="120" width="8" height="180"/><path d="M388 80 l46 60 h-92 z"/></g><rect x="0" y="320" width="800" height="130" fill="%23B36D48"/></svg>'); }
+
+        .card[data-city="tokyo"] .thumb > .art{ background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450"><defs><linearGradient id="s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="%23C3C9FF"/><stop offset="1" stop-color="%239DB0FF"/></linearGradient></defs><rect width="800" height="450" fill="url(%23s)"/><rect x="360" y="120" width="12" height="170" fill="%23DA4960"/><polygon points="366,80 386,120 346,120" fill="%23DA4960"/><rect x="0" y="330" width="800" height="120" fill="%237A87D1"/></svg>'); }
+
+        .card[data-city="rome"] .thumb > .art{ background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450"><defs><linearGradient id="s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="%23FFD0CF"/><stop offset="1" stop-color="%23FFAAA8"/></linearGradient></defs><rect width="800" height="450" fill="url(%23s)"/><g fill="%23C18A4D"><rect x="480" y="220" width="140" height="80" rx="12"/><rect x="500" y="200" width="96" height="60" rx="10"/><rect x="520" y="180" width="60" height="40" rx="8"/></g><rect x="0" y="330" width="800" height="120" fill="%23CE8E68"/></svg>'); }
+
+        .card[data-city="santorini"] .thumb > .art{ background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450"><defs><linearGradient id="s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="%23A8D5FF"/><stop offset="1" stop-color="%2380BFFF"/></linearGradient></defs><rect width="800" height="450" fill="url(%23s)"/><g fill="%23FFFFFF"><rect x="200" y="250" width="80" height="100" rx="6"/><rect x="220" y="230" width="40" height="60" rx="4"/><circle cx="240" cy="220" r="18"/></g><rect x="0" y="350" width="800" height="100" fill="%236AA8E8"/></svg>'); }
+
+        .card[data-city="dubai"] .thumb > .art{ background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450"><defs><linearGradient id="s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="%23FFE5C8"/><stop offset="1" stop-color="%23FFD0A8"/></linearGradient></defs><rect width="800" height="450" fill="url(%23s)"/><g fill="%23C19A6B"><rect x="380" y="100" width="40" height="250" rx="8"/><rect x="360" y="80" width="80" height="30" rx="6"/></g><rect x="0" y="350" width="800" height="100" fill="%23D4A574"/></svg>'); }
+
+        .card[data-city="newyork"] .thumb > .art{ background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450"><defs><linearGradient id="s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="%23B8C8FF"/><stop offset="1" stop-color="%2398ACFF"/></linearGradient></defs><rect width="800" height="450" fill="url(%23s)"/><g fill="%235A6A8A"><rect x="300" y="150" width="60" height="200" rx="6"/><rect x="380" y="120" width="40" height="230" rx="5"/><rect x="440" y="180" width="50" height="170" rx="5"/></g><rect x="0" y="350" width="800" height="100" fill="%237888AC"/></svg>'); }
+
+        .card[data-city="barcelona"] .thumb > .art{ background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450"><defs><linearGradient id="s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="%23FFCFC8"/><stop offset="1" stop-color="%23FFACA8"/></linearGradient></defs><rect width="800" height="450" fill="url(%23s)"/><g fill="%23A86858"><rect x="300" y="200" width="200" height="150" rx="12"/><circle cx="400" cy="190" r="30"/><rect x="340" y="240" width="40" height="60" rx="4"/><rect x="420" y="240" width="40" height="60" rx="4"/></g><rect x="0" y="350" width="800" height="100" fill="%23C88A78"/></svg>'); }
+
+        /* 覆盖插画不要压住文字：底部渐隐（原有的 ::after）在上层 */
+        .thumb > .art{ z-index: 0; }
+        .thumb::after{ z-index: 1; }
+
+        /* 减少动画时禁用视差 */
+        @media (prefers-reduced-motion: reduce){
+          .scene__props-left,
+          .scene__props-right,
+          .scene__light-sweep{
+            animation: none !important;
+          }
+        }
     </style>
 </head>
 <body>
+    <!-- 背景插画（在主面板外层，营造客厅/工作室氛围） -->
+    <div class="scene" aria-hidden="true">
+        <div class="scene__layer scene__wall"></div>
+        <div class="scene__layer scene__props-left"></div>
+        <div class="scene__layer scene__props-right"></div>
+        <div class="scene__layer scene__light-sweep"></div>
+        <div class="scene__grain"></div>
+    </div>
+    
     <!-- 顶部工具条 -->
     <div class="toolbar">
         <button class="toolbar-btn" aria-label="返回" tabindex="0">←</button>
@@ -1122,6 +1232,22 @@
                 window.history.back();
             } else {
                 window.location.href = '/';
+            }
+        });
+
+        // ========================================
+        // 卡片城市标记 + 插画层注入
+        // ========================================
+        document.querySelectorAll('.card').forEach((card, i) => {
+            const cities = ['bali', 'paris', 'tokyo', 'rome', 'santorini', 'dubai', 'newyork', 'barcelona'];
+            if (!card.dataset.city) card.dataset.city = cities[i % cities.length];
+            
+            // 为每个缩略图插入插画层
+            const thumb = card.querySelector('.thumb');
+            if (thumb && !thumb.querySelector('.art')) {
+                const art = document.createElement('div');
+                art.className = 'art';
+                thumb.prepend(art);
             }
         });
     </script>
