@@ -6,984 +6,605 @@
     <title>Umail - Discover Your Dream Vacation</title>
     <style>
         /* ========================================
-           设计令牌 - 流式根字体 + CSS 变量
+           设计令牌（1440×900 基准）
            ======================================== */
         :root {
-            /* 根字体流式基线（33%–200% 缩放稳态） */
-            font-size: clamp(14px, 0.9vw + 0.5vh, 17px);
+            /* 缩放基准 */
+            --scale: clamp(0.8, 100vw / 1440, 1.25);
             
-            /* 画布 & 玻璃 */
-            --canvas: #EFE6DA;
-            --panel-bg: rgba(58, 53, 49, .50);
-            --panel-border: #FFFFFF26;
-            --panel-shadow: 0 40px 90px -30px rgba(0, 0, 0, .45);
-            --panel-radius: 24px;
-            --panel-blur: 18px;
-            
+            /* 画布 */
+            --canvas-cream-1: #EFE6DA;
+            --canvas-cream-2: #F6EFE7;
+            --canvas-amber: #FFEFD6;
+
+            /* 面板玻璃 */
+            --panel-fill: rgba(102, 94, 86, 0.56);
+            --panel-stroke-o: rgba(255, 255, 255, 0.10);
+            --panel-stroke-i: rgba(0, 0, 0, 0.12);
+
             /* 文本 */
-            --txt: #F5F2EE;
-            --txt-2: #D0C7BD;
-            --txt-invert: #2B2B2B;
+            --txt-hero: #FFFFFFF2;
+            --txt-sub: #FFFFFFAA;
+            --txt-card: #FFFFFFDE;
+            --txt-dim: #FFFFFF99;
 
-            /* 分类 Chips 渐变（糖果风格） */
-            --chip-flight-from: #FDC2CF;
-            --chip-flight-to: #F999A8;
-            --chip-vac-from: #D5FA7F;
-            --chip-vac-to: #B0E468;
-            --chip-stays-from: #A9D9FF;
-            --chip-stays-to: #74B7F6;
-            --chip-rest-from: #A6CEFF;
-            --chip-rest-to: #70ACF2;
-            --chip-attr-from: #FFC0B9;
-            --chip-attr-to: #FF93A6;
-            --chip-bus-from: #F7EAA8;
-            --chip-bus-to: #EBD582;
+            /* 过滤器 Chip */
+            --chip-bg: rgba(255, 255, 255, 0.08);
+            --chip-stk: rgba(255, 255, 255, 0.18);
+            --chip-txt: #FFF;
 
-            /* 卡片（更轻的暗玻璃） */
-            --card-bg: rgba(46, 42, 39, .55);
-            --card-border: #FFFFFF24;
-            --card-radius: 18px;
-            --card-shadow: 0 18px 48px -18px rgba(0, 0, 0, .35);
+            /* 分类 Pills */
+            --pill-pink: #FF9FB1;
+            --pill-green: #B5EB6E;
+            --pill-blue: #7BB5FF;
+            --pill-azure: #8BB6FF;
+            --pill-rose: #FF9CB0;
+            --pill-sand: #FFE287;
 
-            /* 按钮/控件 */
-            --pill-h: 36px;
-            --chip-h: 44px;
-            --icon-bg: rgba(255, 255, 255, .14);
-            --icon-border: #FFFFFF26;
+            /* 卡片覆盖层 */
+            --card-gradient-top: rgba(0, 0, 0, 0.0);
+            --card-gradient-mid: rgba(0, 0, 0, 0.15);
+            --card-gradient-btm: rgba(0, 0, 0, 0.52);
 
-            /* 流式排版标尺 */
-            --h1: clamp(32px, 4.6vw, 54px);
-            --h2: clamp(18px, 2vw, 24px);
-            --body: clamp(14px, 1.4vw, 18px);
-            --meta: clamp(12px, 1.1vw, 16px);
-            
-            /* 容器与间距 */
-            --container: 1200px;
-            --gutter: clamp(16px, 3vw, 32px);
-            --easing: cubic-bezier(.22, .61, .36, 1);
+            /* 阴影 */
+            --shadow-elev: 0 24px 60px rgba(0, 0, 0, 0.25);
+            --shadow-chip: 0 6px 16px rgba(0, 0, 0, 0.18);
+            --shadow-card: 0 14px 40px rgba(0, 0, 0, 0.28);
         }
 
         /* ========================================
-           基础重置与画布（温暖室内氛围 + 噪点）
+           基础重置
            ======================================== */
         *, *::before, *::after {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
-        
+
         html {
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
-            background:
-                radial-gradient(60% 60% at 20% 30%, #F5EEE6 0%, #EFE6DA 45%, #E7DAC8 100%),
-                radial-gradient(70% 70% at 85% 15%, #F3E6D3 0%, transparent 60%),
-                var(--canvas);
-            min-height: 100vh;
         }
-        
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-            color: var(--txt);
-            font-size: 1rem;
+            font-family: "Inter", "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            color: var(--txt-hero);
+            font-size: 14px;
             line-height: 1.6;
             min-height: 100vh;
             overflow-x: hidden;
             position: relative;
-        }
-
-        /* 细噪点纹理 */
-        body::after {
-            content: "";
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            opacity: .08;
-            mix-blend-mode: multiply;
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23n)" opacity=".4"/></svg>');
-        }
-
-        /* 室内光影装饰遮罩 */
-        body::before {
-            content: "";
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            opacity: .12;
-            background:
-                radial-gradient(40% 35% at 15% 25%, rgba(255, 245, 230, .6), transparent 70%),
-                radial-gradient(35% 40% at 85% 40%, rgba(255, 235, 210, .5), transparent 65%);
-            z-index: 0;
+            background: var(--canvas-cream-1);
         }
 
         /* ========================================
-           顶部工具条（浏览器风格，更大更柔和 + 增大60px）
+           背景房间插画（固定层）
            ======================================== */
-        .toolbar {
+        .scene {
             position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 100;
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            padding: 0 24px;
-            height: 56px;
-            background: rgba(255, 255, 255, .92);
-            backdrop-filter: blur(16px) saturate(1.15);
-            -webkit-backdrop-filter: blur(16px) saturate(1.15);
-            border: 1.5px solid rgba(0, 0, 0, .08);
-            border-radius: 999px;
-            box-shadow: 0 8px 24px -4px rgba(0, 0, 0, .12), 0 2px 8px rgba(0, 0, 0, .06);
-            min-width: 600px;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
         }
 
-        .toolbar-btn {
-            width: 40px;
-            height: 40px;
-            border: none;
-            background: transparent;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--txt-invert);
-            transition: all 0.18s var(--easing);
-            font-size: 20px;
+        .scene__layer {
+            position: absolute;
+            inset: 0;
         }
 
-        .toolbar-btn:hover {
-            background: rgba(0, 0, 0, 0.06);
-            box-shadow: inset 0 1px 3px rgba(0, 0, 0, .1);
+        /* 墙体暖奶油渐变 */
+        .scene__wall {
+            background:
+                radial-gradient(60% 60% at 22% 28%, #F6EFE7 0%, #EFE6DA 48%, #E7DAC8 100%),
+                radial-gradient(28% 18% at 82% 18%, #FFF2E0 0%, transparent 70%);
         }
 
-        .toolbar-btn:focus-visible {
-            outline: none;
-            box-shadow: 0 0 0 3px #FFFFFF66, 0 0 0 1px #FFFFFF inset;
+        /* 左侧：吊蔓绿植与矮柜（放大1.18倍） */
+        .scene__props-left {
+            background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 800'><g opacity='0.92' transform='scale(1.18)'><rect x='80' y='520' width='220' height='120' rx='14' fill='%23B26B3D'/><rect x='92' y='532' width='196' height='96' rx='10' fill='%23D48A54'/><circle cx='160' cy='520' r='14' fill='%23985A30'/><g opacity='0.9'><rect x='118' y='464' width='44' height='12' rx='6' fill='%23C9BBAF'/><rect x='172' y='452' width='12' height='24' rx='6' fill='%2375A66C'/><path d='M176 452c-10 -28 24 -36 30 -60 6 24 40 30 24 60' fill='%2378B27D'/><path d='M172 464c-8 -26 16 -30 20 -48 6 20 28 26 18 48' fill='%2386C08C'/></g><circle cx='240' cy='496' r='10' fill='%23A65B2D'/></g></svg>") left 48px bottom 120px / 420px auto no-repeat;
+            filter: blur(1px) saturate(0.95);
+            animation: parallax-slow 18s ease-in-out infinite alternate;
         }
 
-        .toolbar-address {
-            padding: 0 24px;
-            background: rgba(0, 0, 0, .05);
-            border-radius: 999px;
-            font-size: clamp(15px, 1.2vw, 17px);
-            color: var(--txt-invert);
-            min-width: 300px;
-            text-align: center;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 500;
+        /* 右侧：壁架、相框、台灯 */
+        .scene__props-right {
+            background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 800'><g opacity='0.92'><rect x='920' y='160' width='200' height='16' rx='8' fill='%23A38D7E'/><rect x='940' y='124' width='160' height='18' rx='9' fill='%23B9A69A'/><rect x='980' y='176' width='120' height='12' rx='6' fill='%23C9BBAF'/><circle cx='1020' cy='214' r='14' fill='%23E3B57C'/><rect x='1000' y='228' width='40' height='6' rx='3' fill='%23C9BBAF'/></g></svg>") right 56px top 96px / 520px auto no-repeat;
+            filter: blur(0.8px) saturate(0.95);
+            animation: parallax-slower 22s ease-in-out infinite alternate;
         }
+
+        /* 顶部扫光 */
+        .scene__light-sweep {
+            background:
+                radial-gradient(60% 40% at 50% 0%, rgba(255, 255, 255, .30), rgba(255, 255, 255, 0) 70%),
+                radial-gradient(30% 20% at 80% 12%, rgba(255, 241, 210, .28), rgba(255, 241, 210, 0) 70%);
+            mix-blend-mode: screen;
+            opacity: 0.34;
+            animation: sweep 14s ease-in-out infinite alternate;
+        }
+
+        /* 颗粒噪声 */
+        .scene__grain {
+            position: absolute;
+            inset: 0;
+            mix-blend-mode: multiply;
+            opacity: 0.06;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180" viewBox="0 0 180 180"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="2" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23n)" opacity=".35"/></svg>');
+        }
+
+        /* 视差动画 */
+        @keyframes parallax-slow { from { transform: translateY(0px); } to { transform: translateY(8px); } }
+        @keyframes parallax-slower { from { transform: translateY(0px); } to { transform: translateY(5px); } }
+        @keyframes sweep { 0% { transform: translateY(-2%); opacity: .28; } 100% { transform: translateY(2%); opacity: .38; } }
 
         /* ========================================
-           主容器（流式宽度）
+           主面板容器
            ======================================== */
         .container {
-            max-width: min(var(--container), 92vw);
-            margin: 0 auto;
-            padding: 100px var(--gutter) 60px;
-        }
-
-        /* ========================================
-           主毛玻璃面板（通透暖灰 + 顶部内高光 + 增大内边距）
-           ======================================== */
-        .panel {
-            background:
-                linear-gradient(180deg, rgba(255, 255, 255, .06), rgba(255, 255, 255, .02)),
-                linear-gradient(180deg, var(--panel-bg), rgba(58, 53, 49, .44));
-            border: 1.5px solid var(--panel-border);
-            border-radius: var(--panel-radius);
-            backdrop-filter: blur(var(--panel-blur)) saturate(1.05);
-            -webkit-backdrop-filter: blur(var(--panel-blur)) saturate(1.05);
-            box-shadow: var(--panel-shadow);
-            padding: clamp(32px, 4vw, 56px);
-            margin-bottom: var(--gutter);
             position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            padding: 96px min(64px, 6vw) 60px;
         }
 
-        /* 顶部内高光带 */
+        .panel {
+            width: 1120px;
+            max-width: 100%;
+            margin: 0 auto;
+            background: var(--panel-fill);
+            border: 1px solid var(--panel-stroke-o);
+            box-shadow:
+                var(--shadow-elev),
+                0 2px 1px rgba(255, 255, 255, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.10),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.12);
+            border-radius: 20px;
+            backdrop-filter: blur(22px) saturate(1.15);
+            -webkit-backdrop-filter: blur(22px) saturate(1.15);
+            padding: 40px;
+            position: relative;
+            transform: translateZ(0);
+            overflow: hidden;
+        }
+
+        /* 面板内渐变 + 噪声 */
         .panel::before {
             content: "";
             position: absolute;
-            inset: 0 0 auto 0;
-            height: 12%;
-            border-radius: inherit;
+            inset: 0;
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(0, 0, 0, 0.08)),
+                url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180"><filter id="n2"><feTurbulence baseFrequency="0.8" numOctaves="1"/></filter><rect width="100%" height="100%" filter="url(%23n2)" opacity=".04"/></svg>');
             pointer-events: none;
-            background: linear-gradient(180deg, rgba(255, 255, 255, .7), rgba(255, 255, 255, 0));
-            opacity: .35;
+            border-radius: inherit;
         }
 
-        /* 面板顶部（品牌 + 搜索 + 头像） */
+        .panel:hover {
+            box-shadow:
+                var(--shadow-elev),
+                0 2px 1px rgba(255, 255, 255, 0.15),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+        }
+
+        /* ========================================
+           顶部搜索栏与蓝色圆点
+           ======================================== */
         .panel-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: clamp(32px, 3.5vw, 48px);
-            gap: 16px;
+            margin-bottom: 40px;
+            position: relative;
+            z-index: 2;
         }
 
-        .brand-search {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            flex: 1;
-            max-width: 420px;
-        }
-
-        /* 顶部工具胶囊（Going to / Dates / Guests / Search - 更显眼） */
-        .search-pill {
-            flex: 1;
-            height: var(--pill-h);
-            padding: 0 18px;
-            background: rgba(255, 255, 255, .18);
-            border: 1.5px solid rgba(255, 255, 255, .26);
-            border-radius: 999px;
-            color: var(--txt);
-            font-size: var(--meta);
-            font-family: inherit;
-            transition: all 0.25s var(--easing);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
+        .search-input {
+            width: 520px;
+            height: 36px;
+            padding: 0 16px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 18px;
+            box-shadow: 0 1px 0 rgba(255, 255, 255, 0.35);
+            color: rgba(255, 255, 255, 0.70);
+            font-size: 13px;
             font-weight: 500;
-        }
-
-        .search-pill::placeholder {
-            color: var(--txt-2);
-        }
-
-        .search-pill:hover {
-            background: rgba(255, 255, 255, .24);
-            border-color: rgba(255, 255, 255, .36);
-        }
-
-        .search-pill:focus {
+            font-family: inherit;
             outline: none;
-            background: rgba(255, 255, 255, .28);
-            border-color: rgba(255, 255, 255, .44);
-            box-shadow: 0 0 0 3px rgba(255, 255, 255, .4), inset 0 1px 0 rgba(255, 255, 255, .35);
+            transition: all 0.2s ease;
         }
 
-        .user-avatar {
-            width: 48px;
-            height: 48px;
+        .search-input::placeholder {
+            color: rgba(255, 255, 255, 0.45);
+        }
+
+        .search-input:focus {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.24);
+            color: rgba(255, 255, 255, 0.90);
+        }
+
+        .avatar-dot {
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #74B7F6, #A9D9FF);
-            border: 1.5px solid var(--icon-border);
+            background: radial-gradient(circle at 40% 40%, #FFFFFF80 0%, #8FC5FF 30%, #5AA6FF 100%);
+            box-shadow: 0 0 18px rgba(96, 182, 255, 0.50);
             cursor: pointer;
-            transition: all 0.25s var(--easing);
+            transition: all 0.2s ease;
         }
 
-        .user-avatar:hover {
+        .avatar-dot:hover {
+            box-shadow: 0 0 24px rgba(96, 182, 255, 0.70);
             transform: scale(1.08);
-            box-shadow: 0 12px 28px rgba(0, 0, 0, .26);
-        }
-
-        .user-avatar:focus-visible {
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(255, 255, 255, .66), 0 0 0 1px #FFFFFF inset;
-        }
-
-        /* 主标题区（更大更粗，行高 1.1，字距 -0.01em） */
-        .hero-title {
-            font-size: var(--h1);
-            font-weight: 800;
-            letter-spacing: -0.01em;
-            color: var(--txt);
-            margin-bottom: 12px;
-            line-height: 1.1;
-        }
-
-        .hero-subtitle {
-            font-size: var(--body);
-            color: var(--txt-2);
-            margin-bottom: clamp(28px, 3vw, 40px);
-            line-height: 1.5;
         }
 
         /* ========================================
-           分类 Chips（糖果风格 + icon 圆点内阴影）
+           Hero 标题区
            ======================================== */
-        .chips-container {
+        .hero {
+            width: 880px;
+            max-width: 100%;
+            margin-bottom: 12px;
             position: relative;
-            margin-bottom: clamp(28px, 3vw, 40px);
-            overflow: visible;
-            padding-right: 60px;
+            z-index: 2;
         }
 
-        .chips-scroll {
-            display: flex;
-            gap: clamp(10px, 1.4vw, 16px);
-            overflow-x: auto;
-            overflow-y: hidden;
-            padding-bottom: 8px;
-            scroll-behavior: smooth;
-            -webkit-overflow-scrolling: touch;
+        .hero-title {
+            font-size: clamp(32px, 3.8vw, 48px);
+            font-weight: 800;
+            line-height: 1.08;
+            letter-spacing: -0.5px;
+            color: var(--txt-hero);
+            margin-bottom: 12px;
         }
 
-        .chips-scroll::-webkit-scrollbar {
-            height: 6px;
-        }
-
-        .chips-scroll::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 3px;
-        }
-
-        .chips-scroll::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.18);
-            border-radius: 3px;
-        }
-
-        .chip {
-            height: var(--chip-h);
-            padding: 0 16px;
-            border-radius: 999px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: var(--txt-invert);
-            border: 1.5px solid rgba(0, 0, 0, .20);
-            box-shadow: inset 0 -2px 0 rgba(255, 255, 255, .45), 0 8px 18px rgba(0, 0, 0, .16);
-            cursor: pointer;
-            white-space: nowrap;
-            flex-shrink: 0;
-            transition: transform .18s var(--easing), box-shadow .18s var(--easing);
-            font-size: clamp(13px, 1.2vw, 15px);
-            font-weight: 600;
-        }
-
-        .chip:hover {
-            transform: translateY(-4px);
-            box-shadow: inset 0 -3px 0 rgba(255, 255, 255, .52), 0 12px 24px rgba(0, 0, 0, .22);
-        }
-
-        .chip:focus-visible {
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(255, 255, 255, .66), 0 0 0 1px #FFFFFF inset, inset 0 -2px 0 rgba(255, 255, 255, .45);
-        }
-
-        .chip.active {
-            border-color: rgba(0, 0, 0, .28);
-        }
-
-        /* 糖果渐变色 */
-        .chip.flight { background: linear-gradient(180deg, var(--chip-flight-from) 0%, var(--chip-flight-to) 100%); }
-        .chip.vac { background: linear-gradient(180deg, var(--chip-vac-from) 0%, var(--chip-vac-to) 100%); }
-        .chip.stays { background: linear-gradient(180deg, var(--chip-stays-from) 0%, var(--chip-stays-to) 100%); }
-        .chip.rest { background: linear-gradient(180deg, var(--chip-rest-from) 0%, var(--chip-rest-to) 100%); }
-        .chip.attr { background: linear-gradient(180deg, var(--chip-attr-from) 0%, var(--chip-attr-to) 100%); }
-        .chip.bus { 
-            background: linear-gradient(180deg, var(--chip-bus-from) 0%, var(--chip-bus-to) 100%);
-            transform: translateX(12px); /* 半悬浮溢出 */
-        }
-        .chip.bus:hover {
-            transform: translateX(12px) translateY(-4px);
-        }
-
-        /* icon 圆点 - 半透明背板 + 描边 + 内阴影 */
-        .chip-icon {
-            width: 26px;
-            height: 26px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, .30);
-            border: 1px solid rgba(255, 255, 255, .66);
-            flex-shrink: 0;
-            display: grid;
-            place-items: center;
-            box-shadow: inset 0 1px 2px rgba(0, 0, 0, .12);
-        }
-
-        .chip-info {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-        }
-
-        .chip-count {
-            font-size: 11px;
-            opacity: 0.7;
+        .hero-subtitle {
+            font-size: 14px;
+            line-height: 22px;
+            color: var(--txt-sub);
             font-weight: 400;
         }
 
         /* ========================================
-           次面板 - Explore the world（深色玻璃 + 顶缘亮带）
+           分类 Pills（六个彩色胶囊）
            ======================================== */
-        .subpanel-wrapper {
+        .pills-row {
+            display: flex;
+            gap: 12px;
+            margin: 16px 0 22px;
+            flex-wrap: wrap;
             position: relative;
+            z-index: 2;
         }
 
-        /* 顶部柔和高光带（模拟参考图） */
-        .subpanel-wrapper::before {
-            content: "";
-            position: absolute;
-            inset: -16px 0 auto 0;
-            height: 32px;
-            pointer-events: none;
-            background: linear-gradient(180deg, rgba(255, 255, 255, .18), transparent 70%);
-            border-radius: 24px 24px 0 0;
-            z-index: 1;
-        }
-
-        .explore-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 22px;
-            gap: 16px;
-            flex-wrap: wrap;
-        }
-
-        .explore-title {
-            font-size: var(--h2);
-            font-weight: 700;
-            color: var(--txt);
-        }
-
-        .filters {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-
-        /* 过滤 Pills（hover 提亮 + active 内阴影） */
         .pill {
-            height: var(--pill-h);
-            padding: 0 14px;
-            border-radius: 999px;
-            background: rgba(255, 255, 255, .10);
-            color: #F5F2EE;
-            border: 1.5px solid rgba(255, 255, 255, .26);
-            font-size: var(--meta);
-            cursor: pointer;
-            transition: all 0.18s var(--easing);
-            white-space: nowrap;
-            font-family: inherit;
-            font-weight: 500;
-            backdrop-filter: blur(6px);
-            -webkit-backdrop-filter: blur(6px);
-        }
-
-        .pill:hover {
-            background: rgba(255, 255, 255, .18);
-            border-color: rgba(255, 255, 255, .36);
-        }
-
-        .pill.active {
-            background: rgba(255, 255, 255, .24);
-            border-color: rgba(255, 255, 255, .42);
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, .35);
-        }
-
-        .pill:focus-visible {
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(255, 255, 255, .66), 0 0 0 1px #FFFFFF inset;
-        }
-
-        /* See more 按钮（hover 右移 2px） */
-        .see-more {
+            height: 44px;
+            padding: 0 16px;
+            border-radius: 22px;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            color: var(--txt);
-            font-size: var(--meta);
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #2B2B2B;
+            border: 1px solid rgba(255, 255, 255, 0.80);
+            box-shadow:
+                var(--shadow-chip),
+                inset 0 1px 0 rgba(0, 0, 0, 0.12);
             cursor: pointer;
-            transition: all 0.18s var(--easing);
-            padding: 10px 14px;
-            border-radius: 10px;
+            transition: all 0.15s ease;
+            white-space: nowrap;
+        }
+
+        .pill::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(255, 255, 255, .35), rgba(255, 255, 255, 0));
+            border-radius: inherit;
+            pointer-events: none;
+        }
+
+        .pill-icon {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.35);
+        }
+
+        .pill-count {
+            font-size: 11px;
+            opacity: 0.75;
             font-weight: 500;
         }
 
-        .see-more:hover {
-            background: rgba(255, 255, 255, 0.10);
+        .pill.flight { background: var(--pill-pink); }
+        .pill.vac { background: var(--pill-green); }
+        .pill.stays { background: var(--pill-blue); }
+        .pill.rest { background: var(--pill-azure); }
+        .pill.attr { background: var(--pill-rose); }
+        .pill.bus { background: var(--pill-sand); }
+
+        .pill:hover {
+            box-shadow:
+                0 8px 20px rgba(0, 0, 0, 0.22),
+                inset 0 1px 0 rgba(255, 255, 255, 0.60);
+            transform: translateY(-2px);
         }
 
-        .see-more:hover .arrow {
-            transform: translateX(2px);
-        }
-
-        .arrow {
-            transition: transform 0.18s var(--easing);
+        .pill:active {
+            transform: translateY(1px);
         }
 
         /* ========================================
-           卡片网格（16:9 缩略图 + 渐隐黑遮罩）
+           过滤器 Chips
+           ======================================== */
+        .chips-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 2;
+        }
+
+        .chip {
+            height: 36px;
+            padding: 0 14px;
+            border-radius: 18px;
+            background: var(--chip-bg);
+            border: 1px solid var(--chip-stk);
+            color: var(--chip-txt);
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            white-space: nowrap;
+        }
+
+        .chip:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.26);
+        }
+
+        .chip.active {
+            background: rgba(255, 255, 255, 0.16);
+        }
+
+        /* ========================================
+           卡片栅格（4列）
            ======================================== */
         .cards-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: clamp(14px, 1.6vw, 22px);
-            margin-top: var(--gutter);
+            grid-template-columns: repeat(4, 248px);
+            gap: 24px;
+            position: relative;
+            z-index: 2;
         }
 
         .card {
-            background: linear-gradient(180deg, var(--card-bg), rgba(46, 42, 39, .50));
-            border: 1.5px solid var(--card-border);
-            border-radius: var(--card-radius);
-            box-shadow: var(--card-shadow);
+            width: 248px;
+            background: rgba(102, 94, 86, 0.60);
+            border-radius: 16px;
+            box-shadow:
+                var(--shadow-card),
+                inset 0 1px 0 rgba(255, 255, 255, 0.25);
             overflow: hidden;
             cursor: pointer;
-            transition: transform .2s var(--easing), box-shadow .2s var(--easing), border-color .2s;
+            transition: all 0.2s ease;
+            transform: translateZ(0);
             text-decoration: none;
             color: inherit;
             display: block;
         }
 
         .card:hover {
-            transform: translateY(-6px);
-            border-color: rgba(255, 255, 255, .33);
-            box-shadow: 0 24px 50px -22px rgba(0, 0, 0, .45);
+            transform: translateY(-4px) translateZ(0);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, .32);
         }
 
-        .card:focus-visible {
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(255, 255, 255, .66), 0 0 0 1px #FFFFFF inset, 0 24px 50px -22px rgba(0, 0, 0, .45);
-            border-radius: 999px;
-        }
-
-        /* 缩略图 16:9 + 下方黑遮罩渐隐 */
+        /* 卡片缩略图 */
         .thumb {
-            aspect-ratio: 16 / 9;
-            background: linear-gradient(135deg, #AFC2D6, #97B0C8);
+            height: 140px;
             position: relative;
             overflow: hidden;
+            border-radius: 16px 16px 0 0;
         }
 
-        .thumb::after {
-            content: '';
+        .thumb > .art {
             position: absolute;
-            inset: auto 0 0 0;
-            height: 46%;
-            background: linear-gradient(180deg, transparent, rgba(0, 0, 0, .55));
+            inset: 0;
+            background-position: center bottom;
+            background-size: 110% auto;
+            image-rendering: -webkit-optimize-contrast;
+            z-index: 0;
         }
 
+        /* 底部渐隐遮罩 */
+        .thumb::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg,
+                var(--card-gradient-top) 0%,
+                var(--card-gradient-mid) 55%,
+                var(--card-gradient-btm) 100%);
+            z-index: 1;
+        }
+
+        /* 卡片插画（四张首卡，像素对齐） */
+        .card[data-city="bali"] .thumb > .art {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 248 140"><defs><linearGradient id="sky1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="%23B9DBFF"/><stop offset="1" stop-color="%238FB7E6"/></linearGradient></defs><rect width="248" height="140" fill="url(%23sky1)"/><path d="M0 82 Q62 75, 124 82 T248 82 L248 140 L0 140 Z" fill="%2374A7D6"/><g fill="%232B6642"><polygon points="84,48 104,88 64,88"/><rect x="82" y="88" width="4" height="52"/></g><path d="M0 96 Q62 88, 124 96 T248 96 L248 140 L0 140 Z" fill="%235A96C6"/></svg>');
+        }
+
+        .card[data-city="paris"] .thumb > .art {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 248 140"><defs><linearGradient id="sky2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="%23FFD7C8"/><stop offset="1" stop-color="%23FFC1A8"/></linearGradient></defs><rect width="248" height="140" fill="url(%23sky2)"/><g fill="%23A6422C"><rect x="117" y="26" width="14" height="92"/><polygon points="124,20 138,42 110,42"/><rect x="110" y="42" width="28" height="4"/><rect x="114" y="46" width="20" height="3"/></g><rect x="0" y="118" width="248" height="22" fill="%23B36D48"/></svg>');
+        }
+
+        .card[data-city="tokyo"] .thumb > .art {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 248 140"><defs><linearGradient id="sky3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="%23C3C9FF"/><stop offset="1" stop-color="%239DB0FF"/></linearGradient></defs><rect width="248" height="140" fill="url(%23sky3)"/><g fill="%23DA4960"><rect x="120" y="26" width="8" height="92"/><polygon points="124,20 136,38 112,38"/></g><rect x="0" y="118" width="248" height="22" fill="%237A87D1"/></svg>');
+        }
+
+        .card[data-city="rome"] .thumb > .art {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 248 140"><defs><linearGradient id="sky4" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="%23FFD0CF"/><stop offset="1" stop-color="%23FFAAA8"/></linearGradient></defs><rect width="248" height="140" fill="url(%23sky4)"/><g fill="%23C18A4D"><rect x="54" y="68" width="140" height="50" rx="12"/><rect x="76" y="86" width="96" height="32" rx="10"/><rect x="94" y="104" width="60" height="14" rx="8"/></g><rect x="0" y="118" width="248" height="22" fill="%23CE8E68"/></svg>');
+        }
+
+        /* 卡片文本区 */
         .card-content {
-            padding: 16px;
+            padding: 12px 14px 14px;
         }
 
         .card-title {
-            font-size: clamp(16px, 1.6vw, 18px);
-            font-weight: 600;
-            color: #F5F2EE;
-            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--txt-card);
+            margin-bottom: 6px;
         }
 
         .card-rating {
             display: flex;
             align-items: center;
-            gap: 8px;
-            margin-bottom: 10px;
+            gap: 6px;
+            margin-bottom: 6px;
         }
 
         .stars {
-            color: #FFB957;
-            font-size: 14px;
+            color: #FFD56A;
+            font-size: 12px;
+            letter-spacing: 1px;
         }
 
         .rating-num {
-            font-size: var(--meta);
-            color: var(--txt-2);
+            font-size: 12px;
+            color: #FFD56A;
+            font-weight: 500;
         }
 
-        .card .meta {
-            color: var(--txt-2);
-            font-size: var(--meta);
-            line-height: 1.4;
+        .card-desc {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.70);
+            line-height: 16px;
+            margin-bottom: 10px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
 
-        .price {
-            font-size: clamp(14px, 1.4vw, 15px);
-            font-weight: 700;
-            color: #F5F2EE;
-            margin-top: 10px;
+        .card-price {
+            font-size: 12px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.90);
         }
 
         /* ========================================
-           响应式设计（流式网格）
+           焦点环
+           ======================================== */
+        .pill:focus-visible,
+        .chip:focus-visible,
+        .card:focus-visible,
+        .avatar-dot:focus-visible {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, .22);
+        }
+
+        /* ========================================
+           响应式（≤1199px / ≤767px）
            ======================================== */
         @media (max-width: 1199px) {
-            .container {
-                padding: 100px clamp(16px, 2.5vw, 24px) 60px;
-            }
-
             .panel {
-                padding: clamp(20px, 3vw, 28px);
+                width: 100%;
             }
 
             .cards-grid {
                 grid-template-columns: repeat(3, 1fr);
+                gap: 20px;
+            }
+
+            .card {
+                width: 100%;
+            }
+
+            .hero {
+                width: 100%;
+            }
+
+            .search-input {
+                width: 100%;
+                max-width: 520px;
             }
         }
 
         @media (max-width: 767px) {
-            .toolbar {
-                top: 10px;
-                padding: 0 18px;
-                gap: 12px;
-                height: 50px;
-                min-width: auto;
-            }
-
-            .toolbar-btn {
-                width: 36px;
-                height: 36px;
-                font-size: 18px;
-            }
-
-            .toolbar-address {
-                display: none;
-            }
-
             .container {
-                padding: 90px clamp(16px, 4vw, 20px) 40px;
+                padding: 60px min(24px, 4vw) 40px;
             }
 
             .panel {
-                padding: clamp(20px, 4vw, 28px);
+                padding: 24px 20px;
             }
 
             .panel-header {
                 flex-direction: column;
                 align-items: stretch;
+                gap: 16px;
             }
 
-            .brand-search {
+            .search-input {
                 max-width: none;
             }
 
-            .user-avatar {
+            .avatar-dot {
                 align-self: flex-end;
             }
 
             .hero-title {
-                text-align: center;
                 font-size: clamp(28px, 7vw, 38px);
             }
 
-            .hero-subtitle {
-                text-align: center;
-            }
-
-            .chips-container {
-                padding-right: 0;
-            }
-
-            .chips-scroll {
-                overflow: auto;
+            .pills-row {
+                overflow-x: auto;
+                flex-wrap: nowrap;
                 scroll-snap-type: x mandatory;
+                -webkit-overflow-scrolling: touch;
             }
 
-            .chips-scroll > * {
+            .pill {
                 scroll-snap-align: start;
-            }
-
-            .chip.bus {
-                transform: none;
-            }
-            .chip.bus:hover {
-                transform: translateY(-4px);
-            }
-
-            .explore-header {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            
-            .filters {
-                justify-content: center;
             }
 
             .cards-grid {
                 grid-template-columns: repeat(2, 1fr);
+                gap: 16px;
             }
         }
-        
+
         /* ========================================
            减少动画（可访问性）
            ======================================== */
         @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after {
+            *,
+            *::before,
+            *::after {
                 animation: none !important;
                 transition: none !important;
             }
-
-            .chip:hover,
-            .card:hover,
-            .pill:hover,
-            .toolbar-btn:hover,
-            .user-avatar:hover {
-                transform: none !important;
-            }
-
-            .see-more:hover .arrow {
-                transform: none !important;
-            }
         }
 
         /* ========================================
-           Backdrop-filter 降级支持
+           Backdrop-filter 降级
            ======================================== */
         @supports not (backdrop-filter: blur(1px)) {
             .panel {
-                background: #5A524B;
-                border-color: rgba(255, 255, 255, .12);
+                background: rgba(102, 94, 86, 0.92);
             }
-
-            .card {
-                background: #5A524B;
-                border-color: rgba(255, 255, 255, .12);
-            }
-
-            .toolbar {
-                background: #F5F2EE;
-            }
-        }
-
-        /* ========================================
-           高对比度模式
-           ======================================== */
-        @media (prefers-contrast: high) {
-            .panel,
-            .card {
-                border-width: 2px;
-            }
-        }
-
-        /* ========================================
-           像素级微调覆盖（参考图对齐）
-           ======================================== */
-
-        /* === 1) 流式排版与缩放稳态 === */
-        :root{
-          font-size: clamp(14px, 0.9vw + 0.5vh, 17px); /* 任意缩放稳读 */
-          --h1: clamp(34px, 4.8vw, 56px);
-          --body: clamp(14px, 1.5vw, 18px);
-          --meta: clamp(12px, 1.2vw, 16px);
-          --chip-h: 44px;
-          --pill-h: 36px;
-        }
-
-        /* === 2) 画布与噪点（更细腻，弱化同心圆感） === */
-        html{
-          background:
-            radial-gradient(60% 60% at 22% 28%, #F6EFE7 0%, #EFE6DA 48%, #E7DAC8 100%),
-            radial-gradient(70% 70% at 84% 16%, #F3E6D3 0%, transparent 60%),
-            #EFE6DA;
-        }
-        body::after{
-          content:""; position:fixed; inset:0; pointer-events:none; mix-blend-mode:multiply; opacity:.07;
-          background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180" viewBox="0 0 180 180"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="2" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23n)" opacity=".35"/></svg>');
-        }
-
-        /* === 3) 主面板更通透 + 顶部内高光带 === */
-        .panel{
-          background:
-            linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.02)),
-            linear-gradient(180deg, rgba(58,53,49,.50), rgba(58,53,49,.42));
-          border:1.5px solid #FFFFFF26;
-          border-radius:24px;
-          backdrop-filter: blur(18px) saturate(1.05);
-          box-shadow: 0 40px 90px -30px rgba(0,0,0,.45);
-          position:relative;
-        }
-        .panel::before{
-          content:""; position:absolute; inset:0 0 auto 0; height:10%;
-          border-radius:inherit; pointer-events:none; opacity:.35;
-          background: linear-gradient(180deg,#FFFFFFB0,#FFFFFF00); /* 亮带 */
-        }
-
-        /* 标题更亮更粗更紧凑 */
-        h1{ font-size: var(--h1); line-height:1.12; letter-spacing:-0.01em; color:#F7F4F0; font-weight:800; }
-
-        /* === 4) 顶部工具胶囊更显眼 === */
-        .top-pills{ gap: 10px; }
-        .top-pill{
-          height: var(--pill-h); padding:0 12px; border-radius:999px;
-          background:#FFFFFF1A; color:#F5F2EE;
-          border:1.5px solid #FFFFFF26; backdrop-filter: blur(8px);
-          box-shadow: inset 0 1px 0 #FFFFFF55;
-        }
-        .top-pill:hover{ background:#FFFFFF2A; }
-        .top-pill .dot{ width:8px; height:8px; border-radius:50%;
-          background: radial-gradient(circle at 30% 30%, #FFE19B, #D69A2E);
-          box-shadow: inset 0 1px 1px rgba(255,255,255,.6);
-        }
-
-        /* === 5) 彩色 chips 更"糖果"并右侧溢出 === */
-        .chips-scroll{ gap: 14px; padding-right: 60px; overflow: visible; }
-        .chip{
-          height: var(--chip-h); padding:0 16px; border-radius:999px;
-          display:flex; align-items:center; gap:10px; color:#2B2B2B;
-          border:1.5px solid #00000020;
-          box-shadow: inset 0 -2px 0 rgba(255,255,255,.45), 0 8px 18px rgba(0,0,0,.16);
-          font-weight:600; font-size: clamp(13px,1.2vw,15px);
-          transition: transform .18s cubic-bezier(.22,.61,.36,1), box-shadow .18s;
-        }
-        .chip-icon{
-          width:26px; height:26px; border-radius:50%; display:grid; place-items:center;
-          background: rgba(255,255,255,.30); border:1px solid #FFFFFF66;
-        }
-        .chip:hover{ transform: translateY(-4px); }
-        .chip.flight   { background:linear-gradient(180deg,#FDC2CF 0%,#F999A8 100%); }
-        .chip.vac      { background:linear-gradient(180deg,#D5FA7F 0%,#B0E468 100%); }
-        .chip.stays    { background:linear-gradient(180deg,#A9D9FF 0%,#74B7F6 100%); }
-        .chip.rest     { background:linear-gradient(180deg,#A6CEFF 0%,#70ACF2 100%); }
-        .chip.attr     { background:linear-gradient(180deg,#FFC0B9 0%,#FF93A6 100%); }
-        .chip.bus      { background:linear-gradient(180deg,#F7EAA8 0%,#EBD582 100%); transform: translateX(12px); }
-
-        /* === 6) 次级面板顶缘亮带（参考图关键） === */
-        .subpanel-wrapper{ position:relative; }
-        .subpanel-wrapper::before{
-          content:""; position:absolute; inset:-12px 0 auto 0; height:24px; pointer-events:none;
-          background: linear-gradient(180deg, #FFFFFF22, transparent 70%);
-          border-radius: 24px 24px 0 0;
-        }
-
-        /* === 7) 卡片变轻、图像渐隐正确 === */
-        .card{
-          background: linear-gradient(180deg, rgba(46,42,39,.55), rgba(46,42,39,.50));
-          border:1px solid #FFFFFF24; border-radius:18px; overflow:hidden;
-          box-shadow: 0 18px 48px -18px rgba(0,0,0,.35);
-          transition: transform .2s cubic-bezier(.22,.61,.36,1), box-shadow .2s, border-color .2s;
-        }
-        .card:hover{ transform: translateY(-6px); border-color:#FFFFFF33; box-shadow:0 24px 50px -22px rgba(0,0,0,.45); }
-        .thumb{ aspect-ratio:16/9; background:#AFC2D6; position:relative; }
-        .thumb::after{ content:""; position:absolute; inset:auto 0 0 0; height:46%;
-          background:linear-gradient(180deg,transparent,rgba(0,0,0,.55));
-        }
-        .card-title{ font-size: clamp(16px,1.6vw,18px); font-weight:600; color:#F5F2EE; }
-        .card .meta{ font-size: var(--meta); color:#D0C7BD; }
-        .price{ font-size: clamp(14px,1.4vw,15px); font-weight:700; color:#F5F2EE; }
-        .stars{ color:#FFB957; }
-
-        /* === 8) 网格与间距（各缩放稳态 + 增大宽度） === */
-        .container{ max-width: min(1480px, 96vw); padding-inline: clamp(20px, 2vw, 40px); }
-        .cards-grid{ display:grid; gap: clamp(14px, 1.6vw, 22px); grid-template-columns: repeat(4,1fr); }
-        @media (max-width:1199px){ .cards-grid{ grid-template-columns: repeat(3,1fr); } }
-        @media (max-width: 767px){
-          .panel{ padding: 18px 16px 24px; }
-          .chips-scroll{ overflow:auto; scroll-snap-type:x mandatory; }
-          .chip{ scroll-snap-align:start; }
-          .cards-grid{ grid-template-columns: repeat(2,1fr); gap:14px; }
-          .hero-title{ font-size: clamp(28px,7vw,38px); }
-        }
-
-        /* === 9) 可达性与退化 === */
-        :where(a,button,.chip,.pill,.card a):focus-visible{
-          outline: none; box-shadow: 0 0 0 3px #FFFFFF66, 0 0 0 1px #FFFFFF inset; border-radius: 999px;
-        }
-        @media (prefers-reduced-motion: reduce){ *{ transition:none !important; } }
-        @supports not (backdrop-filter: blur(1px)){
-          .panel,.subpanel-wrapper,.card{ background:#5A524B; border-color:#FFFFFF12; }
-        }
-
-        /* ========================================
-           画布插画：环境氛围（客厅/工作室 + 视差）
-           ======================================== */
-        .scene{
-          position: fixed; inset: 0; z-index: 0; pointer-events: none;
-          overflow: hidden;
-          /* 背景基底仍是暖奶油径向渐变 */
-          background:
-            radial-gradient(60% 60% at 22% 28%, #F6EFE7 0%, #EFE6DA 48%, #E7DAC8 100%),
-            radial-gradient(70% 70% at 84% 16%, #F3E6D3 0%, transparent 60%),
-            #EFE6DA;
-        }
-        .scene__layer{ position:absolute; inset:0; }
-        .scene__grain{
-          position:absolute; inset:0; mix-blend-mode:multiply; opacity:.06;
-          background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180" viewBox="0 0 180 180"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="2" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23n)" opacity=".35"/></svg>');
-        }
-
-        /* 左侧：绿植+边柜（矢量、轻模糊） */
-        .scene__props-left{
-          background:
-            url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 800'><g opacity='0.92'><rect x='80' y='520' width='220' height='120' rx='14' fill='%23B26B3D'/><rect x='92' y='532' width='196' height='96' rx='10' fill='%23D48A54'/><circle cx='160' cy='520' r='14' fill='%23985A30'/><g opacity='0.9'><rect x='118' y='464' width='44' height='12' rx='6' fill='%23C9BBAF'/><rect x='172' y='452' width='12' height='24' rx='6' fill='%2375A66C'/><path d='M176 452c-10 -28 24 -36 30 -60 6 24 40 30 24 60' fill='%2378B27D'/><path d='M172 464c-8 -26 16 -30 20 -48 6 20 28 26 18 48' fill='%2386C08C'/></g><circle cx='240' cy='496' r='10' fill='%23A65B2D'/></g></svg>") left 0 bottom 0/ 900px auto no-repeat;
-          filter: blur(1px) saturate(0.95);
-          transform: translateY(0);
-          animation: parallax-slow 18s ease-in-out infinite alternate;
-        }
-
-        /* 右侧：壁架+装饰灯 */
-        .scene__props-right{
-          background:
-            url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 800'><g opacity='0.92'><rect x='920' y='160' width='200' height='16' rx='8' fill='%23A38D7E'/><rect x='940' y='124' width='160' height='18' rx='9' fill='%23B9A69A'/><rect x='980' y='176' width='120' height='12' rx='6' fill='%23C9BBAF'/><circle cx='1020' cy='214' r='14' fill='%23E3B57C'/><rect x='1000' y='228' width='40' height='6' rx='3' fill='%23C9BBAF'/></g></svg>") right 2% 8%/ 720px auto no-repeat;
-          filter: blur(0.8px) saturate(0.95);
-          animation: parallax-slower 22s ease-in-out infinite alternate;
-        }
-
-        /* 顶部光扫 */
-        .scene__light-sweep{
-          background:
-            radial-gradient(60% 40% at 50% 0%, rgba(255,255,255,.35), rgba(255,255,255,0) 70%),
-            radial-gradient(30% 20% at 80% 12%, rgba(255,241,210,.35), rgba(255,241,210,0) 70%);
-          mix-blend-mode: screen; opacity:.35;
-          animation: sweep 14s ease-in-out infinite alternate;
-        }
-
-        /* 背景墙纹理（比之前更细，避免同心圆感） */
-        .scene__wall{
-          background:
-            radial-gradient(32% 22% at 28% 20%, rgba(255,255,255,.20), rgba(255,255,255,0) 70%),
-            radial-gradient(18% 16% at 82% 18%, rgba(255,255,255,.18), rgba(255,255,255,0) 70%);
-          mix-blend-mode: screen;
-        }
-
-        @keyframes sweep{
-          0%   { transform: translateY(-2%); opacity:.28; }
-          100% { transform: translateY(2%);  opacity:.38; }
-        }
-        @keyframes parallax-slow   { from{ transform: translateY(0px);} to{ transform: translateY(8px);} }
-        @keyframes parallax-slower { from{ transform: translateY(0px);} to{ transform: translateY(5px);} }
-
-        /* 保证主面板在上面 */
-        .panel{ position: relative; z-index: 1; }
-
-        /* ========================================
-           卡片缩略图插画（主题占位，浅色扁平风）
-           ======================================== */
-        .thumb{ position:relative; }
-        .thumb > .art{
-          position:absolute; inset:0; background-size: cover; background-position:center;
-          filter: saturate(1.05);
-        }
-
-        /* 每类/城市一个轻插画 */
-        .card[data-city="bali"] .thumb > .art{ background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450"><defs><linearGradient id="s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="%23B8D9FF"/><stop offset="1" stop-color="%238FB7E6"/></linearGradient></defs><rect width="800" height="450" fill="url(%23s)"/><path d="M0 310 C120 280, 220 280, 360 300 S640 340, 800 310 L800 450 L0 450 Z" fill="%2374A7D6"/><g fill="%232B6642"><rect x="140" y="210" width="26" height="120" rx="8"/><path d="M153 90 l40 50 -40 14 -40 -14 z"/><circle cx="153" cy="86" r="12" fill="%233C7B53"/></g></svg>'); }
-
-        .card[data-city="paris"] .thumb > .art{ background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450"><defs><linearGradient id="s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="%23FFD7C8"/><stop offset="1" stop-color="%23FFC1A8"/></linearGradient></defs><rect width="800" height="450" fill="url(%23s)"/><g fill="%23A6422C"><rect x="384" y="120" width="8" height="180"/><path d="M388 80 l46 60 h-92 z"/></g><rect x="0" y="320" width="800" height="130" fill="%23B36D48"/></svg>'); }
-
-        .card[data-city="tokyo"] .thumb > .art{ background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450"><defs><linearGradient id="s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="%23C3C9FF"/><stop offset="1" stop-color="%239DB0FF"/></linearGradient></defs><rect width="800" height="450" fill="url(%23s)"/><rect x="360" y="120" width="12" height="170" fill="%23DA4960"/><polygon points="366,80 386,120 346,120" fill="%23DA4960"/><rect x="0" y="330" width="800" height="120" fill="%237A87D1"/></svg>'); }
-
-        .card[data-city="rome"] .thumb > .art{ background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450"><defs><linearGradient id="s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="%23FFD0CF"/><stop offset="1" stop-color="%23FFAAA8"/></linearGradient></defs><rect width="800" height="450" fill="url(%23s)"/><g fill="%23C18A4D"><rect x="480" y="220" width="140" height="80" rx="12"/><rect x="500" y="200" width="96" height="60" rx="10"/><rect x="520" y="180" width="60" height="40" rx="8"/></g><rect x="0" y="330" width="800" height="120" fill="%23CE8E68"/></svg>'); }
-
-        .card[data-city="santorini"] .thumb > .art{ background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450"><defs><linearGradient id="s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="%23A8D5FF"/><stop offset="1" stop-color="%2380BFFF"/></linearGradient></defs><rect width="800" height="450" fill="url(%23s)"/><g fill="%23FFFFFF"><rect x="200" y="250" width="80" height="100" rx="6"/><rect x="220" y="230" width="40" height="60" rx="4"/><circle cx="240" cy="220" r="18"/></g><rect x="0" y="350" width="800" height="100" fill="%236AA8E8"/></svg>'); }
-
-        .card[data-city="dubai"] .thumb > .art{ background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450"><defs><linearGradient id="s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="%23FFE5C8"/><stop offset="1" stop-color="%23FFD0A8"/></linearGradient></defs><rect width="800" height="450" fill="url(%23s)"/><g fill="%23C19A6B"><rect x="380" y="100" width="40" height="250" rx="8"/><rect x="360" y="80" width="80" height="30" rx="6"/></g><rect x="0" y="350" width="800" height="100" fill="%23D4A574"/></svg>'); }
-
-        .card[data-city="newyork"] .thumb > .art{ background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450"><defs><linearGradient id="s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="%23B8C8FF"/><stop offset="1" stop-color="%2398ACFF"/></linearGradient></defs><rect width="800" height="450" fill="url(%23s)"/><g fill="%235A6A8A"><rect x="300" y="150" width="60" height="200" rx="6"/><rect x="380" y="120" width="40" height="230" rx="5"/><rect x="440" y="180" width="50" height="170" rx="5"/></g><rect x="0" y="350" width="800" height="100" fill="%237888AC"/></svg>'); }
-
-        .card[data-city="barcelona"] .thumb > .art{ background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450"><defs><linearGradient id="s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="%23FFCFC8"/><stop offset="1" stop-color="%23FFACA8"/></linearGradient></defs><rect width="800" height="450" fill="url(%23s)"/><g fill="%23A86858"><rect x="300" y="200" width="200" height="150" rx="12"/><circle cx="400" cy="190" r="30"/><rect x="340" y="240" width="40" height="60" rx="4"/><rect x="420" y="240" width="40" height="60" rx="4"/></g><rect x="0" y="350" width="800" height="100" fill="%23C88A78"/></svg>'); }
-
-        /* 覆盖插画不要压住文字：底部渐隐（原有的 ::after）在上层 */
-        .thumb > .art{ z-index: 0; }
-        .thumb::after{ z-index: 1; }
-
-        /* 减少动画时禁用视差 */
-        @media (prefers-reduced-motion: reduce){
-          .scene__props-left,
-          .scene__props-right,
-          .scene__light-sweep{
-            animation: none !important;
-          }
         }
     </style>
 </head>
 <body>
-    <!-- 背景插画（在主面板外层，营造客厅/工作室氛围） -->
+    <!-- 背景房间插画 -->
     <div class="scene" aria-hidden="true">
         <div class="scene__layer scene__wall"></div>
         <div class="scene__layer scene__props-left"></div>
@@ -991,224 +612,132 @@
         <div class="scene__layer scene__light-sweep"></div>
         <div class="scene__grain"></div>
     </div>
-    
-    <!-- 顶部工具条 -->
-    <div class="toolbar">
-        <button class="toolbar-btn" aria-label="返回" tabindex="0">←</button>
-        <button class="toolbar-btn" aria-label="前进" tabindex="0">→</button>
-        <div class="toolbar-address">likaifeng.net/umail</div>
-        <button class="toolbar-btn" aria-label="书签" tabindex="0">★</button>
-        <button class="toolbar-btn" aria-label="设置" tabindex="0">⚙</button>
-        </div>
-    
+
     <!-- 主容器 -->
     <div class="container">
-        <!-- 主毛玻璃面板 -->
         <div class="panel">
-            <!-- 面板顶部 -->
+            <!-- 顶部搜索栏 -->
             <div class="panel-header">
-                <div class="brand-search">
-                    <input type="text" class="search-pill" placeholder="Search destinations..." aria-label="搜索目的地">
-                </div>
-                <button class="user-avatar" aria-label="用户头像" tabindex="0"></button>
-    </div>
-    
-            <!-- 主标题 -->
-            <h1 class="hero-title">Discover the vacation of your dreams</h1>
-            <p class="hero-subtitle">Explore stunning destinations and create unforgettable memories</p>
+                <input type="text" class="search-input" placeholder="Search destinations..." aria-label="搜索目的地">
+                <div class="avatar-dot" role="button" tabindex="0" aria-label="用户头像"></div>
+            </div>
 
-            <!-- 分类 Chips -->
-            <div class="chips-container">
-                <div class="chips-scroll" role="list" aria-label="旅行分类">
-                    <button class="chip flight active" role="listitem" aria-label="航班" tabindex="0">
-                        <div class="chip-icon" aria-hidden="true"></div>
-                        <div class="chip-info">
-                            <span>Flight</span>
-                            <span class="chip-count">256 deals</span>
-                        </div>
-                    </button>
-                    <button class="chip vac" role="listitem" aria-label="度假" tabindex="0">
-                        <div class="chip-icon" aria-hidden="true"></div>
-                        <div class="chip-info">
-                            <span>Vacations</span>
-                            <span class="chip-count">128 packages</span>
-                        </div>
-                    </button>
-                    <button class="chip stays" role="listitem" aria-label="住宿" tabindex="0">
-                        <div class="chip-icon" aria-hidden="true"></div>
-                        <div class="chip-info">
-                            <span>Stays</span>
-                            <span class="chip-count">512 hotels</span>
-                        </div>
-                    </button>
-                    <button class="chip rest" role="listitem" aria-label="餐厅" tabindex="0">
-                        <div class="chip-icon" aria-hidden="true"></div>
-                        <div class="chip-info">
-                            <span>Restaurant</span>
-                            <span class="chip-count">89 spots</span>
-                        </div>
-                    </button>
-                    <button class="chip attr" role="listitem" aria-label="景点" tabindex="0">
-                        <div class="chip-icon" aria-hidden="true"></div>
-                        <div class="chip-info">
-                            <span>Attractions</span>
-                            <span class="chip-count">342 places</span>
-                        </div>
-                    </button>
-                    <button class="chip bus" role="listitem" aria-label="机场巴士" tabindex="0">
-                        <div class="chip-icon" aria-hidden="true"></div>
-                        <div class="chip-info">
-                            <span>Bus Airport</span>
-                            <span class="chip-count">24 routes</span>
-                        </div>
-                    </button>
-                </div>
+            <!-- Hero 标题 -->
+            <div class="hero">
+                <h1 class="hero-title">Discover the vacation of your dreams</h1>
+                <p class="hero-subtitle">Explore stunning destinations and create unforgettable memories</p>
             </div>
-            
-            <!-- 次面板：Explore the world（带顶缘亮带） -->
-            <div class="subpanel-wrapper">
-                <div class="explore-header">
-                    <h2 class="explore-title">Explore the world</h2>
-                    <div class="filters" role="group" aria-label="筛选选项">
-                        <button class="pill active" tabindex="0">Filters</button>
-                        <button class="pill" tabindex="0">Nearby</button>
-                        <button class="pill" tabindex="0">Popular</button>
-                        <button class="pill" tabindex="0">Recommendation</button>
-                        <button class="pill" tabindex="0">New</button>
-                    </div>
-                </div>
+
+            <!-- 分类 Pills -->
+            <div class="pills-row" role="list" aria-label="旅行分类">
+                <button class="pill flight" role="listitem" tabindex="0">
+                    <span class="pill-icon"></span>
+                    <span>Flight</span>
+                    <span class="pill-count">256 deals</span>
+                </button>
+                <button class="pill vac" role="listitem" tabindex="0">
+                    <span class="pill-icon"></span>
+                    <span>Vacations</span>
+                    <span class="pill-count">128 packages</span>
+                </button>
+                <button class="pill stays" role="listitem" tabindex="0">
+                    <span class="pill-icon"></span>
+                    <span>Stays</span>
+                    <span class="pill-count">512 hotels</span>
+                </button>
+                <button class="pill rest" role="listitem" tabindex="0">
+                    <span class="pill-icon"></span>
+                    <span>Restaurant</span>
+                    <span class="pill-count">89 spots</span>
+                </button>
+                <button class="pill attr" role="listitem" tabindex="0">
+                    <span class="pill-icon"></span>
+                    <span>Attractions</span>
+                    <span class="pill-count">342 places</span>
+                </button>
+                <button class="pill bus" role="listitem" tabindex="0">
+                    <span class="pill-icon"></span>
+                    <span>Bus Airport</span>
+                    <span class="pill-count">24 routes</span>
+                </button>
             </div>
-            
+
+            <!-- 过滤器 Chips -->
+            <div class="chips-row" role="group" aria-label="筛选选项">
+                <button class="chip active" tabindex="0">Filters</button>
+                <button class="chip" tabindex="0">Nearby</button>
+                <button class="chip" tabindex="0">Popular</button>
+                <button class="chip" tabindex="0">Recommendation</button>
+                <button class="chip" tabindex="0">New</button>
+            </div>
+
             <!-- 卡片网格 -->
-            <div class="cards-grid" role="list" aria-label="城市列表">
-                <a href="#" class="card" role="listitem" tabindex="0">
-                    <div class="thumb" aria-hidden="true"></div>
+            <div class="cards-grid" role="list" aria-label="目的地列表">
+                <a href="#" class="card" data-city="bali" role="listitem" tabindex="0">
+                    <div class="thumb">
+                        <div class="art"></div>
+                    </div>
                     <div class="card-content">
                         <h3 class="card-title">Bali, Indonesia</h3>
                         <div class="card-rating">
-                            <span class="stars" aria-label="评分 4.8">★★★★★</span>
+                            <span class="stars">★★★★★</span>
                             <span class="rating-num">4.8</span>
-                </div>
-                        <p class="meta">Tropical paradise with stunning beaches</p>
-                        <p class="price">From $599/night</p>
+                        </div>
+                        <p class="card-desc">Tropical paradise with stunning beaches</p>
+                        <p class="card-price">From $599/night</p>
                     </div>
                 </a>
 
-                <a href="#" class="card" role="listitem" tabindex="0">
-                    <div class="thumb" aria-hidden="true"></div>
+                <a href="#" class="card" data-city="paris" role="listitem" tabindex="0">
+                    <div class="thumb">
+                        <div class="art"></div>
+                    </div>
                     <div class="card-content">
                         <h3 class="card-title">Paris, France</h3>
                         <div class="card-rating">
-                            <span class="stars" aria-label="评分 4.9">★★★★★</span>
+                            <span class="stars">★★★★★</span>
                             <span class="rating-num">4.9</span>
-                </div>
-                        <p class="meta">City of lights and romance</p>
-                        <p class="price">From $799/night</p>
+                        </div>
+                        <p class="card-desc">City of lights and romance</p>
+                        <p class="card-price">From $799/night</p>
                     </div>
                 </a>
 
-                <a href="#" class="card" role="listitem" tabindex="0">
-                    <div class="thumb" aria-hidden="true"></div>
+                <a href="#" class="card" data-city="tokyo" role="listitem" tabindex="0">
+                    <div class="thumb">
+                        <div class="art"></div>
+                    </div>
                     <div class="card-content">
                         <h3 class="card-title">Tokyo, Japan</h3>
                         <div class="card-rating">
-                            <span class="stars" aria-label="评分 4.7">★★★★★</span>
+                            <span class="stars">★★★★★</span>
                             <span class="rating-num">4.7</span>
-                </div>
-                        <p class="meta">Modern metropolis with tradition</p>
-                        <p class="price">From $699/night</p>
+                        </div>
+                        <p class="card-desc">Modern metropolis with tradition</p>
+                        <p class="card-price">From $699/night</p>
                     </div>
                 </a>
 
-                <a href="#" class="card" role="listitem" tabindex="0">
-                    <div class="thumb" aria-hidden="true"></div>
+                <a href="#" class="card" data-city="rome" role="listitem" tabindex="0">
+                    <div class="thumb">
+                        <div class="art"></div>
+                    </div>
                     <div class="card-content">
                         <h3 class="card-title">Rome, Italy</h3>
                         <div class="card-rating">
-                            <span class="stars" aria-label="评分 4.8">★★★★★</span>
-                            <span class="rating-num">4.8</span>
-                </div>
-                        <p class="meta">Ancient history meets vibrant culture</p>
-                        <p class="price">From $649/night</p>
-            </div>
-                </a>
-
-                <a href="#" class="card" role="listitem" tabindex="0">
-                    <div class="thumb" aria-hidden="true"></div>
-                    <div class="card-content">
-                        <h3 class="card-title">Santorini, Greece</h3>
-                        <div class="card-rating">
-                            <span class="stars" aria-label="评分 4.9">★★★★★</span>
-                            <span class="rating-num">4.9</span>
-                        </div>
-                        <p class="meta">Iconic white buildings and sunsets</p>
-                        <p class="price">From $899/night</p>
-                    </div>
-                </a>
-
-                <a href="#" class="card" role="listitem" tabindex="0">
-                    <div class="thumb" aria-hidden="true"></div>
-                    <div class="card-content">
-                        <h3 class="card-title">Dubai, UAE</h3>
-                        <div class="card-rating">
-                            <span class="stars" aria-label="评分 4.7">★★★★★</span>
-                            <span class="rating-num">4.7</span>
-                        </div>
-                        <p class="meta">Luxury and ultramodern architecture</p>
-                        <p class="price">From $999/night</p>
-                    </div>
-                </a>
-
-                <a href="#" class="card" role="listitem" tabindex="0">
-                    <div class="thumb" aria-hidden="true"></div>
-                    <div class="card-content">
-                        <h3 class="card-title">New York, USA</h3>
-                        <div class="card-rating">
-                            <span class="stars" aria-label="评分 4.8">★★★★★</span>
-                            <span class="rating-num">4.8</span>
-            </div>
-                        <p class="meta">The city that never sleeps</p>
-                        <p class="price">From $849/night</p>
-        </div>
-                </a>
-
-                <a href="#" class="card" role="listitem" tabindex="0">
-                    <div class="thumb" aria-hidden="true"></div>
-                    <div class="card-content">
-                        <h3 class="card-title">Barcelona, Spain</h3>
-                        <div class="card-rating">
-                            <span class="stars" aria-label="评分 4.8">★★★★★</span>
+                            <span class="stars">★★★★★</span>
                             <span class="rating-num">4.8</span>
                         </div>
-                        <p class="meta">Gaudi's masterpieces and beaches</p>
-                        <p class="price">From $699/night</p>
+                        <p class="card-desc">Ancient history meets vibrant culture</p>
+                        <p class="card-price">From $649/night</p>
                     </div>
                 </a>
-            </div>
-
-            <div style="margin-top: 32px; text-align: center;">
-                <span class="see-more" tabindex="0" role="button">
-                    See more destinations
-                    <span class="arrow">→</span>
-                </span>
             </div>
         </div>
     </div>
-    
+
     <script>
-        // ========================================
-        // 交互逻辑
-        // ========================================
-
-        // Chips 点击切换 active 态
-        document.querySelectorAll('.chip').forEach(chip => {
-            chip.addEventListener('click', function() {
-                document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
-                this.classList.add('active');
-            });
-        });
-
-        // 筛选胶囊切换
+        // Pills 点击切换
         document.querySelectorAll('.pill').forEach(pill => {
             pill.addEventListener('click', function() {
                 document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
@@ -1216,39 +745,22 @@
             });
         });
 
-        // 键盘导航支持
+        // Chips 点击切换
+        document.querySelectorAll('.chip').forEach(chip => {
+            chip.addEventListener('click', function() {
+                document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // 键盘导航
         document.querySelectorAll('[tabindex="0"]').forEach(element => {
             element.addEventListener('keydown', function(e) {
                 if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();
                     this.click();
                 }
-                });
             });
-            
-        // 工具栏返回按钮功能
-        document.querySelector('.toolbar-btn[aria-label="返回"]').addEventListener('click', () => {
-            if (document.referrer && document.referrer.includes(window.location.host)) {
-                window.history.back();
-            } else {
-                window.location.href = '/';
-            }
-        });
-
-        // ========================================
-        // 卡片城市标记 + 插画层注入
-        // ========================================
-        document.querySelectorAll('.card').forEach((card, i) => {
-            const cities = ['bali', 'paris', 'tokyo', 'rome', 'santorini', 'dubai', 'newyork', 'barcelona'];
-            if (!card.dataset.city) card.dataset.city = cities[i % cities.length];
-            
-            // 为每个缩略图插入插画层
-            const thumb = card.querySelector('.thumb');
-            if (thumb && !thumb.querySelector('.art')) {
-                const art = document.createElement('div');
-                art.className = 'art';
-                thumb.prepend(art);
-            }
         });
     </script>
 </body>
