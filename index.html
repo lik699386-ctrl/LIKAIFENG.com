@@ -626,6 +626,8 @@
             color: rgba(255, 255, 255, 0.6) !important;
             text-decoration: none;
             transition: color 0.3s ease;
+            cursor: pointer !important; /* 确保显示手型光标 */
+            pointer-events: auto !important; /* 确保可点击 */
         }
         
         .product-info a:hover,
@@ -1303,9 +1305,9 @@
                 border-radius: 0 !important; /* 移除圆角 */
             }
             
-            /* 语言按钮向右移动 */
+            /* 语言按钮调整与产品按钮的距离为3px */
             .nav-items .language-menu-item a {
-                margin-right: 6px; /* 语言按钮右移6px */
+                margin-right: -1px; /* 调整使语言和产品按钮之间保持3px距离 */
             }
             
             .nav-items .btn-primary {
