@@ -884,11 +884,14 @@
         .scene{
           position: fixed; inset: 0; z-index: 0; pointer-events: none;
           overflow: hidden;
-          /* 背景基底仍是你的暖奶油径向渐变 */
+          /* 方案2：温暖渐变（Instagram风格）- 多层径向渐变 + 网格纹理 */
           background:
-            radial-gradient(60% 60% at 22% 28%, #F6EFE7 0%, #EFE6DA 48%, #E7DAC8 100%),
-            radial-gradient(70% 70% at 84% 16%, #F3E6D3 0%, transparent 60%),
-            #EFE6DA;
+            repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,.03) 2px, rgba(255,255,255,.03) 4px),
+            repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(255,255,255,.03) 2px, rgba(255,255,255,.03) 4px),
+            radial-gradient(circle at 20% 30%, #FFE8D6 0%, #F5D9C5 25%, transparent 50%),
+            radial-gradient(circle at 80% 20%, #E8D4F2 0%, #D4C5E8 25%, transparent 50%),
+            radial-gradient(circle at 50% 90%, #FFF5E1 0%, #F5E8D1 30%, transparent 60%),
+            linear-gradient(135deg, #F8F0E8 0%, #EFE6DA 100%);
         }
         .scene__layer{ position:absolute; inset:0; }
         .scene__grain{
