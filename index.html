@@ -628,6 +628,8 @@
             transition: color 0.3s ease;
             cursor: pointer !important; /* 确保显示手型光标 */
             pointer-events: auto !important; /* 确保可点击 */
+            position: relative; /* 添加定位 */
+            z-index: 10; /* 确保在platform-section之上 */
         }
         
         .product-info a:hover,
@@ -2219,7 +2221,14 @@
             }
             
             // 点击任何下拉菜单选项（语言或产品）时关闭菜单
+            // 但如果点击的是产品链接（如umail.html），不要阻止默认行为
             if (e.target.closest('.platform-section') || e.target.closest('.product-card')) {
+                // 如果点击的是产品链接，允许导航
+                if (e.target.tagName === 'A' && e.target.href) {
+                    // 不阻止默认行为，让链接正常跳转
+                    return;
+                }
+                
                 // 关闭所有下拉菜单
                 document.querySelectorAll('.dropdown-menu').forEach(menu => {
                     menu.classList.remove('active');
