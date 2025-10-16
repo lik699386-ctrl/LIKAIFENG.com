@@ -117,7 +117,7 @@
         }
 
         /* ========================================
-           顶部工具条（浏览器风格，更大更柔和）
+           顶部工具条（浏览器风格，更大更柔和 + 增大60px）
            ======================================== */
         .toolbar {
             position: fixed;
@@ -127,20 +127,21 @@
             z-index: 100;
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 0 18px;
-            height: 44px;
+            gap: 16px;
+            padding: 0 24px;
+            height: 56px;
             background: rgba(255, 255, 255, .92);
             backdrop-filter: blur(16px) saturate(1.15);
             -webkit-backdrop-filter: blur(16px) saturate(1.15);
             border: 1.5px solid rgba(0, 0, 0, .08);
             border-radius: 999px;
             box-shadow: 0 8px 24px -4px rgba(0, 0, 0, .12), 0 2px 8px rgba(0, 0, 0, .06);
+            min-width: 600px;
         }
 
         .toolbar-btn {
-            width: 32px;
-            height: 32px;
+            width: 40px;
+            height: 40px;
             border: none;
             background: transparent;
             border-radius: 50%;
@@ -150,7 +151,7 @@
             justify-content: center;
             color: var(--txt-invert);
             transition: all 0.18s var(--easing);
-            font-size: 16px;
+            font-size: 20px;
         }
 
         .toolbar-btn:hover {
@@ -164,14 +165,14 @@
         }
 
         .toolbar-address {
-            padding: 0 16px;
+            padding: 0 24px;
             background: rgba(0, 0, 0, .05);
             border-radius: 999px;
-            font-size: clamp(13px, 1vw, 15px);
+            font-size: clamp(15px, 1.2vw, 17px);
             color: var(--txt-invert);
-            min-width: 220px;
+            min-width: 300px;
             text-align: center;
-            height: 30px;
+            height: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -188,7 +189,7 @@
         }
 
         /* ========================================
-           主毛玻璃面板（通透暖灰 + 顶部内高光）
+           主毛玻璃面板（通透暖灰 + 顶部内高光 + 增大内边距）
            ======================================== */
         .panel {
             background:
@@ -199,7 +200,7 @@
             backdrop-filter: blur(var(--panel-blur)) saturate(1.05);
             -webkit-backdrop-filter: blur(var(--panel-blur)) saturate(1.05);
             box-shadow: var(--panel-shadow);
-            padding: clamp(24px, 3.5vw, 40px);
+            padding: clamp(32px, 4vw, 56px);
             margin-bottom: var(--gutter);
             position: relative;
         }
@@ -620,9 +621,16 @@
         @media (max-width: 767px) {
             .toolbar {
                 top: 10px;
-                padding: 0 14px;
-                gap: 10px;
-                height: 40px;
+                padding: 0 18px;
+                gap: 12px;
+                height: 50px;
+                min-width: auto;
+            }
+
+            .toolbar-btn {
+                width: 36px;
+                height: 36px;
+                font-size: 18px;
             }
 
             .toolbar-address {
@@ -630,11 +638,11 @@
             }
 
             .container {
-                padding: 80px clamp(14px, 4vw, 18px) 40px;
+                padding: 90px clamp(16px, 4vw, 20px) 40px;
             }
 
             .panel {
-                padding: clamp(16px, 4vw, 20px);
+                padding: clamp(20px, 4vw, 28px);
             }
 
             .panel-header {
@@ -851,8 +859,8 @@
         .price{ font-size: clamp(14px,1.4vw,15px); font-weight:700; color:#F5F2EE; }
         .stars{ color:#FFB957; }
 
-        /* === 8) 网格与间距（各缩放稳态） === */
-        .container{ max-width: min(1200px, 92vw); padding-inline: clamp(16px, 3vw, 32px); }
+        /* === 8) 网格与间距（各缩放稳态 + 增大宽度） === */
+        .container{ max-width: min(1480px, 96vw); padding-inline: clamp(20px, 2vw, 40px); }
         .cards-grid{ display:grid; gap: clamp(14px, 1.6vw, 22px); grid-template-columns: repeat(4,1fr); }
         @media (max-width:1199px){ .cards-grid{ grid-template-columns: repeat(3,1fr); } }
         @media (max-width: 767px){
@@ -881,7 +889,7 @@
         <div class="toolbar-address">likaifeng.net/umail</div>
         <button class="toolbar-btn" aria-label="书签" tabindex="0">★</button>
         <button class="toolbar-btn" aria-label="设置" tabindex="0">⚙</button>
-    </div>
+        </div>
     
     <!-- 主容器 -->
     <div class="container">
@@ -893,8 +901,8 @@
                     <input type="text" class="search-pill" placeholder="Search destinations..." aria-label="搜索目的地">
                 </div>
                 <button class="user-avatar" aria-label="用户头像" tabindex="0"></button>
-            </div>
-            
+    </div>
+    
             <!-- 主标题 -->
             <h1 class="hero-title">Discover the vacation of your dreams</h1>
             <p class="hero-subtitle">Explore stunning destinations and create unforgettable memories</p>
@@ -970,7 +978,7 @@
                         <div class="card-rating">
                             <span class="stars" aria-label="评分 4.8">★★★★★</span>
                             <span class="rating-num">4.8</span>
-                        </div>
+                </div>
                         <p class="meta">Tropical paradise with stunning beaches</p>
                         <p class="price">From $599/night</p>
                     </div>
@@ -983,7 +991,7 @@
                         <div class="card-rating">
                             <span class="stars" aria-label="评分 4.9">★★★★★</span>
                             <span class="rating-num">4.9</span>
-                        </div>
+                </div>
                         <p class="meta">City of lights and romance</p>
                         <p class="price">From $799/night</p>
                     </div>
@@ -996,7 +1004,7 @@
                         <div class="card-rating">
                             <span class="stars" aria-label="评分 4.7">★★★★★</span>
                             <span class="rating-num">4.7</span>
-                        </div>
+                </div>
                         <p class="meta">Modern metropolis with tradition</p>
                         <p class="price">From $699/night</p>
                     </div>
@@ -1009,10 +1017,10 @@
                         <div class="card-rating">
                             <span class="stars" aria-label="评分 4.8">★★★★★</span>
                             <span class="rating-num">4.8</span>
-                        </div>
+                </div>
                         <p class="meta">Ancient history meets vibrant culture</p>
                         <p class="price">From $649/night</p>
-                    </div>
+            </div>
                 </a>
 
                 <a href="#" class="card" role="listitem" tabindex="0">
@@ -1048,10 +1056,10 @@
                         <div class="card-rating">
                             <span class="stars" aria-label="评分 4.8">★★★★★</span>
                             <span class="rating-num">4.8</span>
-                        </div>
+            </div>
                         <p class="meta">The city that never sleeps</p>
                         <p class="price">From $849/night</p>
-                    </div>
+        </div>
                 </a>
 
                 <a href="#" class="card" role="listitem" tabindex="0">
@@ -1105,9 +1113,9 @@
                     e.preventDefault();
                     this.click();
                 }
+                });
             });
-        });
-
+            
         // 工具栏返回按钮功能
         document.querySelector('.toolbar-btn[aria-label="返回"]').addEventListener('click', () => {
             if (document.referrer && document.referrer.includes(window.location.host)) {
