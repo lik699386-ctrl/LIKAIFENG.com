@@ -743,6 +743,134 @@
                 border-width: 2px;
             }
         }
+
+        /* ========================================
+           像素级微调覆盖（参考图对齐）
+           ======================================== */
+
+        /* === 1) 流式排版与缩放稳态 === */
+        :root{
+          font-size: clamp(14px, 0.9vw + 0.5vh, 17px); /* 任意缩放稳读 */
+          --h1: clamp(34px, 4.8vw, 56px);
+          --body: clamp(14px, 1.5vw, 18px);
+          --meta: clamp(12px, 1.2vw, 16px);
+          --chip-h: 44px;
+          --pill-h: 36px;
+        }
+
+        /* === 2) 画布与噪点（更细腻，弱化同心圆感） === */
+        html{
+          background:
+            radial-gradient(60% 60% at 22% 28%, #F6EFE7 0%, #EFE6DA 48%, #E7DAC8 100%),
+            radial-gradient(70% 70% at 84% 16%, #F3E6D3 0%, transparent 60%),
+            #EFE6DA;
+        }
+        body::after{
+          content:""; position:fixed; inset:0; pointer-events:none; mix-blend-mode:multiply; opacity:.07;
+          background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180" viewBox="0 0 180 180"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="2" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23n)" opacity=".35"/></svg>');
+        }
+
+        /* === 3) 主面板更通透 + 顶部内高光带 === */
+        .panel{
+          background:
+            linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.02)),
+            linear-gradient(180deg, rgba(58,53,49,.50), rgba(58,53,49,.42));
+          border:1.5px solid #FFFFFF26;
+          border-radius:24px;
+          backdrop-filter: blur(18px) saturate(1.05);
+          box-shadow: 0 40px 90px -30px rgba(0,0,0,.45);
+          position:relative;
+        }
+        .panel::before{
+          content:""; position:absolute; inset:0 0 auto 0; height:10%;
+          border-radius:inherit; pointer-events:none; opacity:.35;
+          background: linear-gradient(180deg,#FFFFFFB0,#FFFFFF00); /* 亮带 */
+        }
+
+        /* 标题更亮更粗更紧凑 */
+        h1{ font-size: var(--h1); line-height:1.12; letter-spacing:-0.01em; color:#F7F4F0; font-weight:800; }
+
+        /* === 4) 顶部工具胶囊更显眼 === */
+        .top-pills{ gap: 10px; }
+        .top-pill{
+          height: var(--pill-h); padding:0 12px; border-radius:999px;
+          background:#FFFFFF1A; color:#F5F2EE;
+          border:1.5px solid #FFFFFF26; backdrop-filter: blur(8px);
+          box-shadow: inset 0 1px 0 #FFFFFF55;
+        }
+        .top-pill:hover{ background:#FFFFFF2A; }
+        .top-pill .dot{ width:8px; height:8px; border-radius:50%;
+          background: radial-gradient(circle at 30% 30%, #FFE19B, #D69A2E);
+          box-shadow: inset 0 1px 1px rgba(255,255,255,.6);
+        }
+
+        /* === 5) 彩色 chips 更"糖果"并右侧溢出 === */
+        .chips-scroll{ gap: 14px; padding-right: 60px; overflow: visible; }
+        .chip{
+          height: var(--chip-h); padding:0 16px; border-radius:999px;
+          display:flex; align-items:center; gap:10px; color:#2B2B2B;
+          border:1.5px solid #00000020;
+          box-shadow: inset 0 -2px 0 rgba(255,255,255,.45), 0 8px 18px rgba(0,0,0,.16);
+          font-weight:600; font-size: clamp(13px,1.2vw,15px);
+          transition: transform .18s cubic-bezier(.22,.61,.36,1), box-shadow .18s;
+        }
+        .chip-icon{
+          width:26px; height:26px; border-radius:50%; display:grid; place-items:center;
+          background: rgba(255,255,255,.30); border:1px solid #FFFFFF66;
+        }
+        .chip:hover{ transform: translateY(-4px); }
+        .chip.flight   { background:linear-gradient(180deg,#FDC2CF 0%,#F999A8 100%); }
+        .chip.vac      { background:linear-gradient(180deg,#D5FA7F 0%,#B0E468 100%); }
+        .chip.stays    { background:linear-gradient(180deg,#A9D9FF 0%,#74B7F6 100%); }
+        .chip.rest     { background:linear-gradient(180deg,#A6CEFF 0%,#70ACF2 100%); }
+        .chip.attr     { background:linear-gradient(180deg,#FFC0B9 0%,#FF93A6 100%); }
+        .chip.bus      { background:linear-gradient(180deg,#F7EAA8 0%,#EBD582 100%); transform: translateX(12px); }
+
+        /* === 6) 次级面板顶缘亮带（参考图关键） === */
+        .subpanel-wrapper{ position:relative; }
+        .subpanel-wrapper::before{
+          content:""; position:absolute; inset:-12px 0 auto 0; height:24px; pointer-events:none;
+          background: linear-gradient(180deg, #FFFFFF22, transparent 70%);
+          border-radius: 24px 24px 0 0;
+        }
+
+        /* === 7) 卡片变轻、图像渐隐正确 === */
+        .card{
+          background: linear-gradient(180deg, rgba(46,42,39,.55), rgba(46,42,39,.50));
+          border:1px solid #FFFFFF24; border-radius:18px; overflow:hidden;
+          box-shadow: 0 18px 48px -18px rgba(0,0,0,.35);
+          transition: transform .2s cubic-bezier(.22,.61,.36,1), box-shadow .2s, border-color .2s;
+        }
+        .card:hover{ transform: translateY(-6px); border-color:#FFFFFF33; box-shadow:0 24px 50px -22px rgba(0,0,0,.45); }
+        .thumb{ aspect-ratio:16/9; background:#AFC2D6; position:relative; }
+        .thumb::after{ content:""; position:absolute; inset:auto 0 0 0; height:46%;
+          background:linear-gradient(180deg,transparent,rgba(0,0,0,.55));
+        }
+        .card-title{ font-size: clamp(16px,1.6vw,18px); font-weight:600; color:#F5F2EE; }
+        .card .meta{ font-size: var(--meta); color:#D0C7BD; }
+        .price{ font-size: clamp(14px,1.4vw,15px); font-weight:700; color:#F5F2EE; }
+        .stars{ color:#FFB957; }
+
+        /* === 8) 网格与间距（各缩放稳态） === */
+        .container{ max-width: min(1200px, 92vw); padding-inline: clamp(16px, 3vw, 32px); }
+        .cards-grid{ display:grid; gap: clamp(14px, 1.6vw, 22px); grid-template-columns: repeat(4,1fr); }
+        @media (max-width:1199px){ .cards-grid{ grid-template-columns: repeat(3,1fr); } }
+        @media (max-width: 767px){
+          .panel{ padding: 18px 16px 24px; }
+          .chips-scroll{ overflow:auto; scroll-snap-type:x mandatory; }
+          .chip{ scroll-snap-align:start; }
+          .cards-grid{ grid-template-columns: repeat(2,1fr); gap:14px; }
+          .hero-title{ font-size: clamp(28px,7vw,38px); }
+        }
+
+        /* === 9) 可达性与退化 === */
+        :where(a,button,.chip,.pill,.card a):focus-visible{
+          outline: none; box-shadow: 0 0 0 3px #FFFFFF66, 0 0 0 1px #FFFFFF inset; border-radius: 999px;
+        }
+        @media (prefers-reduced-motion: reduce){ *{ transition:none !important; } }
+        @supports not (backdrop-filter: blur(1px)){
+          .panel,.subpanel-wrapper,.card{ background:#5A524B; border-color:#FFFFFF12; }
+        }
     </style>
 </head>
 <body>
