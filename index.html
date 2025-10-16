@@ -1348,6 +1348,7 @@
                 font-weight: 500;  /* Artwork加粗 */
                 margin-bottom: 20px;
                 line-height: 1.1;
+                transform: translateY(-6px); /* 向上移动6px */
             }
             
             .hero-subtitle {
@@ -1355,6 +1356,7 @@
                 font-size: clamp(16px, 4vw, 18px);
                 max-width: 95%;
                 line-height: 1.5;
+                transform: translateY(-6px); /* 向上移动6px */
             }
             
             .btn-primary {
@@ -1369,10 +1371,12 @@
                 padding: 0 28px;
                 background: rgba(255, 255, 255, 0.95) !important;
                 color: var(--text-dark) !important;
+                transform: translateY(-6px); /* 向上移动6px */
             }
             
             .btn-primary:hover {
                 background: rgba(255, 255, 255, 1) !important;
+                transform: translateY(-10px); /* 悬停时向上移动10px（保持-6px基础+额外-4px） */
             }
             
             /* 移动端性能优化 */
@@ -1755,11 +1759,11 @@
         <section class="hero">
             <div class="hero-container">
                 <h1 class="hero-title">
-                    <span data-i18n="hero.title.line1">为你打造的艺术品</span>
+                    <span data-i18n="hero.title.line1">为您打造的艺术品</span>
                     <span data-i18n="hero.title.line2"></span>
                 </h1>
                 <p class="hero-subtitle" data-i18n="hero.subtitle">
-                    "多即是少"交给我，"少即是多"留给你。设计对于我来说不仅仅是外观，也是工作原理。
+                    "多即是少"交给我们，"少即是多"留给您。设计对于我们来说不仅仅是外观，也是工作原理。
                 </p>
                 <a href="#about" class="btn-primary pill" aria-label="View" data-i18n="hero.cta">
                     浏览
@@ -1777,9 +1781,9 @@
                 'nav.language': '语言',
                 'nav.products': '产品',
                 'nav.back': '← 返回',
-                'hero.title.line1': '为你打造的艺术品',
+                'hero.title.line1': '为您打造的艺术品',
                 'hero.title.line2': '',
-                'hero.subtitle': '"多即是少"交给我，"少即是多"留给你。设计对于我来说不仅仅是外观，也是工作原理。',
+                'hero.subtitle': '"多即是少"交给我们，"少即是多"留给您。设计对于我们来说不仅仅是外观，也是工作原理。',
                 'hero.cta': '浏览',
                 'language.simplified-chinese': '简体中文',
                 'language.english': 'English',
@@ -1818,7 +1822,7 @@
                 'nav.back': '← Back',
                 'hero.title.line1': 'Artwork made',
                 'hero.title.line2': 'especially for you',
-                'hero.subtitle': 'Leave \'more is less\' to us—just to show you that less is more. Design is not just what it looks like for me, but also how it works.',
+                'hero.subtitle': 'Leave \'more is less\' to us—just to show you that less is more. Design is not just what it looks like for us, but also how it works.',
                 'hero.cta': 'View',
                 'language.simplified-chinese': '简体中文',
                 'language.english': 'English',
@@ -1857,7 +1861,7 @@
                 'nav.back': '← Назад',
                 'hero.title.line1': 'Произведение искусства,',
                 'hero.title.line2': 'созданное для вас',
-                'hero.subtitle': 'Оставьте "больше значит меньше" нам—просто чтобы показать вам, что меньше значит больше. Для меня дизайн — это не только внешний вид, но и принцип работы.',
+                'hero.subtitle': 'Оставьте "больше значит меньше" нам—просто чтобы показать вам, что меньше значит больше. Для нас дизайн — это не только внешний вид, но и принцип работы.',
                 'hero.cta': 'Просмотр',
                 'language.simplified-chinese': '简体中文',
                 'language.english': 'English',
@@ -1896,7 +1900,7 @@
                 'nav.back': '← Retour',
                 'hero.title.line1': 'Une œuvre d\'art créée',
                 'hero.title.line2': 'spécialement pour vous',
-                'hero.subtitle': 'Laissez-nous "plus c\'est moins"—juste pour vous montrer que moins c\'est plus. Pour moi, le design n\'est pas seulement l\'apparence, mais aussi le fonctionnement.',
+                'hero.subtitle': 'Laissez-nous "plus c\'est moins"—juste pour vous montrer que moins c\'est plus. Pour nous, le design n\'est pas seulement l\'apparence, mais aussi le fonctionnement.',
                 'hero.cta': 'Voir',
                 'language.simplified-chinese': '简体中文',
                 'language.english': 'English',
@@ -1935,7 +1939,7 @@
                 'nav.back': '← Zurück',
                 'hero.title.line1': 'Kunstwerk speziell',
                 'hero.title.line2': 'für Sie gemacht',
-                'hero.subtitle': 'Überlassen Sie uns "mehr ist weniger"—nur um Ihnen zu zeigen, dass weniger mehr ist. Für mich ist Design nicht nur das Aussehen, sondern auch die Funktionsweise.',
+                'hero.subtitle': 'Überlassen Sie uns "mehr ist weniger"—nur um Ihnen zu zeigen, dass weniger mehr ist. Für uns ist Design nicht nur das Aussehen, sondern auch die Funktionsweise.',
                 'hero.cta': 'Ansehen',
                 'language.simplified-chinese': '简体中文',
                 'language.english': 'English',
@@ -1974,7 +1978,7 @@
                 'nav.back': '← Volver',
                 'hero.title.line1': 'Obra de arte hecha',
                 'hero.title.line2': 'especialmente para ti',
-                'hero.subtitle': 'Déjanos "más es menos"—solo para mostrarte que menos es más. Para mí, el diseño no es solo la apariencia, sino también cómo funciona.',
+                'hero.subtitle': 'Déjanos "más es menos"—solo para mostrarle que menos es más. Para nosotros, el diseño no es solo la apariencia, sino también cómo funciona.',
                 'hero.cta': 'Ver',
                 'language.simplified-chinese': '简体中文',
                 'language.english': 'English',
