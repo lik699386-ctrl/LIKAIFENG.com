@@ -1009,22 +1009,45 @@
             <h1 class="hero-title">Discover the vacation of your dreams</h1>
             <p class="hero-subtitle">Explore stunning destinations and create unforgettable memories</p>
 
-            <!-- 下载区域 -->
-            <div style="margin: 24px 0; text-align: center;">
-                <a href="https://github.com/lik699386-ctrl/LIKAIFENG.com/releases/download/v1.0.0-test/test-app-v1.0.0.zip" 
-                   class="download-btn"
-                   style="display: inline-block; padding: 14px 32px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; text-decoration: none; border-radius: 12px; font-weight: 600; font-size: 16px; box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4); transition: all 0.3s ease; margin: 0 8px;">
-                    ⬇️ 下载测试应用 (GitHub)
-                </a>
-                <a href="https://cdn.jsdelivr.net/gh/lik699386-ctrl/LIKAIFENG.com@v1.0.0-test/test-app-v1.0.0.zip" 
-                   class="download-btn-cdn"
-                   style="display: inline-block; padding: 14px 32px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: #fff; text-decoration: none; border-radius: 12px; font-weight: 600; font-size: 16px; box-shadow: 0 8px 24px rgba(240, 147, 251, 0.4); transition: all 0.3s ease; margin: 0 8px;">
-                    🚀 CDN加速下载
-                </a>
-                <p style="margin-top: 12px; font-size: 14px; color: var(--txt-2);">
-                    演示：GitHub Release 文件分发系统 | 文件大小: 0.24 KB
+            <!-- 🎯 超显眼下载区域 -->
+            <div style="margin: 32px auto; padding: 32px; background: linear-gradient(135deg, #667eea22 0%, #764ba255 100%); border: 3px solid #667eea; border-radius: 20px; box-shadow: 0 20px 60px rgba(102, 126, 234, 0.5), inset 0 0 40px rgba(255,255,255,0.1); text-align: center; max-width: 800px; animation: glow 2s ease-in-out infinite alternate;">
+                <h2 style="color: #fff; font-size: 28px; margin-bottom: 16px; text-shadow: 0 2px 8px rgba(0,0,0,0.3); font-weight: 800;">
+                    🎁 测试文件下载区
+                </h2>
+                <p style="color: #F5F2EE; font-size: 16px; margin-bottom: 24px; text-shadow: 0 1px 4px rgba(0,0,0,0.2);">
+                    GitHub Release 文件分发系统演示 | 支持最大 2GB 文件上传
+                </p>
+                <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+                    <a href="https://github.com/lik699386-ctrl/LIKAIFENG.com/releases/download/v1.0.0-test/test-app-v1.0.0.zip" 
+                       style="display: inline-flex; align-items: center; gap: 10px; padding: 18px 40px; background: linear-gradient(135deg, #FF6B6B 0%, #FF3838 100%); color: #fff; text-decoration: none; border-radius: 16px; font-weight: 700; font-size: 18px; box-shadow: 0 12px 30px rgba(255, 107, 107, 0.6); transition: all 0.3s ease; border: 3px solid #fff;">
+                        <span style="font-size: 28px;">⬇️</span>
+                        <span>GitHub 直接下载</span>
+                    </a>
+                    <a href="https://cdn.jsdelivr.net/gh/lik699386-ctrl/LIKAIFENG.com@v1.0.0-test/test-app-v1.0.0.zip" 
+                       style="display: inline-flex; align-items: center; gap: 10px; padding: 18px 40px; background: linear-gradient(135deg, #4ECDC4 0%, #44A08D 100%); color: #fff; text-decoration: none; border-radius: 16px; font-weight: 700; font-size: 18px; box-shadow: 0 12px 30px rgba(78, 205, 196, 0.6); transition: all 0.3s ease; border: 3px solid #fff;">
+                        <span style="font-size: 28px;">🚀</span>
+                        <span>CDN 加速下载</span>
+                    </a>
+                </div>
+                <p style="margin-top: 20px; font-size: 14px; color: #FFE19B; background: rgba(0,0,0,0.3); padding: 10px 20px; border-radius: 10px; display: inline-block; font-weight: 600;">
+                    📦 文件大小: 0.24 KB | ✅ 测试成功
                 </p>
             </div>
+            
+            <style>
+                @keyframes glow {
+                    from { box-shadow: 0 20px 60px rgba(102, 126, 234, 0.5), inset 0 0 40px rgba(255,255,255,0.1); }
+                    to { box-shadow: 0 20px 80px rgba(102, 126, 234, 0.8), inset 0 0 60px rgba(255,255,255,0.2); }
+                }
+                a[href*="releases"]:hover {
+                    transform: translateY(-5px) scale(1.05);
+                    box-shadow: 0 16px 40px rgba(255, 107, 107, 0.8);
+                }
+                a[href*="cdn.jsdelivr"]:hover {
+                    transform: translateY(-5px) scale(1.05);
+                    box-shadow: 0 16px 40px rgba(78, 205, 196, 0.8);
+                }
+            </style>
 
             <!-- 分类 Chips -->
             <div class="chips-container">
