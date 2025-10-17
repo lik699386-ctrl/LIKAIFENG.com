@@ -2057,6 +2057,20 @@
         // 页面加载时应用当前语言
         document.addEventListener('DOMContentLoaded', function() {
             updateLanguage(currentLang);
+            
+            // 优化Umail链接的点击响应
+            document.querySelectorAll('a[href="umail.html"]').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    // 确保链接可点击，关闭菜单
+                    document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                        menu.classList.remove('active');
+                    });
+                    const overlay = document.getElementById('dropdownOverlay');
+                    if (overlay) overlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                    // 让默认行为继续（跳转到umail.html）
+                });
+            });
         });
 
         // 语言切换事件 - 支持新的Apple风格布局
@@ -2220,30 +2234,34 @@
                 }
             }
             
-            // 点击任何下拉菜单选项（语言或产品）时关闭菜单
-            // 但如果点击的是产品链接（如umail.html），不要阻止默认行为
-            if (e.target.closest('.platform-section') || e.target.closest('.product-card')) {
-                // 如果点击的是产品链接或链接内的元素，允许导航
-                const linkElement = e.target.closest('a');
-                if (linkElement && linkElement.href && !linkElement.href.startsWith('#')) {
-                    // 不阻止默认行为，让链接正常跳转
-                    // 但仍然关闭菜单
-                    document.querySelectorAll('.dropdown-menu').forEach(menu => {
-                        menu.classList.remove('active');
-                    });
-                    const overlay = document.getElementById('dropdownOverlay');
-                    if (overlay) overlay.classList.remove('active');
-                    document.body.style.overflow = '';
-                    return;
-                }
-                
-                // 关闭所有下拉菜单
+            // 优化点击处理：优先检查是否点击链接
+            const clickedLink = e.target.closest('a');
+            
+            // 如果点击的是产品链接（如umail.html），立即跳转
+            if (clickedLink && clickedLink.href && !clickedLink.href.startsWith('#')) {
+                // 关闭菜单但不阻止默认行为
                 document.querySelectorAll('.dropdown-menu').forEach(menu => {
                     menu.classList.remove('active');
                 });
                 const overlay = document.getElementById('dropdownOverlay');
                 if (overlay) overlay.classList.remove('active');
                 document.body.style.overflow = '';
+                return; // 让链接正常跳转
+            }
+            
+            // 如果点击的是语言选项（platform-section但不是链接）
+            if (e.target.closest('.platform-section') && !clickedLink) {
+                // 检查是否在语言下拉菜单中
+                const languageDropdown = e.target.closest('.language-dropdown');
+                if (languageDropdown) {
+                    // 是语言选项，关闭菜单（语言切换逻辑会单独处理）
+                    document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                        menu.classList.remove('active');
+                    });
+                    const overlay = document.getElementById('dropdownOverlay');
+                    if (overlay) overlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
             }
         });
 
