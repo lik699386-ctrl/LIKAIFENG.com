@@ -1,6 +1,19 @@
 {
   "apps": [
     {
+      "id": 1760692487,
+      "name": "测试应用",
+      "description": "GitHub Release 文件分发系统测试 - 演示如何上传和下载文件",
+      "version": "v1.0.0-test",
+      "category": "utility",
+      "fileName": "test-app-v1.0.0.zip",
+      "fileSize": "0.24 KB",
+      "downloadUrl": "https://github.com/lik699386-ctrl/cyberone-website/releases/download/v1.0.0-test/test-app-v1.0.0.zip",
+      "cdnUrl": "https://cdn.jsdelivr.net/gh/lik699386-ctrl/cyberone-website@v1.0.0-test/test-app-v1.0.0.zip",
+      "uploadDate": "2025-10-17 17:14:47",
+      "icon": null
+    },
+    {
       "id": 1,
       "name": "示例应用",
       "description": "这是一个示例应用，展示如何配置",
