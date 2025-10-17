@@ -2158,33 +2158,33 @@
         }
 
         // ========================================
-        // 下拉菜单内按钮切换功能（桌面端悬停，移动端点击）
+        // 下拉菜单内按钮切换功能（统一改为点击切换）
         // ========================================
         
-        // 桌面端：鼠标悬停切换下拉菜单内的内容区域
-        if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-            // 语言按钮悬停事件
-            document.querySelectorAll('.language-btn').forEach(btn => {
-                btn.addEventListener('mouseenter', function(e) {
-                    if (this.closest('.dropdown-menu')) {
-                        e.preventDefault();
-                        switchToLanguageMenu();
-                    }
-                });
+        // 桌面端和移动端：统一使用点击切换
+        // 语言按钮点击事件
+        document.querySelectorAll('.language-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                if (this.closest('.dropdown-menu')) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    switchToLanguageMenu();
+                }
             });
-            
-            // 产品按钮悬停事件
-            document.querySelectorAll('.products-btn').forEach(btn => {
-                btn.addEventListener('mouseenter', function(e) {
-                    if (this.closest('.dropdown-menu')) {
-                        e.preventDefault();
-                        switchToProductsMenu();
-                    }
-                });
-            });
-        }
+        });
         
-        // 移动端：点击切换
+        // 产品按钮点击事件
+        document.querySelectorAll('.products-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                if (this.closest('.dropdown-menu')) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    switchToProductsMenu();
+                }
+            });
+        });
+        
+        // 以下是原有的移动端点击切换逻辑（保持不变）
         document.addEventListener('click', function(e) {
             // 点击下拉菜单内的语言按钮
             if (e.target.classList.contains('language-btn') && e.target.closest('.dropdown-menu')) {

@@ -58,28 +58,6 @@
             transform: translateX(-4px);
         }
         
-        /* 语言切换按钮 */
-        .lang-btn {
-            position: fixed;
-            top: 32px;
-            right: 32px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #FFFFFF;
-            padding: 12px 24px;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            z-index: 1000;
-        }
-        
-        .lang-btn:hover {
-            background: rgba(255, 255, 255, 0.15);
-        }
         
         /* 主标题 */
         .main-title {
@@ -115,16 +93,11 @@
         
         /* 移动端优化 */
         @media (max-width: 768px) {
-            .back-btn, .lang-btn {
+            .back-btn {
                 top: 20px;
                 left: 20px;
                 padding: 10px 20px;
                 font-size: 14px;
-            }
-            
-            .lang-btn {
-                left: auto;
-                right: 20px;
             }
             
             .main-title {
@@ -137,61 +110,6 @@
             }
         }
         
-        /* 语言菜单 */
-        .lang-menu {
-            position: fixed;
-            top: 80px;
-            right: 32px;
-            background: rgba(20, 20, 20, 0.95);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 16px;
-            padding: 12px 0;
-            min-width: 180px;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-10px);
-            transition: all 0.3s ease;
-            z-index: 999;
-        }
-        
-        .lang-menu.active {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-        
-        .lang-option {
-            padding: 12px 20px;
-            color: rgba(255, 255, 255, 0.8);
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-size: 15px;
-        }
-        
-        .lang-option:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: #FFFFFF;
-        }
-        
-        .lang-option.active {
-            color: #FFFFFF;
-            background: rgba(255, 255, 255, 0.05);
-            font-weight: 600;
-        }
-        
-        .lang-option.active::after {
-            content: ' ✓';
-            color: #4CAF50;
-        }
-        
-        @media (max-width: 768px) {
-            .lang-menu {
-                right: 20px;
-                top: 60px;
-            }
-        }
     </style>
 </head>
 <body>
@@ -200,19 +118,6 @@
         <span>←</span>
         <span>返回</span>
     </a>
-    
-    <!-- 语言切换按钮 -->
-    <button class="lang-btn" id="langBtn">语言 / Language</button>
-    
-    <!-- 语言菜单 -->
-    <div class="lang-menu" id="langMenu">
-        <div class="lang-option" data-lang="zh-CN">简体中文</div>
-        <div class="lang-option" data-lang="en">English</div>
-        <div class="lang-option" data-lang="ru">Русский</div>
-        <div class="lang-option" data-lang="fr">Français</div>
-        <div class="lang-option" data-lang="de">Deutsch</div>
-        <div class="lang-option" data-lang="es">Español</div>
-    </div>
     
     <!-- 主内容 -->
     <h1 class="main-title">Umail</h1>
@@ -241,13 +146,12 @@
             }
         };
         
-        // 获取当前语言
+        // 获取当前语言（从主页面同步）
         let currentLang = localStorage.getItem('language') || 'zh-CN';
         
         // 更新页面文本
         function updateLanguage(lang) {
             currentLang = lang;
-            localStorage.setItem('language', lang);
             
             // 更新所有带有 data-i18n 的元素
             document.querySelectorAll('[data-i18n]').forEach(el => {
@@ -257,44 +161,10 @@
                     el.textContent = translation;
                 }
             });
-            
-            // 更新语言选项的选中状态
-            document.querySelectorAll('.lang-option').forEach(option => {
-                if (option.dataset.lang === lang) {
-                    option.classList.add('active');
-                } else {
-                    option.classList.remove('active');
-                }
-            });
         }
         
         // 页面加载时应用当前语言
         updateLanguage(currentLang);
-        
-        // 语言切换按钮
-        const langBtn = document.getElementById('langBtn');
-        const langMenu = document.getElementById('langMenu');
-        
-        langBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            langMenu.classList.toggle('active');
-        });
-        
-        // 点击页面其他地方关闭菜单
-        document.addEventListener('click', (e) => {
-            if (!langMenu.contains(e.target) && e.target !== langBtn) {
-                langMenu.classList.remove('active');
-            }
-        });
-        
-        // 语言选项点击事件
-        document.querySelectorAll('.lang-option').forEach(option => {
-            option.addEventListener('click', () => {
-                const lang = option.dataset.lang;
-                updateLanguage(lang);
-                langMenu.classList.remove('active');
-            });
-        });
     </script>
 </body>
 </html>
