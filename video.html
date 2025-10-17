@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>视频展示 - LIKAIFENG.Net</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* 返回按钮 */
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 16px;
+            margin-bottom: 40px;
+            padding: 10px 20px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(-4px);
+        }
+        
+        /* 页面标题 */
+        .page-title {
+            font-size: clamp(32px, 5vw, 48px);
+            font-weight: 700;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .page-subtitle {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 60px;
+        }
+        
+        /* 视频网格 */
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+        
+        /* 视频卡片 */
+        .video-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .video-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 60px rgba(102, 126, 234, 0.3);
+            border-color: rgba(102, 126, 234, 0.5);
+        }
+        
+        /* 视频播放器容器 - 16:9 比例 */
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 */
+            height: 0;
+            overflow: hidden;
+            background: #000;
+        }
+        
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        /* 视频信息 */
+        .video-info {
+            padding: 20px;
+        }
+        
+        .video-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #ffffff;
+        }
+        
+        .video-desc {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+        
+        .video-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .video-tag {
+            background: rgba(102, 126, 234, 0.2);
+            color: #667eea;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+        }
+        
+        /* 大视频展示区 */
+        .featured-video {
+            margin-bottom: 60px;
+        }
+        
+        .featured-video .video-wrapper {
+            padding-bottom: 56.25%;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 20px 80px rgba(0, 0, 0, 0.5);
+        }
+        
+        .featured-info {
+            margin-top: 24px;
+        }
+        
+        .featured-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+        
+        .featured-desc {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.8;
+        }
+        
+        /* 使用说明 */
+        .instructions {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            border: 2px solid rgba(102, 126, 234, 0.3);
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 60px;
+        }
+        
+        .instructions h3 {
+            font-size: 24px;
+            margin-bottom: 16px;
+            color: #667eea;
+        }
+        
+        .instructions ol {
+            margin-left: 20px;
+            line-height: 2;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .instructions code {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #4ECDC4;
+        }
+        
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .video-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+            
+            .page-title {
+                font-size: 28px;
+            }
+            
+            .featured-title {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 返回按钮 -->
+        <a href="index.html" class="back-btn">
+            <span>←</span>
+            <span>返回首页</span>
+        </a>
+        
+        <!-- 页面标题 -->
+        <h1 class="page-title">视频展示</h1>
+        <p class="page-subtitle">使用B站流式播放，速度快，体验好</p>
+        
+        <!-- 使用说明 -->
+        <div class="instructions">
+            <h3>📝 如何添加你的视频？</h3>
+            <ol>
+                <li>访问 <a href="https://member.bilibili.com/platform/upload/video/frame" target="_blank" style="color: #667eea;">B站创作中心</a> 上传视频</li>
+                <li>选择"仅自己可见"（不公开，但可以通过链接访问）</li>
+                <li>上传完成后，复制视频链接，获取 <code>BV号</code>（如：BV1xx411c7mD）</li>
+                <li>在下面的代码中替换 <code>bvid=你的BV号</code></li>
+                <li>刷新页面即可看到你的视频！</li>
+            </ol>
+        </div>
+        
+        <!-- 精选大视频 -->
+        <div class="featured-video">
+            <div class="video-wrapper">
+                <!-- 替换这里的BV号为你的视频 -->
+                <iframe 
+                    src="//player.bilibili.com/player.html?bvid=BV1GJ411x7h7&page=1&high_quality=1&danmaku=0" 
+                    scrolling="no" 
+                    allowfullscreen="true">
+                </iframe>
+            </div>
+            <div class="featured-info">
+                <h2 class="featured-title">示例视频标题</h2>
+                <p class="featured-desc">
+                    这是一个演示视频。替换上面的BV号为你自己的视频。支持高清播放、流式加载、倍速播放等功能。
+                    视频会自动适应不同网络速度，给用户最佳观看体验。
+                </p>
+            </div>
+        </div>
+        
+        <!-- 视频网格 -->
+        <div class="video-grid">
+            <!-- 视频卡片 1 -->
+            <div class="video-card">
+                <div class="video-wrapper">
+                    <!-- 替换BV号 -->
+                    <iframe 
+                        src="//player.bilibili.com/player.html?bvid=BV1GJ411x7h7&page=1&high_quality=1&danmaku=0" 
+                        scrolling="no" 
+                        allowfullscreen="true">
+                    </iframe>
+                </div>
+                <div class="video-info">
+                    <h3 class="video-title">产品演示视频</h3>
+                    <p class="video-desc">展示产品核心功能和使用方法</p>
+                    <div class="video-meta">
+                        <span class="video-tag">演示</span>
+                        <span>5:30</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 视频卡片 2 -->
+            <div class="video-card">
+                <div class="video-wrapper">
+                    <!-- 替换BV号 -->
+                    <iframe 
+                        src="//player.bilibili.com/player.html?bvid=BV1GJ411x7h7&page=1&high_quality=1&danmaku=0" 
+                        scrolling="no" 
+                        allowfullscreen="true">
+                    </iframe>
+                </div>
+                <div class="video-info">
+                    <h3 class="video-title">安装教程</h3>
+                    <p class="video-desc">详细的软件安装步骤说明</p>
+                    <div class="video-meta">
+                        <span class="video-tag">教程</span>
+                        <span>3:20</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 视频卡片 3 -->
+            <div class="video-card">
+                <div class="video-wrapper">
+                    <!-- 替换BV号 -->
+                    <iframe 
+                        src="//player.bilibili.com/player.html?bvid=BV1GJ411x7h7&page=1&high_quality=1&danmaku=0" 
+                        scrolling="no" 
+                        allowfullscreen="true">
+                    </iframe>
+                </div>
+                <div class="video-info">
+                    <h3 class="video-title">功能介绍</h3>
+                    <p class="video-desc">深入讲解高级功能使用技巧</p>
+                    <div class="video-meta">
+                        <span class="video-tag">进阶</span>
+                        <span>8:45</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
