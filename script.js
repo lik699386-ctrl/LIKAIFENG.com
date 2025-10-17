@@ -1,40 +1,57 @@
 // 应用数据存储
 let apps = [];
+let releasesConfig = null;
 
-// 从localStorage加载应用数据
-function loadApps() {
-    const stored = localStorage.getItem('myApps');
-    if (stored) {
-        apps = JSON.parse(stored);
-    } else {
-        // 添加一些示例应用
-        apps = [
-            {
-                id: 1,
-                name: '邮件质检系统',
-                description: '智能邮件质量检查工具，提升邮件处理效率',
-                version: '1.0.0',
-                category: 'productivity',
-                icon: null,
-                fileUrl: '#',
-                fileName: 'MailQC.zip',
-                fileSize: '25.6 MB',
-                uploadDate: new Date().toISOString()
-            },
-            {
-                id: 2,
-                name: 'AI图片生成器',
-                description: '使用人工智能技术快速生成高质量图片',
-                version: '2.1.0',
-                category: 'creative',
-                icon: null,
-                fileUrl: '#',
-                fileName: 'ImageDesign.zip',
-                fileSize: '42.3 MB',
-                uploadDate: new Date().toISOString()
-            }
-        ];
-        saveApps();
+// 从GitHub Release配置加载应用数据
+async function loadApps() {
+    try {
+        // 优先从releases-config.json加载
+        const response = await fetch('releases-config.json');
+        if (response.ok) {
+            releasesConfig = await response.json();
+            apps = releasesConfig.apps || [];
+            console.log('✅ 已从 GitHub Release 加载应用列表');
+        } else {
+            throw new Error('配置文件不存在');
+        }
+    } catch (error) {
+        console.log('⚠️ 未找到 releases-config.json，使用本地存储');
+        // 降级到localStorage
+        const stored = localStorage.getItem('myApps');
+        if (stored) {
+            apps = JSON.parse(stored);
+        } else {
+            // 添加一些示例应用
+            apps = [
+                {
+                    id: 1,
+                    name: '邮件质检系统',
+                    description: '智能邮件质量检查工具，提升邮件处理效率',
+                    version: '1.0.0',
+                    category: 'productivity',
+                    icon: null,
+                    downloadUrl: '#',
+                    cdnUrl: '#',
+                    fileName: 'MailQC.zip',
+                    fileSize: '25.6 MB',
+                    uploadDate: new Date().toISOString()
+                },
+                {
+                    id: 2,
+                    name: 'AI图片生成器',
+                    description: '使用人工智能技术快速生成高质量图片',
+                    version: '2.1.0',
+                    category: 'creative',
+                    icon: null,
+                    downloadUrl: '#',
+                    cdnUrl: '#',
+                    fileName: 'ImageDesign.zip',
+                    fileSize: '42.3 MB',
+                    uploadDate: new Date().toISOString()
+                }
+            ];
+            saveApps();
+        }
     }
     renderApps();
 }
@@ -95,16 +112,31 @@ function downloadApp(appId) {
     const app = apps.find(a => a.id === appId);
     if (!app) return;
     
-    if (app.fileUrl && app.fileUrl !== '#') {
-        // 如果有实际文件URL，触发下载
+    // 优先使用CDN链接，如果配置启用且有CDN链接
+    let downloadUrl = app.downloadUrl;
+    if (releasesConfig?.settings?.useCDN && app.cdnUrl && app.cdnUrl !== '#') {
+        downloadUrl = app.cdnUrl;
+        console.log('🚀 使用 CDN 加速下载');
+    } else if (app.downloadUrl && app.downloadUrl !== '#') {
+        downloadUrl = app.downloadUrl;
+        console.log('📦 从 GitHub 下载');
+    } else if (app.fileUrl && app.fileUrl !== '#') {
+        // 兼容旧版本的fileUrl
+        downloadUrl = app.fileUrl;
+    }
+    
+    if (downloadUrl && downloadUrl !== '#') {
+        // 触发下载
         const a = document.createElement('a');
-        a.href = app.fileUrl;
+        a.href = downloadUrl;
         a.download = app.fileName || `${app.name}.zip`;
+        a.target = '_blank'; // 新标签页打开，某些浏览器需要
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
         
-        showNotification(`开始下载 ${app.name}`, 'success');
+        const source = releasesConfig?.settings?.useCDN ? 'CDN加速' : 'GitHub';
+        showNotification(`开始下载 ${app.name} (${source})`, 'success');
     } else {
         showNotification('此应用暂无可下载文件', 'error');
     }

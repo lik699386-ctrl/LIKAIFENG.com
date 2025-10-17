@@ -1,0 +1,27 @@
+{
+  "apps": [
+    {
+      "id": 1,
+      "name": "示例应用",
+      "description": "这是一个示例应用，展示如何配置",
+      "version": "v1.0.0",
+      "category": "utility",
+      "fileName": "example-app.zip",
+      "fileSize": "0 MB",
+      "downloadUrl": "https://github.com/lik699386-ctrl/cyberone-website/releases/download/v1.0.0/example-app.zip",
+      "cdnUrl": "https://cdn.jsdelivr.net/gh/lik699386-ctrl/cyberone-website@v1.0.0/example-app.zip",
+      "uploadDate": "2024-01-01",
+      "icon": null
+    }
+  ],
+  "repo": {
+    "owner": "lik699386-ctrl",
+    "name": "cyberone-website",
+    "url": "https://github.com/lik699386-ctrl/cyberone-website"
+  },
+  "settings": {
+    "useCDN": true,
+    "autoUpdate": true
+  }
+}
+

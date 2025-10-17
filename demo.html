@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Umail背景方案Demo</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            overflow-x: hidden;
+        }
+        
+        .nav {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 12px 20px;
+            border-radius: 999px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            display: flex;
+            gap: 12px;
+        }
+        
+        .nav button {
+            padding: 8px 16px;
+            border: none;
+            background: transparent;
+            border-radius: 999px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            color: #666;
+            transition: all 0.2s;
+        }
+        
+        .nav button:hover {
+            background: rgba(0, 0, 0, 0.05);
+            color: #000;
+        }
+        
+        .nav button.active {
+            background: #000;
+            color: #fff;
+        }
+        
+        .section {
+            height: 100vh;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .section.active {
+            display: flex;
+        }
+        
+        .content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            max-width: 800px;
+            padding: 40px;
+        }
+        
+        .content h1 {
+            font-size: clamp(32px, 5vw, 56px);
+            font-weight: 800;
+            color: #2B2B2B;
+            margin-bottom: 16px;
+            letter-spacing: -0.02em;
+        }
+        
+        .content p {
+            font-size: clamp(16px, 2vw, 20px);
+            color: #666;
+            margin-bottom: 32px;
+            line-height: 1.6;
+        }
+        
+        .demo-panel {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+        }
+        
+        .tag {
+            display: inline-block;
+            padding: 6px 16px;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        /* 方案1：现代光斑 */
+        #scene1 .scene {
+            position: fixed; inset: 0; z-index: 0; pointer-events: none;
+            background:
+                radial-gradient(800px 800px at 15% 25%, rgba(255, 182, 193, 0.15), transparent 70%),
+                radial-gradient(600px 600px at 85% 15%, rgba(173, 216, 230, 0.12), transparent 65%),
+                radial-gradient(500px 500px at 50% 80%, rgba(255, 218, 185, 0.10), transparent 60%),
+                linear-gradient(180deg, #F5EFE6 0%, #EFE6DA 50%, #E8DED0 100%);
+        }
+        
+        /* 方案2：温暖渐变 */
+        #scene2 .scene {
+            position: fixed; inset: 0; z-index: 0; pointer-events: none;
+            background:
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,.03) 2px, rgba(255,255,255,.03) 4px),
+                repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(255,255,255,.03) 2px, rgba(255,255,255,.03) 4px),
+                radial-gradient(circle at 20% 30%, #FFE8D6 0%, #F5D9C5 25%, transparent 50%),
+                radial-gradient(circle at 80% 20%, #E8D4F2 0%, #D4C5E8 25%, transparent 50%),
+                radial-gradient(circle at 50% 90%, #FFF5E1 0%, #F5E8D1 30%, transparent 60%),
+                linear-gradient(135deg, #F8F0E8 0%, #EFE6DA 100%);
+        }
+        
+        /* 方案3：柔和色块 */
+        #scene3 .scene {
+            position: fixed; inset: 0; z-index: 0; pointer-events: none;
+            background: #F2E9E1;
+        }
+        #scene3 .scene__layer:nth-child(1){
+            position: absolute; inset: 0;
+            background: radial-gradient(ellipse 1200px 800px at 25% 30%, #FFD7BE, transparent 60%);
+            filter: blur(120px);
+            opacity: 0.4;
+        }
+        #scene3 .scene__layer:nth-child(2){
+            position: absolute; inset: 0;
+            background: radial-gradient(ellipse 1000px 900px at 75% 20%, #C4D7F2, transparent 60%);
+            filter: blur(100px);
+            opacity: 0.35;
+            mix-blend-mode: multiply;
+        }
+        #scene3 .scene__layer:nth-child(3){
+            position: absolute; inset: 0;
+            background: radial-gradient(ellipse 800px 600px at 50% 80%, #FFF0D4, transparent 60%);
+            filter: blur(80px);
+            opacity: 0.3;
+        }
+        
+        /* 方案4：极简纯净 */
+        #scene4 .scene {
+            position: fixed; inset: 0; z-index: 0; pointer-events: none;
+            background: linear-gradient(180deg, #FAFAF9 0%, #F5F2ED 50%, #F0EBE3 100%);
+        }
+        #scene4 .scene__grain{
+            position: absolute; inset: 0;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" seed="2"/><feColorMatrix type="saturate" values="0"/></filter><rect width="300" height="300" filter="url(%23n)" opacity=".03"/></svg>');
+            opacity: 0.5;
+        }
+        
+        /* 方案5：梦幻光晕 */
+        #scene5 .scene {
+            position: fixed; inset: 0; z-index: 0; pointer-events: none;
+            background: #EDE7E1;
+        }
+        #scene5 .scene__layer{
+            position: absolute; inset: 0;
+            background:
+                radial-gradient(600px 600px at 20% 25%, rgba(255, 200, 220, 0.25), transparent 50%),
+                radial-gradient(700px 700px at 80% 15%, rgba(200, 220, 255, 0.20), transparent 55%),
+                radial-gradient(500px 500px at 40% 70%, rgba(255, 230, 200, 0.22), transparent 50%),
+                radial-gradient(550px 550px at 90% 85%, rgba(220, 200, 255, 0.18), transparent 52%);
+            filter: blur(60px);
+        }
+        
+        /* 方案6：渐变网格 */
+        #scene6 .scene {
+            position: fixed; inset: 0; z-index: 0; pointer-events: none;
+            background:
+                repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(255,255,255,.015) 40px, rgba(255,255,255,.015) 80px),
+                repeating-linear-gradient(-45deg, transparent, transparent 40px, rgba(0,0,0,.008) 40px, rgba(0,0,0,.008) 80px),
+                linear-gradient(135deg, #FAF5F0 0%, #F0E6DC 25%, #E8D9CE 50%, #E0CEC0 75%, #D8C3B4 100%);
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航切换 -->
+    <div class="nav">
+        <button onclick="showScene(1)" class="active">方案1</button>
+        <button onclick="showScene(2)">方案2</button>
+        <button onclick="showScene(3)">方案3</button>
+        <button onclick="showScene(4)">方案4</button>
+        <button onclick="showScene(5)">方案5</button>
+        <button onclick="showScene(6)">方案6</button>
+    </div>
+    
+    <!-- 方案1：现代光斑 -->
+    <div id="scene1" class="section active">
+        <div class="scene"></div>
+        <div class="content">
+            <div class="tag">方案1 - Apple风格</div>
+            <div class="demo-panel">
+                <h1>现代光斑</h1>
+                <p>大号柔和光斑 + 细腻渐变<br>简洁大气，适合任何内容</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 方案2：温暖渐变 -->
+    <div id="scene2" class="section">
+        <div class="scene"></div>
+        <div class="content">
+            <div class="tag">方案2 - Instagram风格</div>
+            <div class="demo-panel">
+                <h1>温暖渐变</h1>
+                <p>多层径向渐变 + 网格纹理<br>温暖舒适，有细节层次</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 方案3：柔和色块 -->
+    <div id="scene3" class="section">
+        <div class="scene">
+            <div class="scene__layer"></div>
+            <div class="scene__layer"></div>
+            <div class="scene__layer"></div>
+        </div>
+        <div class="content">
+            <div class="tag">方案3 - Dribbble风格</div>
+            <div class="demo-panel">
+                <h1>柔和色块</h1>
+                <p>大号模糊色块 + 叠加混合<br>有设计感，不会抢内容</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 方案4：极简纯净 -->
+    <div id="scene4" class="section">
+        <div class="scene">
+            <div class="scene__grain"></div>
+        </div>
+        <div class="content">
+            <div class="tag">方案4 - Notion风格</div>
+            <div class="demo-panel">
+                <h1>极简纯净</h1>
+                <p>单层柔和渐变 + 微妙噪点<br>极简风格，专注内容</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 方案5：梦幻光晕 -->
+    <div id="scene5" class="section">
+        <div class="scene">
+            <div class="scene__layer"></div>
+        </div>
+        <div class="content">
+            <div class="tag">方案5 - Behance风格</div>
+            <div class="demo-panel">
+                <h1>梦幻光晕</h1>
+                <p>多层发光圆 + 模糊<br>柔和梦幻，视觉舒适</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 方案6：渐变网格 -->
+    <div id="scene6" class="section">
+        <div class="scene"></div>
+        <div class="content">
+            <div class="tag">方案6 - Linear风格</div>
+            <div class="demo-panel">
+                <h1>渐变网格</h1>
+                <p>对角渐变 + 网格叠加<br>有结构感，现代专业</p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function showScene(num) {
+            // 隐藏所有section
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
+            
+            // 显示选中的section
+            document.getElementById('scene' + num).classList.add('active');
+            document.querySelectorAll('.nav button')[num - 1].classList.add('active');
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
