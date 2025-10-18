@@ -1648,8 +1648,8 @@
                         <div class="dropdown-nav">
                             <div class="dropdown-nav-logo">LIKAIFENG.Net</div>
                             <div class="dropdown-nav-buttons">
-                                <button class="dropdown-nav-btn language-btn active" data-lang>语言</button>
-                                <button class="dropdown-nav-btn products-btn" data-products>产品</button>
+                                <button class="dropdown-nav-btn language-btn active" data-lang onclick="switchToLanguageMenuDirect(); return false;">语言</button>
+                                <button class="dropdown-nav-btn products-btn" data-products onclick="switchToProductsMenuDirect(); return false;">产品</button>
                             </div>
                         </div>
                         <!-- 语言内容区域 -->
@@ -1723,8 +1723,8 @@
                         <div class="dropdown-nav">
                             <div class="dropdown-nav-logo">LIKAIFENG.Net</div>
                             <div class="dropdown-nav-buttons">
-                                <button class="dropdown-nav-btn language-btn" data-lang>语言</button>
-                                <button class="dropdown-nav-btn products-btn active" data-products>产品</button>
+                                <button class="dropdown-nav-btn language-btn" data-lang onclick="switchToLanguageMenuDirect(); return false;">语言</button>
+                                <button class="dropdown-nav-btn products-btn active" data-products onclick="switchToProductsMenuDirect(); return false;">产品</button>
                             </div>
                         </div>
                         <!-- 语言内容区域（复制） -->
@@ -2062,6 +2062,89 @@
 
         // 当前语言（默认简体中文）
         let currentLang = localStorage.getItem('language') || 'zh-CN';
+        
+        // ===== 超级简单的全局切换函数（用于onclick） =====
+        function switchToLanguageMenuDirect() {
+            console.log('🎯 直接切换到语言菜单（onclick）');
+            
+            const isMobile = !window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+            
+            if (isMobile) {
+                // 移动端：切换菜单容器
+                const languageDropdown = document.querySelector('.language-dropdown');
+                const productsDropdown = document.querySelector('.products-dropdown');
+                
+                if (languageDropdown && productsDropdown) {
+                    productsDropdown.classList.remove('active');
+                    languageDropdown.classList.add('active');
+                    
+                    // 更新按钮状态
+                    document.querySelectorAll('.language-btn').forEach(btn => btn.classList.add('active'));
+                    document.querySelectorAll('.products-btn').forEach(btn => btn.classList.remove('active'));
+                    
+                    console.log('✅ 移动端语言菜单已激活');
+                }
+            } else {
+                // 桌面端：切换内容
+                const currentMenu = document.querySelector('.dropdown-menu.active');
+                if (currentMenu) {
+                    const languageContent = currentMenu.querySelector('.language-content');
+                    const productsContent = currentMenu.querySelector('.products-content');
+                    
+                    if (languageContent && productsContent) {
+                        languageContent.style.display = 'block';
+                        productsContent.style.display = 'none';
+                        
+                        // 更新按钮状态
+                        currentMenu.querySelectorAll('.language-btn').forEach(btn => btn.classList.add('active'));
+                        currentMenu.querySelectorAll('.products-btn').forEach(btn => btn.classList.remove('active'));
+                        
+                        console.log('✅ 桌面端语言内容已显示');
+                    }
+                }
+            }
+        }
+        
+        function switchToProductsMenuDirect() {
+            console.log('🎯 直接切换到产品菜单（onclick）');
+            
+            const isMobile = !window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+            
+            if (isMobile) {
+                // 移动端：切换菜单容器
+                const languageDropdown = document.querySelector('.language-dropdown');
+                const productsDropdown = document.querySelector('.products-dropdown');
+                
+                if (languageDropdown && productsDropdown) {
+                    languageDropdown.classList.remove('active');
+                    productsDropdown.classList.add('active');
+                    
+                    // 更新按钮状态
+                    document.querySelectorAll('.language-btn').forEach(btn => btn.classList.remove('active'));
+                    document.querySelectorAll('.products-btn').forEach(btn => btn.classList.add('active'));
+                    
+                    console.log('✅ 移动端产品菜单已激活');
+                }
+            } else {
+                // 桌面端：切换内容
+                const currentMenu = document.querySelector('.dropdown-menu.active');
+                if (currentMenu) {
+                    const languageContent = currentMenu.querySelector('.language-content');
+                    const productsContent = currentMenu.querySelector('.products-content');
+                    
+                    if (languageContent && productsContent) {
+                        languageContent.style.display = 'none';
+                        productsContent.style.display = 'block';
+                        
+                        // 更新按钮状态
+                        currentMenu.querySelectorAll('.language-btn').forEach(btn => btn.classList.remove('active'));
+                        currentMenu.querySelectorAll('.products-btn').forEach(btn => btn.classList.add('active'));
+                        
+                        console.log('✅ 桌面端产品内容已显示');
+                    }
+                }
+            }
+        }
 
         // 更新页面文本
         function updateLanguage(lang) {
