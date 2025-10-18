@@ -2209,65 +2209,116 @@
             }
             
             // ========================================
-            // 菜单内语言和产品按钮切换事件（使用事件委托）
+            // 菜单内语言和产品按钮切换事件（多层防护）
             // ========================================
             
-            // 使用事件委托处理所有按钮点击
-            document.addEventListener('click', function(e) {
-                // 检查是否点击了语言按钮（菜单内）
-                const languageBtn = e.target.closest('.dropdown-nav-btn.language-btn');
-                if (languageBtn && languageBtn.closest('.dropdown-menu')) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    
-                    console.log('✅ 语言按钮被点击');
-                    
-                    // 移动端：切换到语言菜单容器
-                    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-                        const languageDropdown = document.querySelector('.language-dropdown');
-                        const productsDropdown = document.querySelector('.products-dropdown');
-                        
-                        console.log('📱 移动端检测，切换到语言菜单');
-                        
-                        if (languageDropdown && productsDropdown) {
-                            productsDropdown.classList.remove('active');
-                            languageDropdown.classList.add('active');
-                            updateMobileButtonStates('language');
-                        }
-                    } else {
-                        console.log('🖥️ 桌面端，切换菜单内容');
-                        switchToLanguageMenu();
-                    }
-                    return;
-                }
+            // 方案1：直接给按钮添加多个事件（touchstart + click）
+            const allLanguageBtns = document.querySelectorAll('.dropdown-nav-btn.language-btn');
+            const allProductsBtns = document.querySelectorAll('.dropdown-nav-btn.products-btn');
+            
+            console.log('🔍 调试信息：');
+            console.log('找到语言按钮:', allLanguageBtns.length, '个');
+            console.log('找到产品按钮:', allProductsBtns.length, '个');
+            
+            function handleLanguageClick(e) {
+                console.log('🎯 语言按钮处理函数被调用');
+                e.preventDefault();
+                e.stopPropagation();
+                e.stopImmediatePropagation();
                 
-                // 检查是否点击了产品按钮（菜单内）
-                const productsBtn = e.target.closest('.dropdown-nav-btn.products-btn');
-                if (productsBtn && productsBtn.closest('.dropdown-menu')) {
-                    e.preventDefault();
-                    e.stopPropagation();
+                const isMobile = !window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+                console.log('📱 是否移动端:', isMobile);
+                
+                if (isMobile) {
+                    const languageDropdown = document.querySelector('.language-dropdown');
+                    const productsDropdown = document.querySelector('.products-dropdown');
                     
-                    console.log('✅ 产品按钮被点击');
+                    console.log('🔄 切换到语言菜单');
+                    console.log('语言菜单:', languageDropdown);
+                    console.log('产品菜单:', productsDropdown);
                     
-                    // 移动端：切换到产品菜单容器
-                    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-                        const languageDropdown = document.querySelector('.language-dropdown');
-                        const productsDropdown = document.querySelector('.products-dropdown');
-                        
-                        console.log('📱 移动端检测，切换到产品菜单');
-                        
-                        if (languageDropdown && productsDropdown) {
-                            languageDropdown.classList.remove('active');
-                            productsDropdown.classList.add('active');
-                            updateMobileButtonStates('products');
-                        }
-                    } else {
-                        console.log('🖥️ 桌面端，切换菜单内容');
-                        switchToProductsMenu();
+                    if (languageDropdown && productsDropdown) {
+                        productsDropdown.classList.remove('active');
+                        languageDropdown.classList.add('active');
+                        updateMobileButtonStates('language');
+                        console.log('✅ 语言菜单已激活');
                     }
-                    return;
+                } else {
+                    console.log('🖥️ 桌面端处理');
+                    switchToLanguageMenu();
                 }
-            }, true); // 使用捕获阶段
+            }
+            
+            function handleProductsClick(e) {
+                console.log('🎯 产品按钮处理函数被调用');
+                e.preventDefault();
+                e.stopPropagation();
+                e.stopImmediatePropagation();
+                
+                const isMobile = !window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+                console.log('📱 是否移动端:', isMobile);
+                
+                if (isMobile) {
+                    const languageDropdown = document.querySelector('.language-dropdown');
+                    const productsDropdown = document.querySelector('.products-dropdown');
+                    
+                    console.log('🔄 切换到产品菜单');
+                    console.log('语言菜单:', languageDropdown);
+                    console.log('产品菜单:', productsDropdown);
+                    
+                    if (languageDropdown && productsDropdown) {
+                        languageDropdown.classList.remove('active');
+                        productsDropdown.classList.add('active');
+                        updateMobileButtonStates('products');
+                        console.log('✅ 产品菜单已激活');
+                    }
+                } else {
+                    console.log('🖥️ 桌面端处理');
+                    switchToProductsMenu();
+                }
+            }
+            
+            // 给每个按钮添加多个事件
+            allLanguageBtns.forEach((btn, index) => {
+                console.log('为语言按钮', index, '添加事件监听');
+                btn.addEventListener('click', handleLanguageClick, true);
+                btn.addEventListener('touchstart', function(e) {
+                    console.log('👆 语言按钮 touchstart');
+                    handleLanguageClick(e);
+                }, { passive: false });
+                btn.addEventListener('touchend', function(e) {
+                    console.log('👆 语言按钮 touchend');
+                    e.preventDefault(); // 防止触发click
+                }, { passive: false });
+            });
+            
+            allProductsBtns.forEach((btn, index) => {
+                console.log('为产品按钮', index, '添加事件监听');
+                btn.addEventListener('click', handleProductsClick, true);
+                btn.addEventListener('touchstart', function(e) {
+                    console.log('👆 产品按钮 touchstart');
+                    handleProductsClick(e);
+                }, { passive: false });
+                btn.addEventListener('touchend', function(e) {
+                    console.log('👆 产品按钮 touchend');
+                    e.preventDefault(); // 防止触发click
+                }, { passive: false });
+            });
+            
+            // 方案2：事件委托作为备用
+            document.addEventListener('click', function(e) {
+                console.log('🌐 全局click事件，目标:', e.target);
+                
+                const languageBtn = e.target.closest('.dropdown-nav-btn.language-btn');
+                const productsBtn = e.target.closest('.dropdown-nav-btn.products-btn');
+                
+                if (languageBtn) {
+                    console.log('📍 捕获到语言按钮点击（委托）');
+                }
+                if (productsBtn) {
+                    console.log('📍 捕获到产品按钮点击（委托）');
+                }
+            }, true);
         });
 
         // 语言切换事件 - 支持新的Apple风格布局
