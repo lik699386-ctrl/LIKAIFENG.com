@@ -877,6 +877,16 @@
             font-weight: 400; /* 激活时也不加粗，保持一致 */
         }
         
+        /* 移动端触摸反馈 */
+        @media (hover: none) {
+            .dropdown-nav-btn:active {
+                color: rgba(255, 255, 255, 1) !important;
+                background: rgba(255, 255, 255, 0.1) !important;
+                transform: scale(0.98);
+                transition: all 0.1s ease;
+            }
+        }
+        
         /* 语言选项选中状态 */
         .language-item.active {
             background: rgba(255, 255, 255, 0.12);
@@ -2089,6 +2099,25 @@
             });
         }
 
+        // 更新按钮active状态的辅助函数（移动端）- 需要在DOMContentLoaded之前定义
+        function updateMobileButtonStates(menuType) {
+            const currentMenu = document.querySelector('.dropdown-menu.active');
+            if (currentMenu) {
+                const languageBtn = currentMenu.querySelector('.language-btn');
+                const productsBtn = currentMenu.querySelector('.products-btn');
+                
+                if (languageBtn && productsBtn) {
+                    if (menuType === 'language') {
+                        languageBtn.classList.add('active');
+                        productsBtn.classList.remove('active');
+                    } else if (menuType === 'products') {
+                        languageBtn.classList.remove('active');
+                        productsBtn.classList.add('active');
+                    }
+                }
+            }
+        }
+
         // 页面加载时应用当前语言
         document.addEventListener('DOMContentLoaded', function() {
             updateLanguage(currentLang);
@@ -2106,6 +2135,78 @@
                     // 让默认行为继续（跳转到产品页面）
                 });
             });
+            
+            // 移动端：顶部导航栏语言和产品按钮点击事件
+            const languageTrigger = document.querySelector('.language-trigger');
+            const productsTrigger = document.querySelector('.products-trigger');
+            
+            // 语言按钮点击（移动端）
+            if (languageTrigger) {
+                languageTrigger.addEventListener('click', function(e) {
+                    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+                        e.preventDefault();
+                        const languageDropdown = document.querySelector('.language-dropdown');
+                        const productsDropdown = document.querySelector('.products-dropdown');
+                        const overlay = document.getElementById('dropdownOverlay');
+                        
+                        // 切换菜单显示
+                        if (languageDropdown.classList.contains('active')) {
+                            // 关闭菜单
+                            languageDropdown.classList.remove('active');
+                            if (overlay) overlay.classList.remove('active');
+                            document.body.style.overflow = '';
+                        } else {
+                            // 打开语言菜单，关闭产品菜单
+                            productsDropdown.classList.remove('active');
+                            languageDropdown.classList.add('active');
+                            if (overlay) overlay.classList.add('active');
+                            document.body.style.overflow = 'hidden';
+                            // 设置按钮状态
+                            setTimeout(() => updateMobileButtonStates('language'), 10);
+                        }
+                    }
+                });
+            }
+            
+            // 产品按钮点击（移动端）
+            if (productsTrigger) {
+                productsTrigger.addEventListener('click', function(e) {
+                    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+                        e.preventDefault();
+                        const languageDropdown = document.querySelector('.language-dropdown');
+                        const productsDropdown = document.querySelector('.products-dropdown');
+                        const overlay = document.getElementById('dropdownOverlay');
+                        
+                        // 切换菜单显示
+                        if (productsDropdown.classList.contains('active')) {
+                            // 关闭菜单
+                            productsDropdown.classList.remove('active');
+                            if (overlay) overlay.classList.remove('active');
+                            document.body.style.overflow = '';
+                        } else {
+                            // 打开产品菜单，关闭语言菜单
+                            languageDropdown.classList.remove('active');
+                            productsDropdown.classList.add('active');
+                            if (overlay) overlay.classList.add('active');
+                            document.body.style.overflow = 'hidden';
+                            // 设置按钮状态
+                            setTimeout(() => updateMobileButtonStates('products'), 10);
+                        }
+                    }
+                });
+            }
+            
+            // 点击遮罩关闭菜单
+            const overlay = document.getElementById('dropdownOverlay');
+            if (overlay) {
+                overlay.addEventListener('click', function() {
+                    document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                        menu.classList.remove('active');
+                    });
+                    overlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                });
+            }
         });
 
         // 语言切换事件 - 支持新的Apple风格布局
@@ -2217,7 +2318,26 @@
                 if (this.closest('.dropdown-menu')) {
                     e.preventDefault();
                     e.stopPropagation();
-                    switchToLanguageMenu();
+                    
+                    // 移动端：切换到语言菜单容器
+                    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+                        const languageDropdown = document.querySelector('.language-dropdown');
+                        const productsDropdown = document.querySelector('.products-dropdown');
+                        
+                        if (languageDropdown && productsDropdown) {
+                            // 先移除产品菜单的active
+                            productsDropdown.classList.remove('active');
+                            // 添加语言菜单的active
+                            if (!languageDropdown.classList.contains('active')) {
+                                languageDropdown.classList.add('active');
+                            }
+                            // 更新按钮状态
+                            updateMobileButtonStates('language');
+                        }
+                    } else {
+                        // 桌面端：在当前菜单内切换内容
+                        switchToLanguageMenu();
+                    }
                 }
             });
         });
@@ -2228,47 +2348,32 @@
                 if (this.closest('.dropdown-menu')) {
                     e.preventDefault();
                     e.stopPropagation();
-                    switchToProductsMenu();
+                    
+                    // 移动端：切换到产品菜单容器
+                    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+                        const languageDropdown = document.querySelector('.language-dropdown');
+                        const productsDropdown = document.querySelector('.products-dropdown');
+                        
+                        if (languageDropdown && productsDropdown) {
+                            // 先移除语言菜单的active
+                            languageDropdown.classList.remove('active');
+                            // 添加产品菜单的active
+                            if (!productsDropdown.classList.contains('active')) {
+                                productsDropdown.classList.add('active');
+                            }
+                            // 更新按钮状态
+                            updateMobileButtonStates('products');
+                        }
+                    } else {
+                        // 桌面端：在当前菜单内切换内容
+                        switchToProductsMenu();
+                    }
                 }
             });
         });
         
-        // 以下是原有的移动端点击切换逻辑（保持不变）
+        // 全局点击处理：处理链接和其他交互
         document.addEventListener('click', function(e) {
-            // 点击下拉菜单内的语言按钮
-            if (e.target.classList.contains('language-btn') && e.target.closest('.dropdown-menu')) {
-                e.preventDefault();
-                e.stopPropagation();
-                
-                // 移动端：切换菜单容器
-                if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-                    const languageDropdown = document.querySelector('.language-dropdown');
-                    const productsDropdown = document.querySelector('.products-dropdown');
-                    
-                    if (languageDropdown && productsDropdown) {
-                        productsDropdown.classList.remove('active');
-                        languageDropdown.classList.add('active');
-                    }
-                }
-            }
-            
-            // 点击下拉菜单内的产品按钮
-            if (e.target.classList.contains('products-btn') && e.target.closest('.dropdown-menu')) {
-                e.preventDefault();
-                e.stopPropagation();
-                
-                // 移动端：切换菜单容器
-                if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-                    const languageDropdown = document.querySelector('.language-dropdown');
-                    const productsDropdown = document.querySelector('.products-dropdown');
-                    
-                    if (languageDropdown && productsDropdown) {
-                        languageDropdown.classList.remove('active');
-                        productsDropdown.classList.add('active');
-                    }
-                }
-            }
-            
             // 优化点击处理：优先检查是否点击链接
             const clickedLink = e.target.closest('a');
             
