@@ -188,7 +188,7 @@ git log --all --full-history
 
 ### 24/7 安全热线
 - **邮箱：** lik699386@gmail.com
-- **GitHub Issues：** https://github.com/lik699386-ctrl/cyberone-website/issues (仅非敏感问题)
+- **GitHub Issues：** https://github.com/lik699386-ctrl/likaifeng.com/issues (仅非敏感问题)
 - **加密通信：** PGP Key可用
 
 ### 上报链路

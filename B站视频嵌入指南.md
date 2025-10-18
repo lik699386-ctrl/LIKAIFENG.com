@@ -293,7 +293,7 @@ git push origin master
 
 等待1-2分钟，访问：
 ```
-https://lik699386-ctrl.github.io/LIKAIFENG.com/video.html
+https://lik699386-ctrl.github.io/likaifeng.com/video.html
 ```
 
 ---
@@ -327,4 +327,23 @@ https://lik699386-ctrl.github.io/LIKAIFENG.com/video.html
 ---
 
 ✅ **完成！现在你可以在网站上展示流式播放的视频了！**
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

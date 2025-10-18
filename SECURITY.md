@@ -185,8 +185,8 @@ This security policy is reviewed and updated quarterly.
 ## 📞 Contact
 
 - **Security Email**: lik699386@gmail.com
-- **Website**: https://lik699386-ctrl.github.io/cyberone-website/
-- **Repository**: https://github.com/lik699386-ctrl/cyberone-website
+- **Website**: https://lik699386-ctrl.github.io/likaifeng.com/
+- **Repository**: https://github.com/lik699386-ctrl/likaifeng.com
 
 ---
 

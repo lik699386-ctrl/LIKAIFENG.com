@@ -73,7 +73,7 @@ graph LR
   ],
   "repo": {
     "owner": "lik699386-ctrl",
-    "name": "cyberone-website", 
+    "name": "likaifeng.com", 
     "url": "仓库地址"
   },
   "settings": {
@@ -107,7 +107,7 @@ https://github.com/{用户名}/{仓库名}/releases/download/{版本号}/{文件
 ```
 示例：
 ```
-https://github.com/lik699386-ctrl/cyberone-website/releases/download/v1.0.0/MyApp.zip
+https://github.com/lik699386-ctrl/likaifeng.com/releases/download/v1.0.0/MyApp.zip
 ```
 
 ### jsDelivr CDN加速
@@ -116,7 +116,7 @@ https://cdn.jsdelivr.net/gh/{用户名}/{仓库名}@{版本号}/{文件名}
 ```
 示例：
 ```
-https://cdn.jsdelivr.net/gh/lik699386-ctrl/cyberone-website@v1.0.0/MyApp.zip
+https://cdn.jsdelivr.net/gh/lik699386-ctrl/likaifeng.com@v1.0.0/MyApp.zip
 ```
 
 ## ⚡ 使用示例
@@ -197,7 +197,7 @@ jobs:
 
 ### Q: 如何删除已上传的Release？
 ```powershell
-gh release delete v1.0.0 --repo lik699386-ctrl/cyberone-website --yes
+gh release delete v1.0.0 --repo lik699386-ctrl/likaifeng.com --yes
 ```
 
 ### Q: CDN链接不能访问？
@@ -212,7 +212,7 @@ gh release delete v1.0.0 --repo lik699386-ctrl/cyberone-website --yes
 
 ### Q: 如何查看所有Release？
 ```powershell
-gh release list --repo lik699386-ctrl/cyberone-website
+gh release list --repo lik699386-ctrl/likaifeng.com
 ```
 
 ### Q: 文件超过2GB？
@@ -228,8 +228,8 @@ gh release list --repo lik699386-ctrl/cyberone-website
 
 ## 🔗 快速链接
 
-- 仓库：https://github.com/lik699386-ctrl/cyberone-website
-- Releases：https://github.com/lik699386-ctrl/cyberone-website/releases
+- 仓库：https://github.com/lik699386-ctrl/likaifeng.com
+- Releases：https://github.com/lik699386-ctrl/likaifeng.com/releases
 - 网站：运行 `.\启动.ps1` 查看
 
 ## 🎯 总结

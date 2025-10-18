@@ -77,7 +77,7 @@ cd "D:\个人网页"
 ```powershell
 # 创建 Release 并上传文件
 gh release create v1.0.0 `
-  --repo lik699386-ctrl/cyberone-website `
+  --repo lik699386-ctrl/likaifeng.com `
   --title "应用名称 - v1.0.0" `
   --notes "版本说明" `
   "D:\你的文件.zip"
@@ -85,7 +85,7 @@ gh release create v1.0.0 `
 
 ### 方法三：使用 GitHub 网页界面
 
-1. 访问 https://github.com/lik699386-ctrl/cyberone-website/releases
+1. 访问 https://github.com/lik699386-ctrl/likaifeng.com/releases
 2. 点击 "Draft a new release"
 3. 填写标签（Tag）：v1.0.0
 4. 填写标题和说明
@@ -109,16 +109,16 @@ gh release create v1.0.0 `
       "category": "utility",
       "fileName": "MyApp.zip",
       "fileSize": "1.5 GB",
-      "downloadUrl": "https://github.com/lik699386-ctrl/cyberone-website/releases/download/v1.0.0/MyApp.zip",
-      "cdnUrl": "https://cdn.jsdelivr.net/gh/lik699386-ctrl/cyberone-website@v1.0.0/MyApp.zip",
+      "downloadUrl": "https://github.com/lik699386-ctrl/likaifeng.com/releases/download/v1.0.0/MyApp.zip",
+      "cdnUrl": "https://cdn.jsdelivr.net/gh/lik699386-ctrl/likaifeng.com@v1.0.0/MyApp.zip",
       "uploadDate": "2024-01-01",
       "icon": null
     }
   ],
   "repo": {
     "owner": "lik699386-ctrl",
-    "name": "cyberone-website",
-    "url": "https://github.com/lik699386-ctrl/cyberone-website"
+    "name": "likaifeng.com",
+    "url": "https://github.com/lik699386-ctrl/likaifeng.com"
   },
   "settings": {
     "useCDN": true,
@@ -150,7 +150,7 @@ https://cdn.jsdelivr.net/gh/{用户名}/{仓库名}@{版本号}/{文件名}
 
 例如：
 ```
-https://cdn.jsdelivr.net/gh/lik699386-ctrl/cyberone-website@v1.0.0/MyApp.zip
+https://cdn.jsdelivr.net/gh/lik699386-ctrl/likaifeng.com@v1.0.0/MyApp.zip
 ```
 
 ---
@@ -179,7 +179,7 @@ https://cdn.jsdelivr.net/gh/lik699386-ctrl/cyberone-website@v1.0.0/MyApp.zip
 **A:**
 ```powershell
 # 删除 Release
-gh release delete v1.0.0 --repo lik699386-ctrl/cyberone-website --yes
+gh release delete v1.0.0 --repo lik699386-ctrl/likaifeng.com --yes
 ```
 
 ### Q5: 如何更新应用？
@@ -198,8 +198,8 @@ gh release delete v1.0.0 --repo lik699386-ctrl/cyberone-website --yes
 
 ## 🔗 快速链接
 
-- 仓库地址：https://github.com/lik699386-ctrl/cyberone-website
-- Releases页面：https://github.com/lik699386-ctrl/cyberone-website/releases
+- 仓库地址：https://github.com/lik699386-ctrl/likaifeng.com
+- Releases页面：https://github.com/lik699386-ctrl/likaifeng.com/releases
 - GitHub CLI文档：https://cli.github.com/manual/
 - jsDelivr文档：https://www.jsdelivr.com/
 
@@ -229,5 +229,5 @@ AppName-v1.0.0-windows-x64.zip
 3. ✅ 在网站上展示和下载
 4. ✅ 完全免费使用
 
-有问题？查看 [GitHub Issues](https://github.com/lik699386-ctrl/cyberone-website/issues)
+有问题？查看 [GitHub Issues](https://github.com/lik699386-ctrl/likaifeng.com/issues)
 
