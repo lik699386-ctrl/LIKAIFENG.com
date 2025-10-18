@@ -1662,6 +1662,8 @@
                                 <h3 class="platform-title" data-i18n="platform.windows">Windows</h3>
                                 <div class="product-info">
                                     <a href="umail.html" data-i18n="product.umail">Umail</a>
+                                    <span style="margin: 0 8px; color: rgba(255, 255, 255, 0.3);">|</span>
+                                    <a href="ulik.html" data-i18n="product.ulik">Ulik</a>
                                 </div>
                             </div>
                             
@@ -1735,6 +1737,8 @@
                                 <h3 class="platform-title" data-i18n="platform.windows">Windows</h3>
                                 <div class="product-info">
                                     <a href="umail.html" data-i18n="product.umail">Umail</a>
+                                    <span style="margin: 0 8px; color: rgba(255, 255, 255, 0.3);">|</span>
+                                    <a href="ulik.html" data-i18n="product.ulik">Ulik</a>
                                 </div>
                             </div>
                             
@@ -1803,6 +1807,7 @@
                 'platform.ios': 'iOS',
                 'platform.android': 'Android',
                 'product.umail': 'Umail',
+                'product.ulik': 'Ulik',
                 'product.coming-soon': '待开发',
                 'status.released': '✓ 已发布',
                 'umail.subtitle': '专业级邮箱安全管理工具',
@@ -1842,6 +1847,7 @@
                 'platform.ios': 'iOS',
                 'platform.android': 'Android',
                 'product.umail': 'Umail',
+                'product.ulik': 'Ulik',
                 'product.coming-soon': 'Coming Soon',
                 'status.released': '✓ Released',
                 'umail.subtitle': 'Professional Email Security Management Tool',
@@ -1881,6 +1887,7 @@
                 'platform.ios': 'iOS',
                 'platform.android': 'Android',
                 'product.umail': 'Umail',
+                'product.ulik': 'Ulik',
                 'product.coming-soon': 'Скоро',
                 'status.released': '✓ Выпущен',
                 'umail.subtitle': 'Профессиональный инструмент безопасности электронной почты',
@@ -1920,6 +1927,7 @@
                 'platform.ios': 'iOS',
                 'platform.android': 'Android',
                 'product.umail': 'Umail',
+                'product.ulik': 'Ulik',
                 'product.coming-soon': 'Bientôt disponible',
                 'status.released': '✓ Publié',
                 'umail.subtitle': 'Outil professionnel de gestion de sécurité des emails',
@@ -1959,6 +1967,7 @@
                 'platform.ios': 'iOS',
                 'platform.android': 'Android',
                 'product.umail': 'Umail',
+                'product.ulik': 'Ulik',
                 'product.coming-soon': 'Demnächst verfügbar',
                 'status.released': '✓ Veröffentlicht',
                 'umail.subtitle': 'Professionelles E-Mail-Sicherheits-Management-Tool',
@@ -1998,6 +2007,7 @@
                 'platform.ios': 'iOS',
                 'platform.android': 'Android',
                 'product.umail': 'Umail',
+                'product.ulik': 'Ulik',
                 'product.coming-soon': 'Próximamente',
                 'status.released': '✓ Lanzado',
                 'umail.subtitle': 'Herramienta profesional de gestión de seguridad de correo electrónico',
@@ -2058,8 +2068,8 @@
         document.addEventListener('DOMContentLoaded', function() {
             updateLanguage(currentLang);
             
-            // 优化Umail链接的点击响应
-            document.querySelectorAll('a[href="umail.html"]').forEach(link => {
+            // 优化产品链接的点击响应
+            document.querySelectorAll('a[href="umail.html"], a[href="ulik.html"]').forEach(link => {
                 link.addEventListener('click', function(e) {
                     // 确保链接可点击，关闭菜单
                     document.querySelectorAll('.dropdown-menu').forEach(menu => {
@@ -2068,7 +2078,7 @@
                     const overlay = document.getElementById('dropdownOverlay');
                     if (overlay) overlay.classList.remove('active');
                     document.body.style.overflow = '';
-                    // 让默认行为继续（跳转到umail.html）
+                    // 让默认行为继续（跳转到产品页面）
                 });
             });
         });
