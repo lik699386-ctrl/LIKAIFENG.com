@@ -1642,7 +1642,7 @@
             <div class="nav-logo">LIKAIFENG.Net</div>
             <ul class="nav-items" role="menubar">
                 <li role="none" class="language-menu-item">
-                    <a href="#language" role="menuitem" class="language-trigger" data-lang>语言</a>
+                    <a href="#language" role="menuitem" class="language-trigger" data-lang onclick="openLanguageMenuMobile(event); return false;">语言</a>
                     <div class="dropdown-menu language-dropdown">
                         <!-- 下拉菜单顶部导航栏复刻 -->
                         <div class="dropdown-nav">
@@ -1696,9 +1696,9 @@
                             <div class="platform-section">
                                 <h3 class="platform-title" data-i18n="platform.windows">Windows</h3>
                                 <div class="product-info">
-                                    <a href="umail.html" data-i18n="product.umail">Umail</a>
+                                    <a href="umail.html" data-i18n="product.umail" onclick="window.location.href='umail.html'; return true;">Umail</a>
                                     <span style="margin: 0 8px; color: rgba(255, 255, 255, 0.3);">|</span>
-                                    <a href="ulik.html" data-i18n="product.ulik">Ulik</a>
+                                    <a href="ulik.html" data-i18n="product.ulik" onclick="window.location.href='ulik.html'; return true;">Ulik</a>
                                 </div>
                             </div>
                             
@@ -1717,7 +1717,7 @@
                     </div>
                 </li>
                 <li role="none" class="products-menu-item">
-                    <a href="#products" role="menuitem" class="products-trigger" data-products>产品</a>
+                    <a href="#products" role="menuitem" class="products-trigger" data-products onclick="openProductsMenuMobile(event); return false;">产品</a>
                     <div class="dropdown-menu products-dropdown">
                         <!-- 下拉菜单顶部导航栏复刻 -->
                         <div class="dropdown-nav">
@@ -1771,9 +1771,9 @@
                             <div class="platform-section">
                                 <h3 class="platform-title" data-i18n="platform.windows">Windows</h3>
                                 <div class="product-info">
-                                    <a href="umail.html" data-i18n="product.umail">Umail</a>
+                                    <a href="umail.html" data-i18n="product.umail" onclick="window.location.href='umail.html'; return true;">Umail</a>
                                     <span style="margin: 0 8px; color: rgba(255, 255, 255, 0.3);">|</span>
-                                    <a href="ulik.html" data-i18n="product.ulik">Ulik</a>
+                                    <a href="ulik.html" data-i18n="product.ulik" onclick="window.location.href='ulik.html'; return true;">Ulik</a>
                                 </div>
                             </div>
                             
@@ -2064,6 +2064,72 @@
         let currentLang = localStorage.getItem('language') || 'zh-CN';
         
         // ===== 超级简单的全局切换函数（用于onclick） =====
+        
+        // 顶部导航按钮的移动端处理函数
+        function openLanguageMenuMobile(e) {
+            console.log('🎯 顶部语言按钮被点击');
+            
+            const isMobile = !window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+            
+            if (isMobile) {
+                if (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+                
+                const languageDropdown = document.querySelector('.language-dropdown');
+                const productsDropdown = document.querySelector('.products-dropdown');
+                const overlay = document.getElementById('dropdownOverlay');
+                
+                // 切换菜单显示
+                if (languageDropdown.classList.contains('active')) {
+                    // 关闭菜单
+                    languageDropdown.classList.remove('active');
+                    if (overlay) overlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                } else {
+                    // 打开语言菜单
+                    productsDropdown.classList.remove('active');
+                    languageDropdown.classList.add('active');
+                    if (overlay) overlay.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                }
+                console.log('✅ 移动端语言菜单已切换');
+            }
+        }
+        
+        function openProductsMenuMobile(e) {
+            console.log('🎯 顶部产品按钮被点击');
+            
+            const isMobile = !window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+            
+            if (isMobile) {
+                if (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+                
+                const languageDropdown = document.querySelector('.language-dropdown');
+                const productsDropdown = document.querySelector('.products-dropdown');
+                const overlay = document.getElementById('dropdownOverlay');
+                
+                // 切换菜单显示
+                if (productsDropdown.classList.contains('active')) {
+                    // 关闭菜单
+                    productsDropdown.classList.remove('active');
+                    if (overlay) overlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                } else {
+                    // 打开产品菜单
+                    languageDropdown.classList.remove('active');
+                    productsDropdown.classList.add('active');
+                    if (overlay) overlay.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                }
+                console.log('✅ 移动端产品菜单已切换');
+            }
+        }
+        
         function switchToLanguageMenuDirect() {
             console.log('🎯 直接切换到语言菜单（onclick）');
             
