@@ -639,6 +639,18 @@
             box-shadow: none !important;
         }
         
+        /* 产品链接触摸反馈（移动端） */
+        .product-info a:active,
+        .language-info a:active {
+            color: rgba(255, 255, 255, 0.8) !important;
+        }
+        
+        /* 产品分隔符 */
+        .product-info span {
+            display: inline;
+            vertical-align: middle;
+        }
+        
         /* 右侧产品网格 */
         .products-grid {
             display: grid;
@@ -1069,6 +1081,19 @@
             .language-info,
             .product-info {
                 font-size: clamp(11px, 2.8vw, 13px) !important; /* 更小的副标题 */
+            }
+            
+            /* 产品链接增强触摸区域 */
+            .product-info a {
+                padding: 4px 2px !important;
+                margin: -4px -2px !important;
+                min-height: 32px;
+                display: inline-flex;
+                align-items: center;
+            }
+            
+            .product-info span {
+                margin: 0 6px !important;
             }
             
             .dropdown-item {
